@@ -38,7 +38,7 @@ class ACModel1D(AnomalousCouplingModel):
         if ( self.mode == 'par1_TH1' or self.mode == 'par1_TF1'):
             self.modelBuilder.factory_('RooACProcessScaling_1D::Scaling_%s(observable_%s,%s,Scaling_base_pdf_%s,"%s",%s)'%(scalerName,lepchannel,self.pois[0],scalerName,filename,self.mode))
         else:
-            raise RuntimeError('InvalidCouplingChoice','We can only use 1D (par1_TH1, par1_TF1)  2D (par1par2_TF2par, par1par2_TH2, par1par2_TF2) or 3D (par1par2par3_TH3, par1par2par3_TF3) models right now!')        
+            raise RuntimeError('InvalidCouplingChoice','We can only use 1D (par1_TH1, par1_TF1)  2D (par1par2_TF2par, par1par2_TH2, par1par2_TF2) or 3D (par1par2par3_TH3, par1par2par3_TF3, EFTtoATGC) models right now!')        
 
         return scalerName
 
@@ -75,7 +75,7 @@ class ACModel2D(AnomalousCouplingModel):
         if ( self.mode == 'par1par2_TF2par' or self.mode == 'par1par2_TH2' or self.mode == 'par1par2_TF2'):
             self.modelBuilder.factory_('RooACProcessScaling_2D::Scaling_%s(observable_%s,%s,%s,Scaling_base_pdf_%s,"%s",%s)'%(scalerName,lepchannel,self.pois[0], self.pois[1],scalerName,filename,self.mode))
         else:
-            raise RuntimeError('InvalidCouplingChoice','We can only use 1D (par1_TH1, par1_TF1)  2D (par1par2_TF2par, par1par2_TH2, par1par2_TF2) or 3D (par1par2par3_TH3, par1par2par3_TF3) models right now!')        
+            raise RuntimeError('InvalidCouplingChoice','We can only use 1D (par1_TH1, par1_TF1)  2D (par1par2_TF2par, par1par2_TH2, par1par2_TF2) or 3D (par1par2par3_TH3, par1par2par3_TF3, EFTtoATGC) models right now!')        
 
         return scalerName
 
@@ -111,10 +111,10 @@ class ACModel3D(AnomalousCouplingModel):
         self.modelBuilder.out._import(SM_diboson_shape_dhist)        
         self.modelBuilder.factory_('RooHistFunc::Scaling_base_pdf_%s({observable_%s},DHIST_SM_aC_%s_shape_for_scale)'%(scalerName,lepchannel,lepchannel))              
 
-        if ( self.mode == 'par1par2par3_TH3' or self.mode == 'par1par2par3_TF3'):
+        if ( self.mode == 'par1par2par3_TH3' or self.mode == 'par1par2par3_TF3' or self.mode == 'EFTtoATGC'):
             self.modelBuilder.factory_('RooACProcessScaling_3D::Scaling_%s(observable_%s,%s,%s,%s,Scaling_base_pdf_%s,"%s",%s)'%(scalerName,lepchannel,self.pois[0], self.pois[1], self.pois[2],scalerName,filename,self.mode))
         else:
-            raise RuntimeError('InvalidCouplingChoice','We can only use 1D (par1_TH1, par1_TF1)  2D (par1par2_TF2par, par1par2_TH2, par1par2_TF2) or 3D (par1par2par3_TH3, par1par2par3_TF3) models right now!')        
+            raise RuntimeError('InvalidCouplingChoice','We can only use 1D (par1_TH1, par1_TF1)  2D (par1par2_TF2par, par1par2_TH2, par1par2_TF2) or 3D (par1par2par3_TH3, par1par2par3_TF3, EFTtoATGC) models right now!')        
        
         return scalerName
        
@@ -126,3 +126,4 @@ par1par2_TH2_Model = ACModel2D('par1par2_TH2')
 par1par2_TF2_Model = ACModel2D('par1par2_TF2')
 par1par2par3_TH3_Model = ACModel3D('par1par2par3_TH3')
 par1par2par3_TF3_Model = ACModel3D('par1par2par3_TF3')
+EFTtoATGC_Model = ACModel3D('EFTtoATGC')

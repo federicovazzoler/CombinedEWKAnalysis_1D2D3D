@@ -68,6 +68,10 @@ elif ( signalModel == 'par1par2par3_TH3'):
 elif ( signalModel == 'par1par2par3_TF3'):
     limtype = 1
     Ndim = 3
+elif ( signalModel == 'EFTtoATGC'):
+    limtype = 1
+    Ndim = 3
+
 else:
     raise RuntimeError('InvalidCouplingChoice %s'%signalModel,
                        'We can only use 1D (par1_TH1, par1_TF1)  2D (par1par2_TF2par, par1par2_TH2, par1par2_TF2) or 3D (par1par2par3_TH3, par1par2par3_TF3) models right now!')
@@ -149,6 +153,7 @@ for section in fit_sections:
     codename = section
     lType = codename
     f = TFile('%s/%s.root'%(basepath,codename))
+#    f = TFile('%s/WZ_aQGC_inputs.root'%(basepath))
 
     Nbkg = cfg.get(codename,'Nbkg')
     print "Nbkg= ",Nbkg
@@ -164,7 +169,6 @@ for section in fit_sections:
         background.append(f.Get(bkg_name[i]))
 
 
-    print 'backgrounds= ',background
     background_shapeSyst = []
     for i in range(0,Nbkg_int):
         background_shapeSyst.append([])
@@ -232,12 +236,25 @@ for section in fit_sections:
                 isItCorr=True
         return isItCorr
 
+    def isItCorrelated_i(name,i):
+        isItCorr=False
+        if (name in SignalBkg_corr_name[i]):
+            isItCorr=True
+        return isItCorr
+
     def isItCorrelated_name(name):
         name_out=name
         for i in range(0,NSigBkg_corr_unc_int):
             if (name in SignalBkg_corr_name[i]):
                 name_out=SignalBkg_corr_name_ws[i]
         return name_out
+
+    def isItCorrelated_int(name):
+        int_out=-1
+        for i in range(0,NSigBkg_corr_unc_int):
+            if (name in SignalBkg_corr_name[i]):
+                int_out=i
+        return int_out
 
     
     norm_sig_sm = diboson.Integral()
@@ -297,7 +314,7 @@ for section in fit_sections:
             name_forCorr=background_shapeSyst[j][i]
             if (isItCorrelated(background_shapeSyst[j][i])):
                 name_forCorr=isItCorrelated_name(background_shapeSyst[j][i])
-
+            
             bkgHist_systUp[j].append(RooDataHist('anomalousCoupling_bkg%i_%s_%sUp'%(j+1,codename,name_forCorr),
                                                  'anomalousCoupling_bkg%i_%s_%sUp'%(j+1,codename,name_forCorr),
                                                  vars,
@@ -402,6 +419,7 @@ for section in fit_sections:
         
 
     if (Ndim==1):
+        print '1: RooACSemiAnalyticPdf_1D(ATGCPdf_anoCoupl_process_%s%codename,'
         aTGCPdf = RooACSemiAnalyticPdf_1D('ATGCPdf_anoCoupl_process_%s'%codename,
                                           'ATGCPdf_proc_%s'%codename,
                                           wpt,
@@ -410,6 +428,7 @@ for section in fit_sections:
                                           '%s/signal_proc_%s.root'%(basepath,codename),
                                           limtype
                                           )
+        print 'done 1: RooACSemiAnalyticPdf_1D(ATGCPdf_anoCoupl_process_%s%codename,'
     elif (Ndim==2):
         aTGCPdf = RooACSemiAnalyticPdf_2D('ATGCPdf_anoCoupl_process_%s'%codename,
                                           'ATGCPdf_proc_%s'%codename,
@@ -444,6 +463,7 @@ for section in fit_sections:
             name_forCorr=isItCorrelated_name(signal_shapeSyst[i])
 
             if (Ndim==1):
+                print '2: RooACSemiAnalyticPdf_1D(ATGCPdf_anoCoupl_process_%s%codename,'
                 aTGCPdf_up[i] = RooACSemiAnalyticPdf_1D('ATGCPdf_anoCoupl_process_%s_%sUp'%(codename,name_forCorr),
                                                         'ATGCPdf_proc_%s'%codename,
                                                         wpt,
@@ -479,6 +499,7 @@ for section in fit_sections:
             
 
             if (Ndim==1):
+                print '3: RooACSemiAnalyticPdf_1D(ATGCPdf_anoCoupl_process_%s%codename,'
                 aTGCPdf_down[i] = RooACSemiAnalyticPdf_1D('ATGCPdf_anoCoupl_process_%s_%sDown'%(codename,name_forCorr),
                                                           'ATGCPdf_proc_%s'%codename,
                                                           wpt,
@@ -518,7 +539,6 @@ for section in fit_sections:
         getattr(theWS, 'import')(bkgHist[i])
     for j in range(0,Nbkg_int):
         for i in range(0,len(background_shapeSyst[j])):
-            print '\t%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% adding bkgUp in ws: ',bkgHist_systUp[j][i]
  
             getattr(theWS, 'import')(bkgHist_systUp[j][i])
             getattr(theWS, 'import')(bkgHist_systDown[j][i])
@@ -527,7 +547,6 @@ for section in fit_sections:
         for i in range(0,len(signal_shapeSyst)):
             getattr(theWS, 'import')(aTGCPdf_up[i])
             getattr(theWS, 'import')(aTGCPdf_down[i])
-#            getattr(theWS, 'import')(aTGCPdf_norm[i])
         getattr(theWS, 'import')(aTGCPdf_norm_sum)
     theWS.Print()
     
@@ -626,21 +645,26 @@ rate                        {norm_sig_sm}\t""".format(codename=codename,norm_sig
     if (doSignalShape_unc):
         for i in range(0,len(signal_shapeSyst)):
             name_forCorr=signal_shapeSyst[i]
+	    print "\n\n\n############# name_forCorr= ",name_forCorr
+            int_forCorr=0
             if (isItCorrelated(signal_shapeSyst[i])):
                 name_forCorr=isItCorrelated_name(signal_shapeSyst[i])
+                int_forCorr=isItCorrelated_int(signal_shapeSyst[i])
+
             card += """
 {signal_shapeSyst}        shape1  1.0          """.format(signal_shapeSyst=name_forCorr)
-    
+            print " loop over Nbkg..."
             for j in range(0,Nbkg_int):
-                if (isItCorrelated(signal_shapeSyst[i])):
+                if (isItCorrelated_i(signal_shapeSyst[i],int_forCorr)):
                     isitcorr=false
                     for k in range(0,len(background_shapeSyst[j])):
-                        if (isItCorrelated(background_shapeSyst[j][k])):
+                        if (isItCorrelated_i(background_shapeSyst[j][k],int_forCorr)):
                             isitcorr=true
                     if (isitcorr):
                         card += """\t\t\t\t1.0""".format(codename=codename,norm_sig_sm=norm_sig_sm,norm_bkg=norm_bkg,norm_obs=norm_obs)
                     if not(isitcorr):
                         card += """\t\t\t\t-""".format(codename=codename,norm_sig_sm=norm_sig_sm,norm_bkg=norm_bkg,norm_obs=norm_obs)
+
                 else:
                     card += """\t\t\t\t-""".format(codename=codename,norm_sig_sm=norm_sig_sm,norm_bkg=norm_bkg,norm_obs=norm_obs)
 

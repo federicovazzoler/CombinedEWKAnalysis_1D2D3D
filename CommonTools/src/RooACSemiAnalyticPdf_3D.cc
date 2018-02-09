@@ -163,6 +163,9 @@ void RooACSemiAnalyticPdf_3D::readProfiles(std::vector<double> bins,TDirectory& 
   case par1par2par3_TF3:
     N_bins=bins.size()-1;
     break;
+  case EFTtoATGC:
+    N_bins=bins.size()-1;
+    break;
   default:
     assert(NULL && "invalid limit type!");
     break;
@@ -179,6 +182,9 @@ void RooACSemiAnalyticPdf_3D::readProfiles(std::vector<double> bins,TDirectory& 
       P_par1par2par3_histo[i]->SetDirectory(0);
       break;
     case par1par2par3_TF3:
+      P_par1par2par3_TF[i] = dynamic_cast<TF3 *>(dir.Get(par2name)->Clone(par2name+"new"));
+      break;
+    case EFTtoATGC:
       P_par1par2par3_TF[i] = dynamic_cast<TF3 *>(dir.Get(par2name)->Clone(par2name+"new"));
       break;
     default:
@@ -198,6 +204,9 @@ void RooACSemiAnalyticPdf_3D::readProfiles(RooACSemiAnalyticPdf_3D const& other)
   case par1par2par3_TF3:
     N_bins=bins.size()-1;
     break;
+  case EFTtoATGC:
+    N_bins=bins.size()-1;
+    break;
   default:
     assert(NULL && "invalid limit type!");
     break;
@@ -212,6 +221,10 @@ void RooACSemiAnalyticPdf_3D::readProfiles(RooACSemiAnalyticPdf_3D const& other)
       P_par1par2par3_histo[i]->SetDirectory(0);
       break;
     case par1par2par3_TF3:
+      P_par1par2par3_TF[i] = dynamic_cast<TF3 *>(other.P_par1par2par3_histo[i]->Clone(par2name+"new"));
+      //      P_par1par2par3_TF[i]->SetDirectory(0);
+      break;
+    case EFTtoATGC:
       P_par1par2par3_TF[i] = dynamic_cast<TF3 *>(other.P_par1par2par3_histo[i]->Clone(par2name+"new"));
       //      P_par1par2par3_TF[i]->SetDirectory(0);
       break;
@@ -237,6 +250,17 @@ RooACSemiAnalyticPdf_3D::~RooACSemiAnalyticPdf_3D() {
 
 Double_t RooACSemiAnalyticPdf_3D::evaluate() const 
 { 
+
+  double MZ=0.0911876;
+  double MW=0.080385;
+  //  double s=MZ*MZ/(MW*MW);
+  double sin2thw=0.23126;
+  double tan2thw=-1000.;
+  tan2thw=sin2thw/(1-sin2thw);
+  double alpha=0.0072973525698;
+  double e=sqrt(4.*3.141592*alpha);
+  double g=e/sqrt(sin2thw);
+
 
   TH3D ** P_histo = NULL;
   TF3 ** P_TF = NULL;
@@ -286,6 +310,8 @@ Double_t RooACSemiAnalyticPdf_3D::evaluate() const
       v3 = P_TF[0]->GetZmax();
 */
     break;
+  case EFTtoATGC:   
+    break;
   default:
     assert(NULL && "invalid limit type!");
     break;
@@ -296,9 +322,18 @@ Double_t RooACSemiAnalyticPdf_3D::evaluate() const
 
   int N_bins=bins.size()-1;
 
+  //  cout << "  -> n bins: "<< N_bins<< endl;
+
     int bin_with_x=1;
-    for (int j=0;j<N_bins;j++)
-      if (x<bins[j+1] && x>bins[j]) bin_with_x=j+1;
+    for (int j=0;j<N_bins;j++){
+      if (x<bins[j+1] && x>=bins[j]) {
+	bin_with_x=j+1;
+      }
+    }
+
+    double cwww=v1*2./(3.*g*g*MW*MW);
+    double cw=v2*2./(MZ*MZ);
+    double cb=v3*(-2.)/(sin2thw*MZ*MZ)+cw/tan2thw;
 
     switch(type_) {
     case par1par2par3_TH3:
@@ -306,6 +341,19 @@ Double_t RooACSemiAnalyticPdf_3D::evaluate() const
       break;
     case par1par2par3_TF3:
       ret = P_TF[bin_with_x-1]->Eval(v1, v2, v3)*SM_shape;
+      break;
+    case EFTtoATGC:
+      /*
+      double cwww=v1*2./(3.*g*g*MW*MW);
+      double cw=v2*2./(MZ*MZ);
+      double cb=v3*(-2.)/(sin2thw*MZ*MZ)+cw/tan2thw;
+      */
+      ret = P_TF[bin_with_x-1]->
+	Eval(
+	     cwww, 
+	     cw, 
+	     cb)
+	*SM_shape;
       break;
     case notype:
       assert(NULL && "invalid limit type!");
@@ -325,6 +373,16 @@ getAnalyticalIntegral(RooArgSet& allVars,RooArgSet& analVars,
 
 Double_t RooACSemiAnalyticPdf_3D::
 analyticalIntegral(Int_t code, const char* rangeName) const {  
+
+  double MZ=0.0911876;
+  double MW=0.080385;
+  //  double s=MZ*MZ/(MW*MW);
+  double sin2thw=0.23126;
+  double tan2thw=-1000.;
+  tan2thw=sin2thw/(1-sin2thw);
+  double alpha=0.0072973525698;
+  double e=sqrt(4.*3.141592*alpha);
+  double g=e/sqrt(sin2thw);
 
   assert(code==1 && "invalid analytic integration code!");
 
@@ -352,6 +410,10 @@ analyticalIntegral(Int_t code, const char* rangeName) const {
   double ret(0.);
 
   int N_bins=bins.size()-1;
+  
+  double cwww=v1*2./(3.*g*g*MW*MW);
+  double cw=v2*2./(MZ*MZ);
+  double cb=v3*(-2.)/(sin2thw*MZ*MZ)+cw/tan2thw;
 
   for(Int_t i=0 ; i<N_bins ; i++) {
     switch(type_) {
@@ -361,6 +423,14 @@ analyticalIntegral(Int_t code, const char* rangeName) const {
     case par1par2par3_TF3:
       ret += P_TF[i]->Eval(v1, v2, v3)*integral_basis[rName][i];
       break;
+    case EFTtoATGC:
+      /*
+      double cwww=v1*2./(3.*g*g*MW*MW);
+      double cw=v2*2./(MZ*MZ);
+      double cb=v3*(-2.)/(sin2thw*MZ*MZ)+cw/tan2thw;
+      */
+      ret += P_TF[i]->Eval(cwww, cw, cb)*integral_basis[rName][i];
+      break;
 
     default:
       assert(code==1 && "invalid limit type!");
@@ -368,8 +438,9 @@ analyticalIntegral(Int_t code, const char* rangeName) const {
     }
   }
   cout << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@--> par1(v1): "<<v1<<" par2(v2): "<<v2<<" par3(v3): "<<v3 <<" ret: "<<ret<< endl;
+  cout << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@--> par1: "<<par1<<" par2: "<<par2<<" par3: "<<par3 <<" ret: "<<ret<< endl;
   
-  cout << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@---> integral: "<<ret<< endl;
+  cout << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@---> integral: "<<ret<< endl;
 
   return ret;
 }

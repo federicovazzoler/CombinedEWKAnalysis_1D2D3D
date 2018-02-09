@@ -62,7 +62,6 @@ RooACSemiAnalyticPdf_1D::RooACSemiAnalyticPdf_1D(const char *name,
     }
     bins_.push_back(rdep.getBinning("").binHigh(i));
   }
-  
   readProfiles(bins_,*f);
   f->Close();
 } 
@@ -161,11 +160,14 @@ void RooACSemiAnalyticPdf_1D::readProfiles(std::vector<double> bins,TDirectory& 
     assert(NULL && "invalid limit type!");
     break;
   }
+
+
   for(i=0; i<N_bins; ++i) {
     if (P_par1_histo[i]) delete P_par1_histo[i];
     if (P_par1_TF[i]) delete P_par1_TF[i];
     TString par2name = TString::Format("bin_content_par1_%i",i+1);
 
+    
     switch(type_) {
     case par1_TH1:
       P_par1_histo[i] = dynamic_cast<TH1D *>(dir.Get(par2name)->Clone(par2name+"new"));
@@ -256,13 +258,11 @@ Double_t RooACSemiAnalyticPdf_1D::evaluate() const
     if (v1 > P_histo[0]->GetXaxis()->GetXmax())
       v1 = P_histo[0]->GetXaxis()->GetXmax();
     break;
-  case par1_TF1:   
-/* 
+  case par1_TF1:    
     if (v1 < P_TF[0]->GetXmin())
       v1 = P_TF[0]->GetXmin();
     if (v1 > P_TF[0]->GetXmax())
       v1 = P_TF[0]->GetXmax();
-*/
     break;
   default:
     assert(NULL && "invalid limit type!");

@@ -232,12 +232,10 @@ Double_t RooACProcessScaling_1D::evaluate() const
       v1 = P_histo[0]->GetXaxis()->GetXmax();
     break;
   case par1_TF1:
-/*
     if (v1 < P_TF[0]->GetXmin())
       v1 = P_TF[0]->GetXmin();
     if (v1 > P_TF[0]->GetXmax())
       v1 = P_TF[0]->GetXmax();
-*/
     break;
   case notype:
     assert(NULL && "invalid limit type!");

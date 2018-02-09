@@ -21,6 +21,7 @@ public:
   
   enum LimitType{ par1par2par3_TH3, 
 		  par1par2par3_TF3, 
+		  EFTtoATGC, 
 		  notype };
 
   RooACProcessScaling_3D ();

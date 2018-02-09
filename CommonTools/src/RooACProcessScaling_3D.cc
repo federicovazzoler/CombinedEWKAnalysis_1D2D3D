@@ -138,6 +138,9 @@ void RooACProcessScaling_3D::readProfiles(std::vector<double> bins,TDirectory& d
   case par1par2par3_TF3:
     N_bins=bins.size()-1;
     break;
+  case EFTtoATGC:
+    N_bins=bins.size()-1;
+    break;
   default:
     assert(NULL && "invalid limit type!");
     break;
@@ -157,6 +160,9 @@ void RooACProcessScaling_3D::readProfiles(std::vector<double> bins,TDirectory& d
     case par1par2par3_TF3:
       P_par1par2par3_TF[i] = dynamic_cast<TF3 *>(dir.Get(par2name)->Clone(par2name+"new"));
       break;
+    case EFTtoATGC:
+      P_par1par2par3_TF[i] = dynamic_cast<TF3 *>(dir.Get(par2name)->Clone(par2name+"new"));
+      break;
     default:
       assert(NULL && "invalid limit type!");
       break;
@@ -174,6 +180,9 @@ void RooACProcessScaling_3D::readProfiles(RooACProcessScaling_3D const& other) {
   case par1par2par3_TF3:
     N_bins=bins.size()-1;
     break;
+  case EFTtoATGC:
+    N_bins=bins.size()-1;
+    break;
   default:
     assert(NULL && "invalid limit type!");
     break;
@@ -189,6 +198,9 @@ void RooACProcessScaling_3D::readProfiles(RooACProcessScaling_3D const& other) {
       P_par1par2par3_histo[i]->SetDirectory(0);
       break;
     case par1par2par3_TF3:
+      P_par1par2par3_TF[i] = dynamic_cast<TF3 *>(other.P_par1par2par3_histo[i]->Clone(par2name+"new"));
+      break;
+    case EFTtoATGC:
       P_par1par2par3_TF[i] = dynamic_cast<TF3 *>(other.P_par1par2par3_histo[i]->Clone(par2name+"new"));
       break;
     default:
@@ -214,6 +226,18 @@ RooACProcessScaling_3D::~RooACProcessScaling_3D() {
 
 Double_t RooACProcessScaling_3D::evaluate() const 
 { 
+
+
+  double MZ=0.0911876;
+  double MW=0.080385;
+  //  double s=MZ*MZ/(MW*MW);
+  double sin2thw=0.23126;
+  double tan2thw=-1000.;
+  tan2thw=sin2thw/(1-sin2thw);
+  double alpha=0.0072973525698;
+  double e=sqrt(4.*3.141592*alpha);
+  double g=e/sqrt(sin2thw);
+
 
   TH3D ** P_histo = NULL;
   TF3 ** P_TF = NULL;
@@ -262,6 +286,8 @@ Double_t RooACProcessScaling_3D::evaluate() const
       v3 = P_TF[0]->GetZmax();
 */
     break;
+  case EFTtoATGC:
+    break;
   case notype:
     assert(NULL && "invalid limit type!");
     break;
@@ -271,6 +297,11 @@ Double_t RooACProcessScaling_3D::evaluate() const
   
   double ret(0.);
   int N_bins=bins.size()-1;;
+
+  double cwww=v1*2./(3.*g*g*MW*MW);
+  double cw=v2*2./(MZ*MZ);
+  double cb=v3*(-2.)/(sin2thw*MZ*MZ)+cw/tan2thw;
+
 
   for(int i = 0; i<N_bins; i++) {
  
@@ -282,6 +313,19 @@ Double_t RooACProcessScaling_3D::evaluate() const
     case par1par2par3_TF3:
       ret += P_TF[i]->Eval(v1,v2,v3)*integral_basis[i];
       break;
+    case EFTtoATGC:
+      /*
+      double cwww=v1*2./(3.*g*g*MW*MW);
+      double cw=v2*2./(MZ*MZ);
+      double cb=v3*(-2.)/(sin2thw*MZ*MZ)+cw/tan2thw;
+      */
+      ret += P_TF[i]->Eval(cwww,cw,cb)*integral_basis[i];
+      break;
+      /*
+    case notype:
+      assert(NULL && "invalid limit type!");
+      break;
+      */
     default:
       assert(NULL && "invalid limit type!");
       break;
