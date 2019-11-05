@@ -3,6 +3,8 @@
 WORKDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $WORKDIR
 
+URL="https://wwwusers.ts.infn.it/~dellaric/tmp/Vgg/v13.default/"
+
 BOSON=$1
 
 if [ ! -z "$2" ]; then
@@ -35,19 +37,21 @@ CHANNELS="ele muo"
 echo '*********************************'
 echo '*            '$BOSON' AGC            *'
 echo '*********************************'
-
+echo ''
+echo 'FUNDAMENTAL! Fetching data from: '$URL
+echo ''
 echo '---------------------------------'
 echo '0. Prepare input cards           '
 echo '---------------------------------'
 echo ''
-./scripts/card_generator.sh $WORKDIR $BOSON
+#./scripts/card_generator.sh $WORKDIR $BOSON
 
 echo ''
+echo '---------------------------------'
+echo '1. Prepare aGC signal input file '
+echo '---------------------------------'
+echo ''
 if [ "$3" == fit ]; then
-  echo '---------------------------------'
-  echo '1. Prepare aGC signal input file '
-  echo '---------------------------------'
-  echo ''
   ./scripts/launch_doFit.sh $WORKDIR $BOSON
   if [ $? -ne 0 ]; then
     echo '[ERROR]: launch_doFit.sh crashed'
@@ -56,36 +60,32 @@ if [ "$3" == fit ]; then
 else
   echo 'Fits skipped'
 fi
-#echo ''
-#echo '---------------------------------'
-#echo '2. Prepare data and MC input file'
-#echo '---------------------------------'
-#echo ''
-#./scripts/launch_merge_histo.sh
-#if [ $? -ne 0 ]; then
-#  echo '[ERROR]: launch_merge_histo crashed'
-#  exit 1
-#fi
-#./scripts/prepare_folder.sh
-#if [ $? -ne 0 ]; then
-#  echo '[ERROR]: prepare_folder crashed'
-#  exit 1
-#fi
-#echo ''
-#echo '---------------------------------'
-#echo '3. Build the workspace'
-#echo '---------------------------------'
-#echo ''
-#for PAR in $PARS; do
-#  python python/buildWorkspace_AC.py --config="cards/config_wgg_13TeV_buildWorkspace_$PAR" --path="$WORKDIR/data/$PAR"
-#  if [ $? -ne 0 ]; then
-#    echo '[ERROR]: builWorkspace_AC.py crashed'
-#    exit 1
-#  fi
-#  mkdir -p output/$PAR
-#  mv aC_ch_ele.txt aC_ch_muo.txt ch_ele_ws.root ch_muo_ws.root output/$PAR
-#done
-#echo ''
+echo ''
+echo '---------------------------------'
+echo '2. Prepare data and MC input file'
+echo '---------------------------------'
+echo ''
+#./scripts/launch_merge_histo.sh $WORKDIR $URL $BOSON
+if [ $? -ne 0 ]; then
+  echo '[ERROR]: launch_merge_histo crashed'
+  exit 1
+fi
+echo ''
+echo '---------------------------------'
+echo '3. Build the workspace'
+echo '---------------------------------'
+echo ''
+for PAR in $PARS; do
+  cp data/$BOSON/ch_*.root data/$BOSON/$PAR/
+  python python/buildWorkspace_AC.py --config="cards/config_${BOSON}_13TeV_buildWorkspace_$PAR" --path="$WORKDIR/data/$BOSON/$PAR"
+  if [ $? -ne 0 ]; then
+    echo '[ERROR]: builWorkspace_AC.py crashed'
+    exit 1
+  fi
+  rm -f data/$BOSON/$PAR/ch_ele.root data/$BOSON/$PAR/ch_muo.root
+  mv aC_ch_ele.txt aC_ch_muo.txt ch_ele_ws.root ch_muo_ws.root data/$BOSON/$PAR
+done
+echo ''
 #echo '---------------------------------'
 #echo '4. Convert combine card to ws'
 #echo '---------------------------------'
