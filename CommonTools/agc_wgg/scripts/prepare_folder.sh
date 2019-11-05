@@ -1,6 +1,6 @@
 #bin/bash
 
-WORKDIR=$HOME/work/AGC/CMSSW_7_1_5/src/CombinedEWKAnalysis/CommonTools/agc_wgg
+WORKDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $WORKDIR
 
 PARS="FM0 FM1 FM2 FM3 FM4 FM5 FM6 FM7 FT0 FT1 FT2 FT5 FT6 FT7"

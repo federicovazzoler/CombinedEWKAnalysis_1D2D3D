@@ -1,6 +1,6 @@
 #bin/bash
 
-WORKDIR=$HOME/work/AGC/CMSSW_7_1_5/src/CombinedEWKAnalysis/CommonTools/agc_wgg
+WORKDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $WORKDIR
 #FIXME
 #unalias root
