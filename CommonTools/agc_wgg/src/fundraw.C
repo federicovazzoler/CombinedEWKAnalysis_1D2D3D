@@ -114,10 +114,10 @@ void fundraw(string path, string name_tf1, string name_tg, double range)
     line->SetLineWidth(2);
     line->Draw("same");
 
-    while (gSystem->AccessPathName(("/home/fvazzole/html/agc/wgg/" + name_tf1 + "/").c_str())) {
-      gSystem->mkdir(("/home/fvazzole/html/agc/wgg/" + name_tf1 + "/").c_str(), kTRUE);
+    while (gSystem->AccessPathName(("wgg/" + name_tf1 + "/").c_str())) {
+      gSystem->mkdir(("wgg/" + name_tf1 + "/").c_str(), kTRUE);
     }
-    c1->SaveAs(("/home/fvazzole/html/agc/wgg/" + name_tf1 + "/" + "Range_" + std::to_string((int)range) + "_Bin_" + std::to_string(i+1) + ".pdf").c_str());
+    c1->SaveAs(("wgg/" + name_tf1 + "/" + "Range_" + std::to_string((int)range) + "_Bin_" + std::to_string(i+1) + ".pdf").c_str());
 
     delete fitfunc;
     delete graph;

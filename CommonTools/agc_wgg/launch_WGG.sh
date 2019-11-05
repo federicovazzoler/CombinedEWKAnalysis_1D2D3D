@@ -1,6 +1,6 @@
 #bin/bash
 
-WORKDIR=$HOME/work/aTGC_tool/CMSSW_7_1_5/src/CombinedEWKAnalysis/CommonTools/agc_wgg
+WORKDIR=$HOME/work/AGC/CMSSW_7_1_5/src/CombinedEWKAnalysis/CommonTools/agc_wgg
 cd $WORKDIR
 #FIXME
 #unalias root

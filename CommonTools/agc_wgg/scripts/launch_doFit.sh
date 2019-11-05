@@ -4,7 +4,7 @@ pars="FM0 FM1 FM2 FM3 FM4 FM5 FM6 FM7 FT0 FT1 FT2 FT5 FT6 FT7"
 #pars="FM0"
 channels="ele muo"
 
-WORKDIR=$HOME/work/aTGC_tool/CMSSW_7_1_5/src/CombinedEWKAnalysis/CommonTools/agc_wgg
+WORKDIR=$HOME/work/AGC/CMSSW_7_1_5/src/CombinedEWKAnalysis/CommonTools/agc_wgg
 cd $WORKDIR
 
 for par in $pars; do

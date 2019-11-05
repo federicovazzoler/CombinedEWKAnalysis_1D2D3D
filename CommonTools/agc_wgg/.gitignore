@@ -1,0 +1,6 @@
+*.d
+*.so
+*.pcm
+.*.swp
+*.exe
+html
