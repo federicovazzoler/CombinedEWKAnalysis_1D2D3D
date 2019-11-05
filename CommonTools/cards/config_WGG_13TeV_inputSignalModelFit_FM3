@@ -1,0 +1,28 @@
+[Global]
+# bins of observable you want to use for the fit
+obsBins = 0.,20.,40.,60.,80.,180.,300.
+# name of parameter
+par1Name = FM3
+# number of generated grid points in input TTree
+nGridPar1Bins = 16
+# number of output grid points
+outputgridpoints = 10000
+# min and max values of generated grid points in input TTree
+#par1GridMin = -0.2e-10
+#par1GridMin = -0.00000000002
+par1GridMin = -10e-12
+#par1GridMax = 0.2e-10
+#par1GridMax = 0.00000000003
+par1GridMax = 10e-12
+# function you want to fit on yield in every observable bin
+function = [0] + [1]*x + [2]*x*x
+# model you want to use
+model = par1_TF1
+
+# channels
+[ch_ele]
+obsBins = 0.,20.,40.,60.,80.,180.,300.
+signal_model = /home/fvazzole/work/aTGC_tool/CMSSW_7_1_5/src/CombinedEWKAnalysis/CommonTools/agc_wgg/data/pre_fit/FM3_ele.root
+[ch_muo]
+obsBins = 0.,20.,40.,60.,80.,180.,300.
+signal_model = /home/fvazzole/work/aTGC_tool/CMSSW_7_1_5/src/CombinedEWKAnalysis/CommonTools/agc_wgg/data/pre_fit/FM3_muo.root
