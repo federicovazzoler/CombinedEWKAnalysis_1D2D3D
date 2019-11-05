@@ -12,8 +12,7 @@ limit = file.Get('limit')
 nEntries = limit.GetEntries()-1
 
 histo = TH1F('LLHscan','',nEntries,minmax[0],minmax[1])
-#limit.Draw("dkg >> LLHscan","deltaNLL",'goff')
-limit.Draw("FM0 >> LLHscan","deltaNLL",'goff')
+limit.Draw(parm+" >> LLHscan","deltaNLL",'goff')
 
 minBin = histo.GetMinimumBin()
 minBinCenter = histo.GetBinCenter(minBin)
@@ -55,9 +54,16 @@ for i in xrange(nEntries):
         lastAboveErr95 = True
 file.Close()
 
-boundstext68 = ['[%.3g,%.3g]'%(b[0],b[1]) for b in bounds68]
-#boundstext95 = ['[%.3g,%.3g]'%(b[0],b[1]) for b in bounds95]
-print '68% CL Limit:','U'.join(boundstext68)
-#print '95% CL Limit:','U'.join(boundstext95)
+if len(bounds68[0]) > 1:
+  boundstext68 = ['[%.3g,%.3g]'%(b[0],b[1]) for b in bounds68]
+  print '68% CL Limit:','U'.join(boundstext68)
+else:
+  print 'Sorry, but no 68% limits for you :('
+
+if len(bounds95[0]) > 1:
+  boundstext95 = ['[%.3g,%.3g]'%(b[0],b[1]) for b in bounds95]
+  print '95% CL Limit:','U'.join(boundstext95)
+else:
+  print 'Sorry, but no 95% limits for you :('
 
 

@@ -14,6 +14,7 @@ parser = OptionParser(description="%prog : A RooStats Implementation of Anomalou
 cfgparse = SafeConfigParser()
 
 parser.add_option("--config",dest="config",help="The name of the input configuration file.")
+parser.add_option("--outDir",dest="outDir",help="The name of the output directory.")
 (options,args) = parser.parse_args()
 
 miss_options = False
@@ -145,6 +146,11 @@ else:
     print 'Only dimensions 1, 2 and 3 implemented... this thing will crash.'
 
 NSigBkg_corr_unc_int=0
+
+print "------------------------------"
+print option.outDir
+print "------------------------------"
+
 
 basepath = '%s/src/CombinedEWKAnalysis/CommonTools/data/anomalousCoupling'%os.environ['CMSSW_BASE']
 
