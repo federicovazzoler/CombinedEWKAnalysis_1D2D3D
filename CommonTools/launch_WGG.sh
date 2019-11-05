@@ -35,6 +35,13 @@ CHANNELS="ele muo"
 echo '*********************************'
 echo '*            '$BOSON' AGC            *'
 echo '*********************************'
+
+echo '---------------------------------'
+echo '0. Prepare input cards           '
+echo '---------------------------------'
+echo ''
+./scripts/card_generator.sh $WORKDIR $BOSON
+
 echo ''
 if [ "$3" == fit ]; then
   echo '---------------------------------'
