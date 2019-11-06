@@ -10,7 +10,7 @@ BOSON=$1
 if [ ! -z "$2" ]; then
   if [ "$2" == "all" ]; then
     PARS=""
-    if [ $BOSON == "WGG" ]; then
+    if [ "$BOSON" == "WGG" ]; then
       PARS=$PARS" FM0" 
       PARS=$PARS" FM1"
       PARS=$PARS" FM2"
@@ -26,7 +26,7 @@ if [ ! -z "$2" ]; then
     PARS=$PARS" FT5"
     PARS=$PARS" FT6"
     PARS=$PARS" FT7"
-    if [ $BOSON == "ZGG" ]; then
+    if [ "$BOSON" == "ZGG" ]; then
       PARS=$PARS" FT8"
       PARS=$PARS" FT9"
     fi
@@ -46,9 +46,9 @@ echo '*********************************'
 echo ''
 echo 'FUNDAMENTAL! Fetching data from: '$URL
 echo ''
-wait 1
+sleep 1
 echo '              TAH!'
-wait 1
+sleep 1
 echo ''
 echo '---------------------------------'
 echo '0. Prepare input cards           '
@@ -122,8 +122,9 @@ echo ''
 CHANNELS="ele muo lep"
 n_points=1000
 for PAR in $PARS; do
+  cp -p data/$BOSON/$PAR/signal_proc_ch_ele.root data/anomalousCoupling
+  cp -p data/$BOSON/$PAR/signal_proc_ch_muo.root data/anomalousCoupling
   for CHANNEL in $CHANNELS; do
-    cp -p data/$BOSON/$PAR/signal_proc_ch_${CHANNEL}.root data/anomalousCoupling
     # observed limits
     combine -v -1 data/$BOSON/$PAR/${BOSON}_${PAR}_${CHANNEL}.root -M MultiDimFit -P $PAR --floatOtherPOIs=0 --algo=grid --points=$n_points --minimizerStrategy=2
     if [ $? -ne 0 ]; then

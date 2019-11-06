@@ -67,7 +67,7 @@ done
 
 # write builworkspace
 PARS=""
-if [ $BOSON == "WGG" ]; then
+if [ $BOSON = "WGG" ]; then
   PARS=$PARS" FM0"
   PARS=$PARS" FM1"
   PARS=$PARS" FM2"
@@ -83,7 +83,7 @@ PARS=$PARS" FT2"
 PARS=$PARS" FT5"
 PARS=$PARS" FT6"
 PARS=$PARS" FT7"
-if [ $BOSON == "ZGG" ]; then
+if [ $BOSON = "ZGG" ]; then
   PARS=$PARS" FT8"
   PARS=$PARS" FT9"
 fi
@@ -98,10 +98,10 @@ for PAR in $PARS; do
   echo "par1High = $(cat $WORKDIR/cards/range_${PAR}.txt)" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
   for CHANNEL in $CHANNELS; do
     echo "[ch_${CHANNEL}]" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
-    if [ $BOSON == "WGG" ]; then
+    if [ $BOSON = "WGG" ]; then
       echo "Nbkg = 3" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
     fi
-    if [ $BOSON == "ZGG" ]; then
+    if [ $BOSON = "ZGG" ]; then
       echo "Nbkg = 1" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
     fi
     echo "bkg1_name = bkg_jetpho_misid" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
@@ -115,7 +115,7 @@ for PAR in $PARS; do
       fi
     done
     echo "" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
-    if [ $BOSON == "WGG" ]; then
+    if [ $BOSON = "WGG" ]; then
       echo "bkg2_name = bkg_zg" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
       echo -n "bkg2_shape_syst = " >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
       for FLAG in $FLAGS; do
@@ -149,10 +149,10 @@ for PAR in $PARS; do
       if [ ${FLAG:(-3)} == "_up" ]; then
         FLAG=${FLAG//_up/}
         echo "correlated_SigBkg_unc${nSyst}_name = $FLAG" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
-        if [ $BOSON == "WGG" ]; then
+        if [ $BOSON = "WGG" ]; then
           echo -n "correlated_SigBkg_unc${nSyst} = diboson_$FLAG,bkg_jetpho_misid_$FLAG,bkg_zg_$FLAG,bkg_zgg_$FLAG" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
         fi
-        if [ $BOSON == "ZGG" ]; then
+        if [ $BOSON = "ZGG" ]; then
           echo -n "correlated_SigBkg_unc${nSyst} = diboson_$FLAG,bkg_jetpho_misid_$FLAG" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
         fi
         echo "" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR

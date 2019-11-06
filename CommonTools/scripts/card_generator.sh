@@ -5,7 +5,7 @@ WORKDIR=$1
 BOSON=$2
 
 PARS=""
-if [ $BOSON == "WGG" ]; then
+if [ "$BOSON" == "WGG" ]; then
   PARS=$PARS" FM0"
   PARS=$PARS" FM1"
   PARS=$PARS" FM2"
@@ -21,7 +21,7 @@ PARS=$PARS" FT2"
 PARS=$PARS" FT5"
 PARS=$PARS" FT6"
 PARS=$PARS" FT7"
-if [ $BOSON == "ZGG" ]; then
+if [ "$BOSON" == "ZGG" ]; then
   PARS=$PARS" FT8"
   PARS=$PARS" FT9"
 fi
