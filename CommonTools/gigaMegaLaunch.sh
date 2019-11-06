@@ -85,91 +85,91 @@ if [ $? -ne 0 ]; then
   echo '[ERROR]: launch_merge_histo crashed'
   exit 1
 fi
-echo ''
-echo '---------------------------------'
-echo '3. Build the workspace'
-echo '---------------------------------'
-echo ''
-for PAR in $PARS; do
-  cp -p data/$BOSON/ch_*.root data/$BOSON/$PAR/
-  python python/buildWorkspace_AC.py --config="cards/config_${BOSON}_13TeV_buildWorkspace_$PAR" --path="$WORKDIR/data/$BOSON/$PAR"
-  if [ $? -ne 0 ]; then
-    echo '[ERROR]: builWorkspace_AC.py crashed'
-    exit 1
-  fi
-  mv aC_ch_ele.txt aC_ch_muo.txt ch_ele_ws.root ch_muo_ws.root data/$BOSON/$PAR
-done
-echo ''
-echo '---------------------------------'
-echo '4. Convert combine card to ws'
-echo '---------------------------------'
-echo ''
-for PAR in $PARS; do
-  for CHANNEL in $CHANNELS; do
-    cp -p data/$BOSON/$PAR/ch_${CHANNEL}_ws.root data/anomalousCoupling
-    cp -p data/$BOSON/$PAR/ch_${CHANNEL}.root data/anomalousCoupling
-    cp -p data/$BOSON/$PAR/signal_proc_ch_${CHANNEL}.root data/anomalousCoupling
-    text2workspace.py -m 126 data/$BOSON/$PAR/aC_ch_${CHANNEL}.txt -o data/$BOSON/$PAR/${BOSON}_${PAR}_${CHANNEL}.root -P CombinedEWKAnalysis.CommonTools.ACModel:par1_TF1_Model --PO channels=ch_$CHANNEL --PO poi=$PAR --PO range_$PAR=-$(cat cards/range_${PAR}.txt),$(cat cards/range_${PAR}.txt)
-    if [ $? -ne 0 ]; then
-      echo '[ERROR]: text2workspace.py crashed'
-      exit 1
-    fi
-  done
-  combineCards.py data/$BOSON/$PAR/aC_ch_ele.txt data/$BOSON/$PAR/aC_ch_muo.txt > data/$BOSON/$PAR/aC_ch_lep.txt
-  text2workspace.py -m 126 data/$BOSON/$PAR/aC_ch_lep.txt -o data/$BOSON/$PAR/${BOSON}_${PAR}_lep.root -P CombinedEWKAnalysis.CommonTools.ACModel:par1_TF1_Model --PO channels=ch_ele,ch_muo --PO poi=$PAR --PO range_$PAR=-$(cat cards/range_${PAR}.txt),$(cat cards/range_${PAR}.txt)
-  rm -f data/anomalousCoupling/*
-  rm -f data/$BOSON/$PAR/ch_ele.root data/$BOSON/$PAR/ch_muo.root
-done
-echo ''
-echo '---------------------------------'
-echo '5. Set limits                    '
-echo '---------------------------------'
-echo ''
-CHANNELS="ele muo lep"
-n_points=1000
-for PAR in $PARS; do
-  cp -p data/$BOSON/$PAR/signal_proc_ch_ele.root data/anomalousCoupling
-  cp -p data/$BOSON/$PAR/signal_proc_ch_muo.root data/anomalousCoupling
-  for CHANNEL in $CHANNELS; do
-    # observed limits
-    combine -v -1 data/$BOSON/$PAR/${BOSON}_${PAR}_${CHANNEL}.root -M MultiDimFit -P $PAR --floatOtherPOIs=0 --algo=grid --points=$n_points --minimizerStrategy=2
-    if [ $? -ne 0 ]; then
-      echo '[ERROR]: combine crashed'
-      exit 1
-    fi
-    mv higgsCombineTest.MultiDimFit.mH120.root data/$BOSON/$PAR/${BOSON}_${PAR}_${CHANNEL}_obs.root
-    # expected limits
-    combine -v -1 data/$BOSON/$PAR/${BOSON}_${PAR}_${CHANNEL}.root -M MultiDimFit -P $PAR --floatOtherPOIs=0 --algo=grid --points=$n_points --minimizerStrategy=2 -t -1 --expectSignal=1
-    if [ $? -ne 0 ]; then
-      echo '[ERROR]: combine crashed'
-      exit 1
-    fi
-    mv higgsCombineTest.MultiDimFit.mH120.root data/$BOSON/$PAR/${BOSON}_${PAR}_${CHANNEL}_exp.root
-  done
-  rm -f data/anomalousCoupling/*
-done
-echo ''
-echo '---------------------------------'
-echo '6. Build 1D interval'
-echo '---------------------------------'
-echo ''
-for PAR in $PARS; do
-  for CHANNEL in $CHANNELS; do
-    rm -f data/$BOSON/$PAR/${BOSON}_${PAR}_${CHANNEL}_exp_${n_points}.txt
-    rm -f data/$BOSON/$PAR/${BOSON}_${PAR}_${CHANNEL}_obs_${n_points}.txt
-    touch data/$BOSON/$PAR/${BOSON}_${PAR}_${CHANNEL}_exp_${n_points}.txt
-    touch data/$BOSON/$PAR/${BOSON}_${PAR}_${CHANNEL}_obs_${n_points}.txt
-    echo 'Expected limit' >> data/$BOSON/$PAR/${BOSON}_${PAR}_${CHANNEL}_exp_${n_points}.txt
-    python python/build1DInterval.py -$(cat cards/range_${PAR}.txt) $(cat cards/range_${PAR}.txt) data/$BOSON/$PAR/${BOSON}_${PAR}_${CHANNEL}_exp.root $PAR >> data/$BOSON/$PAR/${BOSON}_${PAR}_${CHANNEL}_exp_${n_points}.txt 
-    echo 'Observed limit' >> data/$BOSON/$PAR/${BOSON}_${PAR}_${CHANNEL}_obs_${n_points}.txt
-    python python/build1DInterval.py -$(cat cards/range_${PAR}.txt) $(cat cards/range_${PAR}.txt) data/$BOSON/$PAR/${BOSON}_${PAR}_${CHANNEL}_obs.root $PAR >> data/$BOSON/$PAR/${BOSON}_${PAR}_${CHANNEL}_obs_${n_points}.txt 
-    echo '******************'
-    echo $PAR ' - ' $CHANNEL
-    cat data/$BOSON/$PAR/${BOSON}_${PAR}_${CHANNEL}_exp_${n_points}.txt
-    cat data/$BOSON/$PAR/${BOSON}_${PAR}_${CHANNEL}_obs_${n_points}.txt
-    echo '******************'
-    echo ''
-  done
-done
+#echo ''
+#echo '---------------------------------'
+#echo '3. Build the workspace'
+#echo '---------------------------------'
+#echo ''
+#for PAR in $PARS; do
+#  cp -p data/$BOSON/ch_*.root data/$BOSON/$PAR/
+#  python python/buildWorkspace_AC.py --config="cards/config_${BOSON}_13TeV_buildWorkspace_$PAR" --path="$WORKDIR/data/$BOSON/$PAR"
+#  if [ $? -ne 0 ]; then
+#    echo '[ERROR]: builWorkspace_AC.py crashed'
+#    exit 1
+#  fi
+#  mv aC_ch_ele.txt aC_ch_muo.txt ch_ele_ws.root ch_muo_ws.root data/$BOSON/$PAR
+#done
+#echo ''
+#echo '---------------------------------'
+#echo '4. Convert combine card to ws'
+#echo '---------------------------------'
+#echo ''
+#for PAR in $PARS; do
+#  for CHANNEL in $CHANNELS; do
+#    cp -p data/$BOSON/$PAR/ch_${CHANNEL}_ws.root data/anomalousCoupling
+#    cp -p data/$BOSON/$PAR/ch_${CHANNEL}.root data/anomalousCoupling
+#    cp -p data/$BOSON/$PAR/signal_proc_ch_${CHANNEL}.root data/anomalousCoupling
+#    text2workspace.py -m 126 data/$BOSON/$PAR/aC_ch_${CHANNEL}.txt -o data/$BOSON/$PAR/${BOSON}_${PAR}_${CHANNEL}.root -P CombinedEWKAnalysis.CommonTools.ACModel:par1_TF1_Model --PO channels=ch_$CHANNEL --PO poi=$PAR --PO range_$PAR=-$(cat cards/range_${PAR}.txt),$(cat cards/range_${PAR}.txt)
+#    if [ $? -ne 0 ]; then
+#      echo '[ERROR]: text2workspace.py crashed'
+#      exit 1
+#    fi
+#  done
+#  combineCards.py data/$BOSON/$PAR/aC_ch_ele.txt data/$BOSON/$PAR/aC_ch_muo.txt > data/$BOSON/$PAR/aC_ch_lep.txt
+#  text2workspace.py -m 126 data/$BOSON/$PAR/aC_ch_lep.txt -o data/$BOSON/$PAR/${BOSON}_${PAR}_lep.root -P CombinedEWKAnalysis.CommonTools.ACModel:par1_TF1_Model --PO channels=ch_ele,ch_muo --PO poi=$PAR --PO range_$PAR=-$(cat cards/range_${PAR}.txt),$(cat cards/range_${PAR}.txt)
+#  rm -f data/anomalousCoupling/*
+#  rm -f data/$BOSON/$PAR/ch_ele.root data/$BOSON/$PAR/ch_muo.root
+#done
+#echo ''
+#echo '---------------------------------'
+#echo '5. Set limits                    '
+#echo '---------------------------------'
+#echo ''
+#CHANNELS="ele muo lep"
+#n_points=1000
+#for PAR in $PARS; do
+#  cp -p data/$BOSON/$PAR/signal_proc_ch_ele.root data/anomalousCoupling
+#  cp -p data/$BOSON/$PAR/signal_proc_ch_muo.root data/anomalousCoupling
+#  for CHANNEL in $CHANNELS; do
+#    # observed limits
+#    combine -v -1 data/$BOSON/$PAR/${BOSON}_${PAR}_${CHANNEL}.root -M MultiDimFit -P $PAR --floatOtherPOIs=0 --algo=grid --points=$n_points --minimizerStrategy=2
+#    if [ $? -ne 0 ]; then
+#      echo '[ERROR]: combine crashed'
+#      exit 1
+#    fi
+#    mv higgsCombineTest.MultiDimFit.mH120.root data/$BOSON/$PAR/${BOSON}_${PAR}_${CHANNEL}_obs.root
+#    # expected limits
+#    combine -v -1 data/$BOSON/$PAR/${BOSON}_${PAR}_${CHANNEL}.root -M MultiDimFit -P $PAR --floatOtherPOIs=0 --algo=grid --points=$n_points --minimizerStrategy=2 -t -1 --expectSignal=1
+#    if [ $? -ne 0 ]; then
+#      echo '[ERROR]: combine crashed'
+#      exit 1
+#    fi
+#    mv higgsCombineTest.MultiDimFit.mH120.root data/$BOSON/$PAR/${BOSON}_${PAR}_${CHANNEL}_exp.root
+#  done
+#  rm -f data/anomalousCoupling/*
+#done
+#echo ''
+#echo '---------------------------------'
+#echo '6. Build 1D interval'
+#echo '---------------------------------'
+#echo ''
+#for PAR in $PARS; do
+#  for CHANNEL in $CHANNELS; do
+#    rm -f data/$BOSON/$PAR/${BOSON}_${PAR}_${CHANNEL}_exp_${n_points}.txt
+#    rm -f data/$BOSON/$PAR/${BOSON}_${PAR}_${CHANNEL}_obs_${n_points}.txt
+#    touch data/$BOSON/$PAR/${BOSON}_${PAR}_${CHANNEL}_exp_${n_points}.txt
+#    touch data/$BOSON/$PAR/${BOSON}_${PAR}_${CHANNEL}_obs_${n_points}.txt
+#    echo 'Expected limit' >> data/$BOSON/$PAR/${BOSON}_${PAR}_${CHANNEL}_exp_${n_points}.txt
+#    python python/build1DInterval.py -$(cat cards/range_${PAR}.txt) $(cat cards/range_${PAR}.txt) data/$BOSON/$PAR/${BOSON}_${PAR}_${CHANNEL}_exp.root $PAR >> data/$BOSON/$PAR/${BOSON}_${PAR}_${CHANNEL}_exp_${n_points}.txt 
+#    echo 'Observed limit' >> data/$BOSON/$PAR/${BOSON}_${PAR}_${CHANNEL}_obs_${n_points}.txt
+#    python python/build1DInterval.py -$(cat cards/range_${PAR}.txt) $(cat cards/range_${PAR}.txt) data/$BOSON/$PAR/${BOSON}_${PAR}_${CHANNEL}_obs.root $PAR >> data/$BOSON/$PAR/${BOSON}_${PAR}_${CHANNEL}_obs_${n_points}.txt 
+#    echo '******************'
+#    echo $PAR ' - ' $CHANNEL
+#    cat data/$BOSON/$PAR/${BOSON}_${PAR}_${CHANNEL}_exp_${n_points}.txt
+#    cat data/$BOSON/$PAR/${BOSON}_${PAR}_${CHANNEL}_obs_${n_points}.txt
+#    echo '******************'
+#    echo ''
+#  done
+#done
 
 exit

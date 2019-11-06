@@ -11,18 +11,10 @@ BOSON=$3
 FLAGS="reference"
 FLAGS=$FLAGS" pileup_up"
 FLAGS=$FLAGS" pileup_down"
-#FLAGS=$FLAGS" jec_up_2016"
-#FLAGS=$FLAGS" jec_up_2017"
-#FLAGS=$FLAGS" jec_up_2018"
-#FLAGS=$FLAGS" jec_down_2016"
-#FLAGS=$FLAGS" jec_down_2017"
-#FLAGS=$FLAGS" jec_down_2018"
-#FLAGS=$FLAGS" jer_up_2016"
-#FLAGS=$FLAGS" jer_up_2017"
-#FLAGS=$FLAGS" jer_up_2018"
-#FLAGS=$FLAGS" jer_down_2016"
-#FLAGS=$FLAGS" jer_down_2017"
-#FLAGS=$FLAGS" jer_down_2018"
+FLAGS=$FLAGS" jec_up"
+FLAGS=$FLAGS" jec_down"
+FLAGS=$FLAGS" jer_up"
+FLAGS=$FLAGS" jer_down"
 FLAGS=$FLAGS" sf_ele_eff_up"
 FLAGS=$FLAGS" sf_ele_eff_down"
 FLAGS=$FLAGS" sf_ele_reco_up"
@@ -37,28 +29,32 @@ FLAGS=$FLAGS" sf_muo_trig_up"
 FLAGS=$FLAGS" sf_muo_trig_down"
 FLAGS=$FLAGS" sf_pho_eff_up"
 FLAGS=$FLAGS" sf_pho_eff_down"
-#FLAGS=$FLAGS" sf_pho_veto_up_2016"
-#FLAGS=$FLAGS" sf_pho_veto_up_2017"
-#FLAGS=$FLAGS" sf_pho_veto_up_2018"
-#FLAGS=$FLAGS" sf_pho_veto_down_2016"
-#FLAGS=$FLAGS" sf_pho_veto_down_2017"
-#FLAGS=$FLAGS" sf_pho_veto_down_2018"
+FLAGS=$FLAGS" sf_pho_veto_up"
+FLAGS=$FLAGS" sf_pho_veto_down"
 FLAGS=$FLAGS" l1prefiring_up"
 FLAGS=$FLAGS" l1prefiring_down"
 FLAGS=$FLAGS" eg_misid_up"
 FLAGS=$FLAGS" eg_misid_down"
 #FLAGS=$FLAGS" jet_misid_iso0"
-#FLAGS=$FLAGS" jet_misid_iso1"
-#FLAGS=$FLAGS" jet_misid_iso2"
 #FLAGS=$FLAGS" jet_bkg_mc"
 
 # merge histos
 for CHANNEL in $CHANNELS; do
   rm -f data/$BOSON/ch_${CHANNEL}_unequalBinning.root
   for FLAG in $FLAGS; do
-    wget -q -O data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}.root $URL/$FLAG/Run2.matrix/root/h_${BOSON}_${CHANNEL}_pho0_pho1_pt.root
-    root-6.12 -l -b -q macros/merge_histo.C\(\"$WORKDIR/data/$BOSON\",\"$BOSON\",\"$CHANNEL\",\"$FLAG\"\)
-    rm -f data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}.root
+    if [[ "$FLAG" == "jec_up" || "$FLAG" == "jec_down" || "$FLAG" == "jer_up" || "$FLAG" == "jer_down" || "$FLAG" == "sf_pho_veto_up" || "$FLAG" == "sf_pho_veto_down" ]]; then
+      wget -q -O data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}_2016.root $URL/${FLAG}_2016/Run2.matrix/root/h_${BOSON}_${CHANNEL}_pho0_pho1_pt.root
+      wget -q -O data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}_2017.root $URL/${FLAG}_2017/Run2.matrix/root/h_${BOSON}_${CHANNEL}_pho0_pho1_pt.root
+      wget -q -O data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}_2018.root $URL/${FLAG}_2018/Run2.matrix/root/h_${BOSON}_${CHANNEL}_pho0_pho1_pt.root
+      root-6.12 -l -b -q macros/combine_syst.C\(\"$WORKDIR/data/$BOSON\",\"$BOSON\",\"$CHANNEL\",\"$FLAG\"\)
+      rm -f data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}_2016.root
+      rm -f data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}_2017.root
+      rm -f data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}_2018.root
+    else
+      wget -q -O data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}.root $URL/$FLAG/Run2.matrix/root/h_${BOSON}_${CHANNEL}_pho0_pho1_pt.root
+      root-6.12 -l -b -q macros/merge_histo.C\(\"$WORKDIR/data/$BOSON\",\"$BOSON\",\"$CHANNEL\",\"$FLAG\"\)
+      rm -f data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}.root
+    fi
   done
   root-6.12 -l -b -q macros/dealWith_unEqualBinning.C\(\"${WORKDIR}/data/$BOSON/ch_${CHANNEL}_unequalBinning.root\"\)
   mv data/$BOSON/ch_${CHANNEL}_unequalBinning_uniformBins.root data/$BOSON/ch_${CHANNEL}.root
