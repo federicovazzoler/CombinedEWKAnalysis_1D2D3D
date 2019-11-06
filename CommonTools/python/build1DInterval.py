@@ -54,16 +54,14 @@ for i in xrange(nEntries):
         lastAboveErr95 = True
 file.Close()
 
-if len(bounds68[0]) > 1:
+if len(bounds68) > 0 and len(bounds68[0]) > 1:
   boundstext68 = ['[%.3g,%.3g]'%(b[0],b[1]) for b in bounds68]
   print '68% CL Limit:','U'.join(boundstext68)
 else:
   print 'Sorry, but no 68% limits for you :('
 
-if len(bounds95[0]) > 1:
+if len(bounds95) > 0 and len(bounds95[0]) > 1:
   boundstext95 = ['[%.3g,%.3g]'%(b[0],b[1]) for b in bounds95]
   print '95% CL Limit:','U'.join(boundstext95)
 else:
   print 'Sorry, but no 95% limits for you :('
-
-
