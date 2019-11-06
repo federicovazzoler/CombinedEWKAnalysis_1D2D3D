@@ -46,6 +46,16 @@ fi
 
 CHANNELS="ele muo"
 
+echo 'You are about to use...'
+sleep 1
+echo ''
+echo '         .__                     _____                            .____                                    .__     '
+echo '   ____  |__|   ____  _____     /     \    ____     ____  _____   |    |    _____    __ __   ____    ____  |  |__  '
+echo '  / ___\ |  |  / ___\ \__  \   /  \ /  \ _/ __ \   / ___\ \__  \  |    |    \__  \  |  |  \ /    \ _/ ___\ |  |  \ ' 
+echo ' / /_/  >|  | / /_/  > / __ \_/    Y    \\  ___/  / /_/  > / __ \_|    |___  / __ \_|  |  /|   |  \\  \___ |   Y  \'
+echo ' \___  / |__| \___  / (____  /\____|__  / \___  > \___  / (____  /|_______ \(____  /|____/ |___|  / \___  >|___|  /'
+echo '/_____/      /_____/       \/         \/      \/ /_____/       \/         \/     \/             \/      \/      \/ '
+echo ''
 echo '*********************************'
 echo '*            '$BOSON' AGC            *'
 echo '*********************************'
@@ -76,29 +86,29 @@ else
   echo 'Fits skipped'
 fi
 echo ''
+#echo '---------------------------------'
+#echo '2. Prepare data and MC input file'
+#echo '---------------------------------'
+#echo ''
+#./scripts/launch_merge_histo.sh $WORKDIR $URL $BOSON
+#if [ $? -ne 0 ]; then
+#  echo '[ERROR]: launch_merge_histo crashed'
+#  exit 1
+#fi
+#echo ''
 echo '---------------------------------'
-echo '2. Prepare data and MC input file'
+echo '3. Build the workspace'
 echo '---------------------------------'
 echo ''
-./scripts/launch_merge_histo.sh $WORKDIR $URL $BOSON
-if [ $? -ne 0 ]; then
-  echo '[ERROR]: launch_merge_histo crashed'
-  exit 1
-fi
-#echo ''
-#echo '---------------------------------'
-#echo '3. Build the workspace'
-#echo '---------------------------------'
-#echo ''
-#for PAR in $PARS; do
-#  cp -p data/$BOSON/ch_*.root data/$BOSON/$PAR/
-#  python python/buildWorkspace_AC.py --config="cards/config_${BOSON}_13TeV_buildWorkspace_$PAR" --path="$WORKDIR/data/$BOSON/$PAR"
-#  if [ $? -ne 0 ]; then
-#    echo '[ERROR]: builWorkspace_AC.py crashed'
-#    exit 1
-#  fi
-#  mv aC_ch_ele.txt aC_ch_muo.txt ch_ele_ws.root ch_muo_ws.root data/$BOSON/$PAR
-#done
+for PAR in $PARS; do
+  cp -p data/$BOSON/ch_*.root data/$BOSON/$PAR/
+  python python/buildWorkspace_AC.py --config="cards/config_${BOSON}_13TeV_buildWorkspace_$PAR" --path="$WORKDIR/data/$BOSON/$PAR"
+  if [ $? -ne 0 ]; then
+    echo '[ERROR]: builWorkspace_AC.py crashed'
+    exit 1
+  fi
+  mv aC_ch_ele.txt aC_ch_muo.txt ch_ele_ws.root ch_muo_ws.root data/$BOSON/$PAR
+done
 #echo ''
 #echo '---------------------------------'
 #echo '4. Convert combine card to ws'
