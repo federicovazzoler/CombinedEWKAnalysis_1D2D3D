@@ -6,6 +6,11 @@ cd $WORKDIR
 URL="https://wwwusers.ts.infn.it/~dellaric/tmp/Vgg/v13.default/"
 
 BOSON=$1
+if [ -z "$1" ]; then
+  echo 'Missing boson to test'
+  echo 'Usage: ./gigaMegaLaunch.sh [BOSON] [PARAMETER(s)] [fit]'
+  exit 1
+fi
 
 if [ ! -z "$2" ]; then
   if [ "$2" == "all" ]; then
@@ -35,6 +40,7 @@ if [ ! -z "$2" ]; then
   fi
 else
   echo 'Missing parameter(s) to test!'
+  echo 'Usage: ./gigaMegaLaunch.sh [BOSON] [PARAMETER(s)] [fit]'
   exit 1
 fi
 
