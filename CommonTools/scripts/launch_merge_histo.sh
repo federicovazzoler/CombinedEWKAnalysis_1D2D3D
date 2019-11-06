@@ -92,6 +92,16 @@ for PAR in $PARS; do
   echo "par1Name = $PAR" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
   echo "par1Low = -$(cat $WORKDIR/cards/range_${PAR}.txt)" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
   echo "par1High = $(cat $WORKDIR/cards/range_${PAR}.txt)" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
+  echo "NlnN = 1" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR 
+  echo "lnN1_name = lumi" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
+  if [ $BOSON = "WGG" ]; then
+    echo "lnN1_value = 1.018,1.018,1.018,1.018,1.018,1.018,1.018,1.018" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
+    echo "lnN1_for = ch_ele_signal,ch_ele_bkg_jetpho_misid,ch_ele_bkg_zg,ch_ele_bkg_zgg,ch_muo_signal,ch_muo_bkg_jetpho_misid,ch_muo_bkg_zg,ch_muo_bkg_zgg" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
+  fi
+  if [ $BOSON = "ZGG" ]; then
+    echo "lnN1_value = 1.018,1.018,1.018,1.018" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
+    echo "lnN1_for = ch_ele_signal,ch_ele_bkg_jetpho_misid,ch_muo_signal,ch_muo_bkg_jetpho_misid" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
+  fi
   for CHANNEL in $CHANNELS; do
     echo "[ch_${CHANNEL}]" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
     if [ $BOSON = "WGG" ]; then
