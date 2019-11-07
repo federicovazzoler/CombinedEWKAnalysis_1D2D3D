@@ -39,15 +39,15 @@ void syst_symmetriser(string path, string boson, string channel, string flag)
   } 
 
   for (int bin = 0; bin < bkg_jetpho_misid_up->GetNbinsX() + 2; bin++) {
-    dibosonSM_down->SetBinContent(bin, dibosonSM_reference->GetBinContent(bin) - (dibosonSM_reference->GetBinContent(bin) - dibosonSM_up->GetBinContent(bin)));
+    dibosonSM_down->SetBinContent(bin, dibosonSM_reference->GetBinContent(bin) - (dibosonSM_up->GetBinContent(bin) - dibosonSM_reference->GetBinContent(bin)));
     dibosonSM_down->SetBinError(bin, dibosonSM_up->GetBinError(bin));
-    bkg_jetpho_misid_down->SetBinContent(bin, bkg_jetpho_misid_reference->GetBinContent(bin) - (bkg_jetpho_misid_reference->GetBinContent(bin) - bkg_jetpho_misid_up->GetBinContent(bin)));
+    bkg_jetpho_misid_down->SetBinContent(bin, bkg_jetpho_misid_reference->GetBinContent(bin) - (bkg_jetpho_misid_up->GetBinContent(bin) - bkg_jetpho_misid_reference->GetBinContent(bin)));
     bkg_jetpho_misid_down->SetBinError(bin, bkg_jetpho_misid_up->GetBinError(bin));
     if (boson == "WGG") {
-      bkg_zg_down->SetBinContent(bin, bkg_zg_reference->GetBinContent(bin) - (bkg_zg_reference->GetBinContent(bin) - bkg_zg_up->GetBinContent(bin)));
-      bkg_zg_down->SetBinError(bin, bkg_zg_up->GetBinError(bin));
-      bkg_zgg_down->SetBinContent(bin, bkg_zgg_reference->GetBinContent(bin) - (bkg_zgg_reference->GetBinContent(bin) - bkg_zgg_up->GetBinContent(bin)));
-      bkg_zgg_down->SetBinError(bin, bkg_zgg_up->GetBinError(bin));
+      bkg_zg_down->SetBinContent(bin , bkg_zg_reference->GetBinContent(bin) - (bkg_zg_up->GetBinContent(bin) - bkg_zg_reference->GetBinContent(bin)));
+      bkg_zg_down->SetBinError(bin   , bkg_zg_up->GetBinError(bin));
+      bkg_zgg_down->SetBinContent(bin, bkg_zgg_reference->GetBinContent(bin) - (bkg_zgg_up->GetBinContent(bin) - bkg_zgg_reference->GetBinContent(bin)));
+      bkg_zgg_down->SetBinError(bin  , bkg_zgg_up->GetBinError(bin));
     }
   }
 
