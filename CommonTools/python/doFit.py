@@ -46,7 +46,7 @@ for cfg_item in cfg_items:
     func_string=cfg.get('Global','function')
 
 # other options
-DEBUG = False
+DEBUG = True
 
 print 'starting ...'
 
@@ -76,7 +76,7 @@ for section in fit_sections:
   outfile_newF = TFile.Open(options.output+'/signal_proc_'+section+'.root','RECREATE')
 
   if (DEBUG): print '---> cycling over bins'
-  for i in range(1,len(bins)+1):
+  for i in range(1,len(bins)):
     if (DEBUG): print 'bin: ', i
     # get and book histos
     theBaseData = sigFile.Get('theBaseData_' + section + '_' + str(i))
