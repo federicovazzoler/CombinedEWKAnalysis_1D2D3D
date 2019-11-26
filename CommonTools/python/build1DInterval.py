@@ -12,7 +12,8 @@ limit = file.Get('limit')
 nEntries = limit.GetEntries()-1
 
 histo = TH1F('LLHscan','',nEntries,minmax[0],minmax[1])
-limit.Draw(parm+" >> LLHscan","deltaNLL",'goff')
+#limit.Draw(parm+" >> LLHscan","deltaNLL",'goff')
+limit.Draw(parm+" >> LLHscan","deltaNLL>0",'goff')
 
 minBin = histo.GetMinimumBin()
 minBinCenter = histo.GetBinCenter(minBin)
@@ -30,6 +31,8 @@ lastAboveErr95 = True
 for i in xrange(nEntries):
     limit.GetEntry(i+1)
     NLL = limit.GetLeaf("deltaNLL").GetValue()
+    if NLL < 0.:
+        continue
     if NLL - minVal <= 0.5:
         if lastAboveErr68:
             bounds68.append([])
