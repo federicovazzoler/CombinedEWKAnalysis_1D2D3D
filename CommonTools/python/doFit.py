@@ -46,7 +46,7 @@ for cfg_item in cfg_items:
     func_string=cfg.get('Global','function')
 
 # other options
-DEBUG = True
+DEBUG = False
 
 print 'starting ...'
 
