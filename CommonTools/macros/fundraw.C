@@ -1,4 +1,4 @@
-void fundraw(string file_postfit, string file_prefit, string output_html, double range) {
+void fundraw(string file_postfit, string file_prefit, string output_html, string par, double range) {
 
   TFile *file_TF1 = new TFile((file_postfit).c_str(),"OPEN");
   file_TF1->cd();
@@ -34,7 +34,33 @@ void fundraw(string file_postfit, string file_prefit, string output_html, double
     pad1->Draw();
     pad1->cd();
 
-    graph->SetTitle(Form("bin %1.d",i+1));
+    double dipho_pt_min = -1.;
+    double dipho_pt_max = -1.;
+    if (i == 0){
+      dipho_pt_min = 0;      
+      dipho_pt_max = 20;
+    } 
+    if (i == 1){
+      dipho_pt_min = 20;      
+      dipho_pt_max = 40;
+    } 
+    if (i == 2){
+      dipho_pt_min = 40;      
+      dipho_pt_max = 60;
+    } 
+    if (i == 3){
+      dipho_pt_min = 60;      
+      dipho_pt_max = 80;
+    } 
+    if (i == 4){
+      dipho_pt_min = 80;      
+      dipho_pt_max = 180;
+    } 
+    if (i == 5){
+      dipho_pt_min = 180;      
+      dipho_pt_max = 300;
+    } 
+    graph->SetTitle(Form("%1.f < Diphoton p_{T} < %1.f", dipho_pt_min, dipho_pt_max));
 
     graph->GetXaxis()->SetTitle("");
     graph->GetXaxis()->SetTitleOffset(0.7);
@@ -60,7 +86,7 @@ void fundraw(string file_postfit, string file_prefit, string output_html, double
     pt->AddText(Form("a = %.2f",fitfunc->GetParameter(2)));
     pt->AddText(Form("b = %.2f",fitfunc->GetParameter(1)));
     pt->AddText(Form("c = %.2f",fitfunc->GetParameter(0)));
-    pt->Draw("same");
+//    pt->Draw("same");
 
     c1->cd();
 
@@ -80,7 +106,16 @@ void fundraw(string file_postfit, string file_prefit, string output_html, double
 
     pull->SetTitle("");
 
-    pull->GetXaxis()->SetTitle("ft0/Lambda^4");
+    string fancypar = "";
+    if (par == "FT0") fancypar="f_{T,0}";
+    if (par == "FT1") fancypar="f_{T,1}";
+    if (par == "FT2") fancypar="f_{T,2}";
+    if (par == "FT5") fancypar="f_{T,5}";
+    if (par == "FT6") fancypar="f_{T,6}";
+    if (par == "FT7") fancypar="f_{T,7}";
+    if (par == "FT8") fancypar="f_{T,8}";
+    if (par == "FT9") fancypar="f_{T,9}";
+    pull->GetXaxis()->SetTitle((fancypar+"/#Lambda^{4}").c_str());
     pull->GetXaxis()->SetTitleFont(42);
     pull->GetXaxis()->SetTitleSize(0.11);
     pull->GetXaxis()->SetTitleOffset(1.1);
