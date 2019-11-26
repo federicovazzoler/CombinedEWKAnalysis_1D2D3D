@@ -76,14 +76,14 @@ void syst_symmetriser(string path, string boson, string channel, string flag)
   TFile *file_out = new TFile((path+"/ch_"+channel+"_unequalBinning.root").c_str(),"UPDATE");
   dibosonSM_up->Write("diboson_jet_misidUp");
   bkg_jetpho_misid_up->Write("bkg_jetpho_misid_jet_misidUp");
-  bkg_multiboson_up->Write("bkg_multibosonUp");
+  bkg_multiboson_up->Write("bkg_multiboson_jet_misidUp");
   if (boson == "WGG") {
     bkg_zg_up->Write("bkg_zg_jet_misidUp");
     bkg_zgg_up->Write("bkg_zgg_jet_misidUp");
   }
   dibosonSM_down->Write("diboson_jet_misidDown");
   bkg_jetpho_misid_down->Write("bkg_jetpho_misid_jet_misidDown");
-  bkg_multiboson_down->Write("bkg_multibosonDown");
+  bkg_multiboson_down->Write("bkg_multiboson_jet_misidDown");
   if (boson == "WGG") {
     bkg_zg_down->Write("bkg_zg_jet_misidDown");
     bkg_zgg_down->Write("bkg_zgg_jet_misidDown");
