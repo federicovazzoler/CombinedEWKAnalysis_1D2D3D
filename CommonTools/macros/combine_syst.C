@@ -1,4 +1,6 @@
-void combine_syst(string path, string boson, string channel, string flag)
+#include "lastbinner.C"
+
+void combine_syst(string path, string boson, string channel, string flag, int nLastBins)
 {
   // Get histos
   TFile *file_in_2016 = new TFile((path+"/h_" + boson + "_"+channel+"_pho0_pho1_pt_"+flag+"_2016.root").c_str(),"OPEN");
@@ -92,6 +94,16 @@ void combine_syst(string path, string boson, string channel, string flag)
 
       bkg_zgg->SetBinContent(bin, TMath::Sqrt(TMath::Power(bkg_zgg_2016->GetBinContent(bin),2) + TMath::Power(bkg_zgg_2017->GetBinContent(bin),2) + TMath::Power(bkg_zgg_2018->GetBinContent(bin),2)));
       bkg_zgg->SetBinError(bin, TMath::Sqrt(TMath::Power(TMath::Power(bkg_zgg_2016->GetBinContent(bin),2) + TMath::Power(bkg_zgg_2017->GetBinContent(bin),2) + TMath::Power(bkg_zgg_2018->GetBinContent(bin),2), -1) * (TMath::Power(bkg_zgg_2016->GetBinContent(bin) * bkg_zgg_2016->GetBinError(bin), 2) + TMath::Power(bkg_zgg_2017->GetBinContent(bin) * bkg_zgg_2017->GetBinError(bin), 2) + TMath::Power(bkg_zgg_2018->GetBinContent(bin) * bkg_zgg_2018->GetBinError(bin), 2))));
+    }
+  }
+
+  if (nLastBins != -1) {
+    dibosonSM = lastbinner(dibosonSM, nLastBins);
+    bkg_jetpho_misid = lastbinner(bkg_jetpho_misid, nLastBins);
+    bkg_multiboson = lastbinner(bkg_multiboson, nLastBins);
+    if (boson == "WGG") {
+      bkg_zg = lastbinner(bkg_zg, nLastBins);
+      bkg_zgg = lastbinner(bkg_zgg, nLastBins);
     }
   }
 

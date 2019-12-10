@@ -8,6 +8,8 @@ CHANNELS="ele muo"
 
 BOSON=$3
 
+LASTBINS=$4
+
 FLAGS="reference"
 FLAGS=$FLAGS" pileup_up"
 FLAGS=$FLAGS" pileup_down"
@@ -45,19 +47,19 @@ for CHANNEL in $CHANNELS; do
       wget -q -O data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}_2016.root $URL/${FLAG}_2016/Run2.matrix/root/h_${BOSON}_${CHANNEL}_pho0_pho1_pt.root
       wget -q -O data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}_2017.root $URL/${FLAG}_2017/Run2.matrix/root/h_${BOSON}_${CHANNEL}_pho0_pho1_pt.root
       wget -q -O data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}_2018.root $URL/${FLAG}_2018/Run2.matrix/root/h_${BOSON}_${CHANNEL}_pho0_pho1_pt.root
-      root-6.12 -l -b -q macros/combine_syst.C\(\"$WORKDIR/data/$BOSON\",\"$BOSON\",\"$CHANNEL\",\"$FLAG\"\)
+      root-6.12 -l -b -q macros/combine_syst.C\(\"$WORKDIR/data/$BOSON\",\"$BOSON\",\"$CHANNEL\",\"$FLAG\",$LASTBINS\)
       rm -f data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}_2016.root
       rm -f data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}_2017.root
       rm -f data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}_2018.root
     elif [[ "$FLAG" == "jet_misid_iso0" ]]; then
       wget -q -O data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_reference.root $URL/reference/Run2.matrix/root/h_${BOSON}_${CHANNEL}_pho0_pho1_pt.root
       wget -q -O data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}.root $URL/$FLAG/Run2.matrix/root/h_${BOSON}_${CHANNEL}_pho0_pho1_pt.root
-      root-6.12 -l -b -q macros/syst_symmetriser.C\(\"$WORKDIR/data/$BOSON\",\"$BOSON\",\"$CHANNEL\",\"$FLAG\"\)
+      root-6.12 -l -b -q macros/syst_symmetriser.C\(\"$WORKDIR/data/$BOSON\",\"$BOSON\",\"$CHANNEL\",\"$FLAG\",$LASTBINS\)
       rm -f data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}.root
       rm -f data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_reference.root
     else
       wget -q -O data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}.root $URL/$FLAG/Run2.matrix/root/h_${BOSON}_${CHANNEL}_pho0_pho1_pt.root
-      root-6.12 -l -b -q macros/merge_histo.C\(\"$WORKDIR/data/$BOSON\",\"$BOSON\",\"$CHANNEL\",\"$FLAG\"\)
+      root-6.12 -l -b -q macros/merge_histo.C\(\"$WORKDIR/data/$BOSON\",\"$BOSON\",\"$CHANNEL\",\"$FLAG\",$LASTBINS\)
       rm -f data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}.root
     fi
   done

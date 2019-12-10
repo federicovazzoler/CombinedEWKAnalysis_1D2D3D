@@ -61,6 +61,9 @@ for section in fit_sections:
 
   bins = [float(i) for i in cfg.get(section,'obsBins').split(',')]
   nObsBins = len(bins)-1
+  nLastBins = cfg.get('Global','nLastBins')
+  if int(nLastBins) == -1:
+    nLastBins = len(bins) - 1
 
   if (DEBUG):
     print '- sigFile: ', sigFile
@@ -76,12 +79,11 @@ for section in fit_sections:
   outfile_newF = TFile.Open(options.output+'/signal_proc_'+section+'.root','RECREATE')
 
   if (DEBUG): print '---> cycling over bins'
-  for i in range(1,len(bins)):
+  for i in range(len(bins)-int(nLastBins),len(bins)):
     if (DEBUG): print 'bin: ', i
     # get and book histos
     theBaseData = sigFile.Get('theBaseData_' + section + '_' + str(i))
-    newFormatInput = TH1D('bin_content_par1_'+str(i),'bincontent',nGridPointsForNewF,par1GridMin,par1GridMax)
-
+    newFormatInput = TH1D('bin_content_par1_'+str(i+2-(len(bins)-int(nLastBins)+1)),'bincontent',nGridPointsForNewF,par1GridMin,par1GridMax)
     # add dummy error bars
 #    for j in range(1,nGridPar1Bins+2):
 #      theBaseData.SetBinError(theBaseData.GetBin(j),0.0000001)
@@ -89,7 +91,7 @@ for section in fit_sections:
 #      if (i == 7): theBaseData.SetBinError(theBaseData.GetBin(j),10)
 
     # fit
-    func = TF1('bin_content_par1_'+str(i),func_string,par1GridMin,par1GridMax)
+    func = TF1('bin_content_par1_'+str(i+2-(len(bins)-int(nLastBins)+1)),func_string,par1GridMin,par1GridMax)
     func.SetLineColor(2)
 
     func.SetParameters(1.0,1.0e10,0.2e22)

@@ -17,12 +17,13 @@ void fundraw(string file_postfit, string file_prefit, string output_html, string
   Double_t x_value[nPoints];
   Double_t y_value[nPoints];
 
-  for (int i = 0; i < list_TGraph->GetEntries();i++) {
+  for (int i = 0; i < list_TF1->GetEntries();i++) {
     TString name_TF1 = list_TF1->At(i)->GetName();
     TF1 *fitfunc = (TF1*)file_TF1->Get(name_TF1);
     fitfunc->SetRange(min, max);
 
-    TString name_TGraph = list_TGraph->At(i)->GetName();
+//    TString name_TGraph = list_TGraph->At(i)->GetName();
+    TString name_TGraph = list_TGraph->At(list_TGraph->GetEntries()-list_TF1->GetEntries()+i)->GetName();
     TGraph *graph = (TGraph*)file_TGraph->Get(name_TGraph);
 
     TCanvas* c1 = new TCanvas("c1", "c1", 10, 10, 800, 600);

@@ -4,6 +4,8 @@ WORKDIR=$1
 
 BOSON=$2
 
+NLASTBINS=$3
+
 PARS=""
 if [ "$BOSON" == "WGG" ]; then
   PARS=$PARS" FM0"
@@ -31,6 +33,7 @@ for PAR in $PARS; do
   touch $WORKDIR/cards/config_${BOSON}_13TeV_inputSignalModelFit_$PAR
   echo "[Global]" >> $WORKDIR/cards/config_${BOSON}_13TeV_inputSignalModelFit_$PAR
   echo "obsBins = 0.,20.,40.,60.,80.,180.,300." >> $WORKDIR/cards/config_${BOSON}_13TeV_inputSignalModelFit_$PAR
+  echo "nLastBins = $3" >> $WORKDIR/cards/config_${BOSON}_13TeV_inputSignalModelFit_$PAR
   echo "par1Name = $PAR" >> $WORKDIR/cards/config_${BOSON}_13TeV_inputSignalModelFit_$PAR
   echo "nGridPar1Bins = 16" >> $WORKDIR/cards/config_${BOSON}_13TeV_inputSignalModelFit_$PAR
   echo "outputgridpoints = 10000" >> $WORKDIR/cards/config_${BOSON}_13TeV_inputSignalModelFit_$PAR

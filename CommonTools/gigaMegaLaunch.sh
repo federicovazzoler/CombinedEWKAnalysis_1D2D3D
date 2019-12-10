@@ -8,7 +8,7 @@ URL="https://wwwusers.ts.infn.it/~dellaric/tmp/Vgg/v13.new.default/"
 BOSON=$1
 if [ -z "$1" ]; then
   echo 'Missing boson to test'
-  echo 'Usage: ./gigaMegaLaunch.sh [BOSON] [PARAMETER(s)] [fit]'
+  echo 'Usage: ./gigaMegaLaunch.sh [BOSON] [PARAMETER(s)] [fit] [nLastBins]'
   exit 1
 fi
 
@@ -42,6 +42,12 @@ else
   echo 'Missing parameter(s) to test!'
   echo 'Usage: ./gigaMegaLaunch.sh [BOSON] [PARAMETER(s)] [fit]'
   exit 1
+fi
+
+if [ ! -z "$4" ]; then
+  NLASTBINS=$4
+else
+  NLASTBINS=-1
 fi
 
 CHANNELS="ele muo"
@@ -91,7 +97,7 @@ echo '---------------------------------'
 echo '0. Prepare input cards           '
 echo '---------------------------------'
 echo ''
-./scripts/card_generator.sh $WORKDIR $BOSON
+./scripts/card_generator.sh $WORKDIR $BOSON $NLASTBINS
 echo ''
 echo '---------------------------------'
 echo '1. Prepare aGC signal input file '
@@ -111,7 +117,7 @@ echo '---------------------------------'
 echo '2. Prepare data and MC input file'
 echo '---------------------------------'
 echo ''
-./scripts/launch_merge_histo.sh $WORKDIR $URL $BOSON
+./scripts/launch_merge_histo.sh $WORKDIR $URL $BOSON $NLASTBINS
 if [ $? -ne 0 ]; then
   echo '[ERROR]: launch_merge_histo crashed'
   exit 1

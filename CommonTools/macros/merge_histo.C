@@ -1,4 +1,6 @@
-void merge_histo(string path, string boson, string channel, string flag)
+#include "lastbinner.C"
+
+void merge_histo(string path, string boson, string channel, string flag, int nLastBins)
 {
   // get histos
   TFile *file_in = new TFile((path+"/h_" + boson + "_"+channel+"_pho0_pho1_pt_"+flag+".root").c_str(),"OPEN");
@@ -21,6 +23,17 @@ void merge_histo(string path, string boson, string channel, string flag)
   bkg_multiboson->Add(bkg_ttg);
   bkg_multiboson->Add(bkg_ttgg);
   bkg_multiboson->Add(bkg_vvg);
+
+  if (nLastBins != -1) {
+    data_obs = lastbinner(data_obs, nLastBins);
+    dibosonSM = lastbinner(dibosonSM, nLastBins);
+    bkg_jetpho_misid = lastbinner(bkg_jetpho_misid, nLastBins);
+    bkg_multiboson = lastbinner(bkg_multiboson, nLastBins);
+    if (boson == "WGG") {
+      bkg_zg = lastbinner(bkg_zg, nLastBins);
+      bkg_zgg = lastbinner(bkg_zgg, nLastBins);
+    }
+  }
 
   // dump histos into output file
   TFile *file_out = new TFile((path+"/ch_"+channel+"_unequalBinning.root").c_str(),"UPDATE");

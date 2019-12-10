@@ -1,4 +1,6 @@
-void syst_symmetriser(string path, string boson, string channel, string flag)
+#include "lastbinner.C"
+
+void syst_symmetriser(string path, string boson, string channel, string flag, int nLastBins)
 {
   // Get histos
   TFile *file_in_reference = new TFile((path+"/h_" + boson + "_"+channel+"_pho0_pho1_pt_reference.root").c_str(),"OPEN");
@@ -69,6 +71,21 @@ void syst_symmetriser(string path, string boson, string channel, string flag)
       bkg_zg_down->SetBinError(bin   , bkg_zg_up->GetBinError(bin));
       bkg_zgg_down->SetBinContent(bin, bkg_zgg_reference->GetBinContent(bin) - (bkg_zgg_up->GetBinContent(bin) - bkg_zgg_reference->GetBinContent(bin)));
       bkg_zgg_down->SetBinError(bin  , bkg_zgg_up->GetBinError(bin));
+    }
+  }
+
+  if (nLastBins != -1) {
+    dibosonSM_up = lastbinner(dibosonSM_up, nLastBins);
+    dibosonSM_down = lastbinner(dibosonSM_down, nLastBins);
+    bkg_jetpho_misid_up = lastbinner(bkg_jetpho_misid_up, nLastBins);
+    bkg_jetpho_misid_down = lastbinner(bkg_jetpho_misid_down, nLastBins);
+    bkg_multiboson_up = lastbinner(bkg_multiboson_up, nLastBins);
+    bkg_multiboson_down = lastbinner(bkg_multiboson_down, nLastBins);
+    if (boson == "WGG") {
+      bkg_zg_up = lastbinner(bkg_zg_up, nLastBins);
+      bkg_zg_down = lastbinner(bkg_zg_down, nLastBins);
+      bkg_zgg_up = lastbinner(bkg_zgg_up, nLastBins);
+      bkg_zgg_down = lastbinner(bkg_zgg_down, nLastBins);
     }
   }
 
