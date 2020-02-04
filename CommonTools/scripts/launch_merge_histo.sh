@@ -37,7 +37,7 @@ FLAGS=$FLAGS" l1prefiring_up"
 FLAGS=$FLAGS" l1prefiring_down"
 FLAGS=$FLAGS" eg_misid_up"
 FLAGS=$FLAGS" eg_misid_down"
-FLAGS=$FLAGS" jet_misid_iso0"
+FLAGS=$FLAGS" jet_misid_syst"
 
 # merge histos
 for CHANNEL in $CHANNELS; do
@@ -51,7 +51,7 @@ for CHANNEL in $CHANNELS; do
       rm -f data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}_2016.root
       rm -f data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}_2017.root
       rm -f data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}_2018.root
-    elif [[ "$FLAG" == "jet_misid_iso0" ]]; then
+    elif [[ "$FLAG" == "jet_misid_syst" ]]; then
       wget -q -O data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_reference.root $URL/reference/Run2.matrix/root/h_${BOSON}_${CHANNEL}_pho0_pho1_pt.root
       wget -q -O data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}.root $URL/$FLAG/Run2.matrix/root/h_${BOSON}_${CHANNEL}_pho0_pho1_pt.root
       root-6.12 -l -b -q macros/syst_symmetriser.C\(\"$WORKDIR/data/$BOSON\",\"$BOSON\",\"$CHANNEL\",\"$FLAG\",$LASTBINS\)
@@ -91,7 +91,7 @@ if [ $BOSON = "ZGG" ]; then
   PARS=$PARS" FT9"
 fi
 
-FLAGS=$(echo $FLAGS | sed -e "s; jet_misid_iso0; jet_misid_up jet_misid_down;")
+FLAGS=$(echo $FLAGS | sed -e "s; jet_misid_syst; jet_misid_up jet_misid_down;")
 
 for PAR in $PARS; do
   rm -f $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
@@ -105,11 +105,11 @@ for PAR in $PARS; do
   echo "lnN1_name = lumi" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
   if [ $BOSON = "WGG" ]; then
     echo "lnN1_value = 1.018,1.018,1.018,1.018,1.018,1.018,1.018,1.018,1.018,1.018" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
-    echo "lnN1_for = ch_ele_signal,ch_ele_bkg_jetpho_misid,ch_ele_bkg_multiboson,ch_ele_bkg_zg,ch_ele_bkg_zgg,ch_muo_signal,ch_muo_bkg_jetpho_misid,ch_muo_bkg_multiboson,ch_muo_bkg_zg,ch_muo_bkg_zgg" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
+    echo "lnN1_for = ch_ele_signal,ch_ele_bkg_jetpho_misid,ch_ele_bkg_ttgg,ch_ele_bkg_zgg,ch_ele_bkg_zg,ch_muo_signal,ch_muo_bkg_jetpho_misid,ch_muo_bkg_ttgg,ch_muo_bkg_zgg,ch_muo_bkg_zg" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
   fi
   if [ $BOSON = "ZGG" ]; then
     echo "lnN1_value = 1.018,1.018,1.018,1.018,1.018,1.018" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
-    echo "lnN1_for = ch_ele_signal,ch_ele_bkg_jetpho_misid,ch_ele_bkg_multiboson,ch_muo_signal,ch_muo_bkg_jetpho_misid,ch_muo_bkg_multiboson" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
+    echo "lnN1_for = ch_ele_signal,ch_ele_bkg_jetpho_misid,ch_ele_bkg_ttgg,ch_muo_signal,ch_muo_bkg_jetpho_misid,ch_muo_bkg_ttgg" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
   fi
   for CHANNEL in $CHANNELS; do
     echo "[ch_${CHANNEL}]" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
@@ -130,27 +130,18 @@ for PAR in $PARS; do
       fi
     done
     echo "" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
-    echo "bkg2_name = bkg_multiboson" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
+    echo "bkg2_name = bkg_ttgg" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
     echo -n "bkg2_shape_syst = " >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
     for FLAG in $FLAGS; do
       if [ ${FLAG:(-3)} == "_up" ]; then
         FLAG=${FLAG//_up/}
-        echo -n "bkg_multiboson_${FLAG}," >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
+        echo -n "bkg_ttgg_${FLAG}," >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
       fi
     done
     echo "" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
     if [ $BOSON = "WGG" ]; then
-      echo "bkg3_name = bkg_zg" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
+      echo "bkg3_name = bkg_zgg" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
       echo -n "bkg3_shape_syst = " >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
-      for FLAG in $FLAGS; do
-        if [ ${FLAG:(-3)} == "_up" ]; then
-          FLAG=${FLAG//_up/}
-          echo -n "bkg_zg_${FLAG}," >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
-        fi
-      done
-      echo "" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
-      echo "bkg4_name = bkg_zgg" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
-      echo -n "bkg4_shape_syst = " >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
       for FLAG in $FLAGS; do
         if [ ${FLAG:(-3)} == "_up" ]; then
           FLAG=${FLAG//_up/}
@@ -158,7 +149,17 @@ for PAR in $PARS; do
         fi
       done
       echo "" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
+      echo "bkg4_name = bkg_zg" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
+      echo -n "bkg4_shape_syst = " >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
+      for FLAG in $FLAGS; do
+        if [ ${FLAG:(-3)} == "_up" ]; then
+          FLAG=${FLAG//_up/}
+          echo -n "bkg_zg_${FLAG}," >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
+        fi
+      done
+      echo "" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
     fi
+
     echo -n "signal_shape_syst = " >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
     for FLAG in $FLAGS; do
       if [ ${FLAG:(-3)} == "_up" ]; then
@@ -174,10 +175,10 @@ for PAR in $PARS; do
         FLAG=${FLAG//_up/}
         echo "correlated_SigBkg_unc${nSyst}_name = $FLAG" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
         if [ $BOSON = "WGG" ]; then
-          echo -n "correlated_SigBkg_unc${nSyst} = diboson_$FLAG,bkg_jetpho_misid_$FLAG,bkg_multiboson_$FLAG,bkg_zg_$FLAG,bkg_zgg_$FLAG" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
+          echo -n "correlated_SigBkg_unc${nSyst} = diboson_$FLAG,bkg_jetpho_misid_$FLAG,bkg_ttgg_$FLAG,bkg_zgg_$FLAG,bkg_zg_$FLAG" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
         fi
         if [ $BOSON = "ZGG" ]; then
-          echo -n "correlated_SigBkg_unc${nSyst} = diboson_$FLAG,bkg_jetpho_misid_$FLAG,bkg_multiboson_$FLAG" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
+          echo -n "correlated_SigBkg_unc${nSyst} = diboson_$FLAG,bkg_jetpho_misid_$FLAG,bkg_ttgg_$FLAG" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
         fi
         echo "" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
         nSyst=$(( $nSyst + 1 ))

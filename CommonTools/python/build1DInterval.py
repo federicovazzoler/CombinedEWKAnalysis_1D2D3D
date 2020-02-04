@@ -32,6 +32,7 @@ for i in xrange(nEntries):
     limit.GetEntry(i+1)
     NLL = limit.GetLeaf("deltaNLL").GetValue()
     if NLL < 0.:
+        print 'ERROR: some values of deltaNLL are below zero!'
         continue
     if NLL - minVal <= 0.5:
         if lastAboveErr68:

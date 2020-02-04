@@ -3,7 +3,7 @@
 WORKDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $WORKDIR
 
-URL="https://wwwusers.ts.infn.it/~dellaric/tmp/Vgg/v13.new.default/"
+URL="https://wwwusers.ts.infn.it/~dellaric/tmp/Vgg/v14.default/"
 
 BOSON=$1
 if [ -z "$1" ]; then
@@ -52,47 +52,47 @@ fi
 
 CHANNELS="ele muo"
 
-echo 'You are about to use...'
-sleep 1
-echo ''
-echo '         .__                     _____                            .____                                    .__     '
-echo '   ____  |__|   ____  _____     /     \    ____     ____  _____   |    |    _____    __ __   ____    ____  |  |__  '
-echo '  / ___\ |  |  / ___\ \__  \   /  \ /  \ _/ __ \   / ___\ \__  \  |    |    \__  \  |  |  \ /    \ _/ ___\ |  |  \ ' 
-echo ' / /_/  >|  | / /_/  > / __ \_/    Y    \\  ___/  / /_/  > / __ \_|    |___  / __ \_|  |  /|   |  \\  \___ |   Y  \'
-echo ' \___  / |__| \___  / (____  /\____|__  / \___  > \___  / (____  /|_______ \(____  /|____/ |___|  / \___  >|___|  /'
-echo '/_____/      /_____/       \/         \/      \/ /_____/       \/         \/     \/             \/      \/      \/ '
-echo ''
-echo '*********************************'
-echo '*            '$BOSON' AGC            *'
-echo '*********************************'
-echo ''
-echo 'FUNDAMENTAL! Fetching data from: '$URL
-echo ''
-sleep 1
-echo ''
-echo ''
-echo ''
-echo '             TTTTTTTTTTTTTTTTTTTTTTT               AAA                    HHHHHHHHH     HHHHHHHHH      !!! '
-echo '             T:::::::::::::::::::::T              A:::A                   H:::::::H     H:::::::H     !!:!!'
-echo '             T:::::::::::::::::::::T             A:::::A                  H:::::::H     H:::::::H     !:::!'
-echo '             T:::::TT:::::::TT:::::T            A:::::::A                 HH::::::H     H::::::HH     !:::!'
-echo '             TTTTTT  T:::::T  TTTTTT           A:::::::::A                  H:::::H     H:::::H       !:::!'
-echo '                     T:::::T                  A:::::A:::::A                 H:::::H     H:::::H       !:::!'
-echo '                     T:::::T                 A:::::A A:::::A                H::::::HHHHH::::::H       !:::!'
-echo '                     T:::::T                A:::::A   A:::::A               H:::::::::::::::::H       !:::!'
-echo '                     T:::::T               A:::::A     A:::::A              H:::::::::::::::::H       !:::!'
-echo '                     T:::::T              A:::::AAAAAAAAA:::::A             H::::::HHHHH::::::H       !:::!'
-echo '                     T:::::T             A:::::::::::::::::::::A            H:::::H     H:::::H       !!:!!'
-echo '                     T:::::T            A:::::AAAAAAAAAAAAA:::::A           H:::::H     H:::::H        !!! '
-echo '                   TT:::::::TT         A:::::A             A:::::A        HH::::::H     H::::::HH          '
-echo '                   T:::::::::T        A:::::A               A:::::A       H:::::::H     H:::::::H      !!! '
-echo '                   T:::::::::T       A:::::A                 A:::::A      H:::::::H     H:::::::H     !!:!!'
-echo '                   TTTTTTTTTTT      AAAAAAA                   AAAAAAA     HHHHHHHHH     HHHHHHHHH      !!! ' 
-echo ''
-echo ''
-echo ''
-sleep 1
-echo ''
+#echo 'You are about to use...'
+#sleep 1
+#echo ''
+#echo '         .__                     _____                            .____                                    .__     '
+#echo '   ____  |__|   ____  _____     /     \    ____     ____  _____   |    |    _____    __ __   ____    ____  |  |__  '
+#echo '  / ___\ |  |  / ___\ \__  \   /  \ /  \ _/ __ \   / ___\ \__  \  |    |    \__  \  |  |  \ /    \ _/ ___\ |  |  \ ' 
+#echo ' / /_/  >|  | / /_/  > / __ \_/    Y    \\  ___/  / /_/  > / __ \_|    |___  / __ \_|  |  /|   |  \\  \___ |   Y  \'
+#echo ' \___  / |__| \___  / (____  /\____|__  / \___  > \___  / (____  /|_______ \(____  /|____/ |___|  / \___  >|___|  /'
+#echo '/_____/      /_____/       \/         \/      \/ /_____/       \/         \/     \/             \/      \/      \/ '
+#echo ''
+#echo '*********************************'
+#echo '*            '$BOSON' AGC            *'
+#echo '*********************************'
+#echo ''
+#echo 'FUNDAMENTAL! Fetching data from: '$URL
+#echo ''
+#sleep 1
+#echo ''
+#echo ''
+#echo ''
+#echo '             TTTTTTTTTTTTTTTTTTTTTTT               AAA                    HHHHHHHHH     HHHHHHHHH      !!! '
+#echo '             T:::::::::::::::::::::T              A:::A                   H:::::::H     H:::::::H     !!:!!'
+#echo '             T:::::::::::::::::::::T             A:::::A                  H:::::::H     H:::::::H     !:::!'
+#echo '             T:::::TT:::::::TT:::::T            A:::::::A                 HH::::::H     H::::::HH     !:::!'
+#echo '             TTTTTT  T:::::T  TTTTTT           A:::::::::A                  H:::::H     H:::::H       !:::!'
+#echo '                     T:::::T                  A:::::A:::::A                 H:::::H     H:::::H       !:::!'
+#echo '                     T:::::T                 A:::::A A:::::A                H::::::HHHHH::::::H       !:::!'
+#echo '                     T:::::T                A:::::A   A:::::A               H:::::::::::::::::H       !:::!'
+#echo '                     T:::::T               A:::::A     A:::::A              H:::::::::::::::::H       !:::!'
+#echo '                     T:::::T              A:::::AAAAAAAAA:::::A             H::::::HHHHH::::::H       !:::!'
+#echo '                     T:::::T             A:::::::::::::::::::::A            H:::::H     H:::::H       !!:!!'
+#echo '                     T:::::T            A:::::AAAAAAAAAAAAA:::::A           H:::::H     H:::::H        !!! '
+#echo '                   TT:::::::TT         A:::::A             A:::::A        HH::::::H     H::::::HH          '
+#echo '                   T:::::::::T        A:::::A               A:::::A       H:::::::H     H:::::::H      !!! '
+#echo '                   T:::::::::T       A:::::A                 A:::::A      H:::::::H     H:::::::H     !!:!!'
+#echo '                   TTTTTTTTTTT      AAAAAAA                   AAAAAAA     HHHHHHHHH     HHHHHHHHH      !!! ' 
+#echo ''
+#echo ''
+#echo ''
+#sleep 1
+#echo ''
 echo '---------------------------------'
 echo '0. Prepare input cards           '
 echo '---------------------------------'
