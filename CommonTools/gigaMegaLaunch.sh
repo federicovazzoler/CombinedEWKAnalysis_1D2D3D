@@ -3,7 +3,7 @@
 WORKDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $WORKDIR
 
-URL="https://wwwusers.ts.infn.it/~dellaric/tmp/Vgg/v14.default/"
+URL="https://wwwusers.ts.infn.it/~darold/vgg/v14.aodv6.iso.default/"
 
 BOSON=$1
 if [ -z "$1" ]; then

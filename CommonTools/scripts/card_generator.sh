@@ -32,7 +32,7 @@ for PAR in $PARS; do
   rm -f $WORKDIR/cards/config_${BOSON}_13TeV_inputSignalModelFit_$PAR
   touch $WORKDIR/cards/config_${BOSON}_13TeV_inputSignalModelFit_$PAR
   echo "[Global]" >> $WORKDIR/cards/config_${BOSON}_13TeV_inputSignalModelFit_$PAR
-  echo "obsBins = 0.,20.,40.,60.,80.,180.,300." >> $WORKDIR/cards/config_${BOSON}_13TeV_inputSignalModelFit_$PAR
+  echo "obsBins = 0.,40.,80.,180.,300." >> $WORKDIR/cards/config_${BOSON}_13TeV_inputSignalModelFit_$PAR
   echo "nLastBins = $3" >> $WORKDIR/cards/config_${BOSON}_13TeV_inputSignalModelFit_$PAR
   echo "par1Name = $PAR" >> $WORKDIR/cards/config_${BOSON}_13TeV_inputSignalModelFit_$PAR
   echo "nGridPar1Bins = 16" >> $WORKDIR/cards/config_${BOSON}_13TeV_inputSignalModelFit_$PAR
@@ -43,9 +43,9 @@ for PAR in $PARS; do
   echo "model = par1_TF1" >> $WORKDIR/cards/config_${BOSON}_13TeV_inputSignalModelFit_$PAR
   echo "" >> $WORKDIR/cards/config_${BOSON}_13TeV_inputSignalModelFit_$PAR
   echo "[ch_ele]" >> $WORKDIR/cards/config_${BOSON}_13TeV_inputSignalModelFit_$PAR
-  echo "obsBins = 0.,20.,40.,60.,80.,180.,300." >> $WORKDIR/cards/config_${BOSON}_13TeV_inputSignalModelFit_$PAR
+  echo "obsBins = 0.,40.,80.,180.,300." >> $WORKDIR/cards/config_${BOSON}_13TeV_inputSignalModelFit_$PAR
   echo "signal_model = $WORKDIR/data/$BOSON/input/${PAR}_ele.root" >> $WORKDIR/cards/config_${BOSON}_13TeV_inputSignalModelFit_$PAR
   echo "[ch_muo]" >> $WORKDIR/cards/config_${BOSON}_13TeV_inputSignalModelFit_$PAR
-  echo "obsBins = 0.,20.,40.,60.,80.,180.,300." >> $WORKDIR/cards/config_${BOSON}_13TeV_inputSignalModelFit_$PAR
+  echo "obsBins = 0.,40.,80.,180.,300." >> $WORKDIR/cards/config_${BOSON}_13TeV_inputSignalModelFit_$PAR
   echo "signal_model = $WORKDIR/data/$BOSON/input/${PAR}_muo.root" >> $WORKDIR/cards/config_${BOSON}_13TeV_inputSignalModelFit_$PAR
 done
