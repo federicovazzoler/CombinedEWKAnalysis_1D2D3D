@@ -17,13 +17,12 @@ void fundraw(string file_postfit, string file_prefit, string output_html, string
   Double_t x_value[nPoints];
   Double_t y_value[nPoints];
 
-  for (int i = 0; i < list_TF1->GetEntries();i++) {
+  for (int i = 0; i < list_TGraph->GetEntries();i++) {
     TString name_TF1 = list_TF1->At(i)->GetName();
     TF1 *fitfunc = (TF1*)file_TF1->Get(name_TF1);
     fitfunc->SetRange(min, max);
 
-//    TString name_TGraph = list_TGraph->At(i)->GetName();
-    TString name_TGraph = list_TGraph->At(list_TGraph->GetEntries()-list_TF1->GetEntries()+i)->GetName();
+    TString name_TGraph = list_TGraph->At(i)->GetName();
     TGraph *graph = (TGraph*)file_TGraph->Get(name_TGraph);
 
     TCanvas* c1 = new TCanvas("c1", "c1", 10, 10, 800, 600);
@@ -108,6 +107,14 @@ void fundraw(string file_postfit, string file_prefit, string output_html, string
     pull->SetTitle("");
 
     string fancypar = "";
+    if (par == "FM0") fancypar="f_{M,0}";
+    if (par == "FM1") fancypar="f_{M,1}";
+    if (par == "FM2") fancypar="f_{M,2}";
+    if (par == "FM3") fancypar="f_{M,3}";
+    if (par == "FM4") fancypar="f_{M,4}";
+    if (par == "FM5") fancypar="f_{M,5}";
+    if (par == "FM6") fancypar="f_{M,6}";
+    if (par == "FM7") fancypar="f_{M,7}";
     if (par == "FT0") fancypar="f_{T,0}";
     if (par == "FT1") fancypar="f_{T,1}";
     if (par == "FT2") fancypar="f_{T,2}";
