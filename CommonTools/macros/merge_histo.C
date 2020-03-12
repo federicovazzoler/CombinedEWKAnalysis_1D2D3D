@@ -9,9 +9,6 @@ void merge_histo(string path, string boson, string channel, string flag, int nLa
   TH1D *bkg_jetpho_misid = (TH1D*)file_in->Get(("h_" + boson + "_"+channel+"_pho0_pho1_pt_misid").c_str());
   TH1D *bkg_irred = (TH1D*)file_in->Get(("h_" + boson + "_"+channel+"_pho0_pho1_pt_irred").c_str());
   TH1D *bkg_egmisid = 0;
-
-cout << path+"/h_" + boson + "_"+channel+"_pho0_pho1_pt_"+flag+".root" << endl;
-
   if (boson == "WGG") {
     bkg_egmisid = (TH1D*)file_in->Get(("h_" + boson + "_"+channel+"_pho0_pho1_pt_egmisid").c_str());
   }
