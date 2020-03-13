@@ -20,8 +20,10 @@ void dealWith_unEqualBinning(TString file_name){
     cout <<"\treading histo \""<< histo_name<< "\" and rebinning.." << endl;
     int N_bins=plot->GetNbinsX();
     TH1D * plot_rebin=new TH1D("plot_rebin","plot_rebin",N_bins,0,N_bins);
-    for (int j=1;j<=N_bins;j++)
+    for (int j=1;j<=N_bins;j++) {
       plot_rebin->SetBinContent(j,plot->GetBinContent(j));
+      plot_rebin->SetBinError(j,plot->GetBinError(j));
+    }
     cout <<"\t\tbin yield starting: "<< plot->Integral()<<" after rebinning: "<<plot_rebin->Integral()  << endl;
     plot_rebin->Write(histo_name);
     delete plot_rebin;
@@ -29,11 +31,5 @@ void dealWith_unEqualBinning(TString file_name){
 
   outFile->Close();
   file_in->Close();
-
-  /*
-  list_histos->GetEntries();
-  list_histos->At(4)->GetName();
-  TH1D * plot=file_in->Get("data_obs");
-  */
 
 }
