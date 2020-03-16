@@ -39,41 +39,60 @@ FLAGS=$FLAGS" eg_misid_up"
 FLAGS=$FLAGS" eg_misid_down"
 FLAGS=$FLAGS" jet_misid_syst"
 
+YEARS="2016 2017 2018 Run2"
+
 # merge histos
-for CHANNEL in $CHANNELS; do
-  rm -f data/$BOSON/ch_${CHANNEL}_unequalBinning.root
-  for FLAG in $FLAGS; do
-    if [[ "$FLAG" == "jec_up" || "$FLAG" == "jec_down" || "$FLAG" == "jer_up" || "$FLAG" == "jer_down" || "$FLAG" == "sf_pho_veto_up" || "$FLAG" == "sf_pho_veto_down" ]]; then
-      wget -q -O data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_reference.root $URL/reference/Run2.matrix/root/h_${BOSON}_${CHANNEL}_pho0_pho1_pt.root
-      wget -q -O data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_reference_2016.root $URL/reference/2016.matrix/root/h_${BOSON}_${CHANNEL}_pho0_pho1_pt.root
-      wget -q -O data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_reference_2017.root $URL/reference/2017.matrix/root/h_${BOSON}_${CHANNEL}_pho0_pho1_pt.root
-      wget -q -O data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_reference_2018.root $URL/reference/2018.matrix/root/h_${BOSON}_${CHANNEL}_pho0_pho1_pt.root
-      wget -q -O data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}_2016.root $URL/${FLAG}_2016/Run2.matrix/root/h_${BOSON}_${CHANNEL}_pho0_pho1_pt.root
-      wget -q -O data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}_2017.root $URL/${FLAG}_2017/Run2.matrix/root/h_${BOSON}_${CHANNEL}_pho0_pho1_pt.root
-      wget -q -O data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}_2018.root $URL/${FLAG}_2018/Run2.matrix/root/h_${BOSON}_${CHANNEL}_pho0_pho1_pt.root
-      root-6.12 -l -b -q macros/combine_syst.C\(\"$WORKDIR/data/$BOSON\",\"$BOSON\",\"$CHANNEL\",\"$FLAG\",$LASTBINS\)
-      rm -f data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_reference.root
-      rm -f data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_reference_2016.root
-      rm -f data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_reference_2017.root
-      rm -f data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_reference_2018.root
-      rm -f data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}_2016.root
-      rm -f data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}_2017.root
-      rm -f data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}_2018.root
-    elif [[ "$FLAG" == "jet_misid_syst" ]]; then
-      wget -q -O data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_reference.root $URL/reference/Run2.matrix/root/h_${BOSON}_${CHANNEL}_pho0_pho1_pt.root
-      wget -q -O data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}.root $URL/$FLAG/Run2.matrix/root/h_${BOSON}_${CHANNEL}_pho0_pho1_pt.root
-      root-6.12 -l -b -q macros/syst_symmetriser.C\(\"$WORKDIR/data/$BOSON\",\"$BOSON\",\"$CHANNEL\",\"$FLAG\",$LASTBINS\)
-      rm -f data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}.root
-      rm -f data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_reference.root
-    else
-      wget -q -O data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}.root $URL/$FLAG/Run2.matrix/root/h_${BOSON}_${CHANNEL}_pho0_pho1_pt.root
-      root-6.12 -l -b -q macros/merge_histo.C\(\"$WORKDIR/data/$BOSON\",\"$BOSON\",\"$CHANNEL\",\"$FLAG\",$LASTBINS\)
-      rm -f data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}.root
-    fi
+for YEAR in ${YEARS}; do
+  echo "Processing : "${YEAR}
+  for CHANNEL in $CHANNELS; do
+    rm -f data/$BOSON/ch_${CHANNEL}_${YEAR}_unequalBinning.root
+    for FLAG in $FLAGS; do
+      if [[ "$FLAG" == "jec_up" || "$FLAG" == "jec_down" || "$FLAG" == "jer_up" || "$FLAG" == "jer_down" || "$FLAG" == "sf_pho_veto_up" || "$FLAG" == "sf_pho_veto_down" ]]; then
+        if [[ "${YEAR}" == "2016" ]]; then
+          wget -q -O data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}.root $URL/${FLAG}_2016/${YEAR}.matrix/root/h_${BOSON}_${CHANNEL}_pho0_pho1_pt.root
+          root-6.12 -l -b -q macros/merge_histo.C\(\"$WORKDIR/data/$BOSON\",\"$BOSON\",\"$CHANNEL\",\"$FLAG\",\"$YEAR\",$LASTBINS\)
+          rm -f data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}.root
+        elif [[ "${YEAR}" == "2017" ]]; then
+          wget -q -O data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}.root $URL/${FLAG}_2017/${YEAR}.matrix/root/h_${BOSON}_${CHANNEL}_pho0_pho1_pt.root
+          root-6.12 -l -b -q macros/merge_histo.C\(\"$WORKDIR/data/$BOSON\",\"$BOSON\",\"$CHANNEL\",\"$FLAG\",\"$YEAR\",$LASTBINS\)
+          rm -f data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}.root
+        elif [[ "${YEAR}" == "2018" ]]; then
+          wget -q -O data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}.root $URL/${FLAG}_2018/${YEAR}.matrix/root/h_${BOSON}_${CHANNEL}_pho0_pho1_pt.root
+          root-6.12 -l -b -q macros/merge_histo.C\(\"$WORKDIR/data/$BOSON\",\"$BOSON\",\"$CHANNEL\",\"$FLAG\",\"$YEAR\",$LASTBINS\)
+          rm -f data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}.root
+        elif [[ "${YEAR}" == "Run2" ]]; then
+          wget -q -O data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_reference.root $URL/reference/Run2.matrix/root/h_${BOSON}_${CHANNEL}_pho0_pho1_pt.root
+          wget -q -O data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_reference_2016.root $URL/reference/2016.matrix/root/h_${BOSON}_${CHANNEL}_pho0_pho1_pt.root
+          wget -q -O data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_reference_2017.root $URL/reference/2017.matrix/root/h_${BOSON}_${CHANNEL}_pho0_pho1_pt.root
+          wget -q -O data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_reference_2018.root $URL/reference/2018.matrix/root/h_${BOSON}_${CHANNEL}_pho0_pho1_pt.root
+          wget -q -O data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}_2016.root $URL/${FLAG}_2016/Run2.matrix/root/h_${BOSON}_${CHANNEL}_pho0_pho1_pt.root
+          wget -q -O data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}_2017.root $URL/${FLAG}_2017/Run2.matrix/root/h_${BOSON}_${CHANNEL}_pho0_pho1_pt.root
+          wget -q -O data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}_2018.root $URL/${FLAG}_2018/Run2.matrix/root/h_${BOSON}_${CHANNEL}_pho0_pho1_pt.root
+          root-6.12 -l -b -q macros/combine_syst.C\(\"$WORKDIR/data/$BOSON\",\"$BOSON\",\"$CHANNEL\",\"$FLAG\",\"$YEAR\",$LASTBINS\)
+          rm -f data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_reference.root
+          rm -f data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_reference_2016.root
+          rm -f data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_reference_2017.root
+          rm -f data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_reference_2018.root
+          rm -f data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}_2016.root
+          rm -f data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}_2017.root
+          rm -f data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}_2018.root
+        fi
+      elif [[ "$FLAG" == "jet_misid_syst" ]]; then
+        wget -q -O data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_reference.root $URL/reference/${YEAR}.matrix/root/h_${BOSON}_${CHANNEL}_pho0_pho1_pt.root
+        wget -q -O data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}.root $URL/$FLAG/${YEAR}.matrix/root/h_${BOSON}_${CHANNEL}_pho0_pho1_pt.root
+        root-6.12 -l -b -q macros/syst_symmetriser.C\(\"$WORKDIR/data/$BOSON\",\"$BOSON\",\"$CHANNEL\",\"$FLAG\",\"$YEAR\",$LASTBINS\)
+        rm -f data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}.root
+        rm -f data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_reference.root
+      else
+        wget -q -O data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}.root $URL/$FLAG/${YEAR}.matrix/root/h_${BOSON}_${CHANNEL}_pho0_pho1_pt.root
+        root-6.12 -l -b -q macros/merge_histo.C\(\"$WORKDIR/data/$BOSON\",\"$BOSON\",\"$CHANNEL\",\"$FLAG\",\"$YEAR\",$LASTBINS\)
+        rm -f data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}.root
+      fi
+    done
+    root-6.12 -l -b -q macros/dealWith_unEqualBinning.C\(\"${WORKDIR}/data/$BOSON/ch_${CHANNEL}_${YEAR}_unequalBinning.root\"\)
+    mv data/$BOSON/ch_${CHANNEL}_${YEAR}_unequalBinning_uniformBins.root data/$BOSON/ch_${CHANNEL}_${YEAR}.root
+    rm -f data/$BOSON/ch_${CHANNEL}_${YEAR}_unequalBinning.root
   done
-  root-6.12 -l -b -q macros/dealWith_unEqualBinning.C\(\"${WORKDIR}/data/$BOSON/ch_${CHANNEL}_unequalBinning.root\"\)
-  mv data/$BOSON/ch_${CHANNEL}_unequalBinning_uniformBins.root data/$BOSON/ch_${CHANNEL}.root
-  rm -f data/$BOSON/ch_${CHANNEL}_unequalBinning.root
 done
 
 # write builworkspace

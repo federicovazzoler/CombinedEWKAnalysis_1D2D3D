@@ -1,6 +1,6 @@
 #include "lastbinner.C"
 
-void syst_symmetriser(string path, string boson, string channel, string flag, int nLastBins)
+void syst_symmetriser(string path, string boson, string channel, string flag, string year, int nLastBins)
 {
   // Get histos
   TFile *file_in_reference = new TFile((path+"/h_" + boson + "_"+channel+"_pho0_pho1_pt_reference.root").c_str(),"OPEN");
@@ -39,14 +39,20 @@ void syst_symmetriser(string path, string boson, string channel, string flag, in
 
   for (int bin = 0; bin < bkg_jetpho_misid_up->GetNbinsX() + 2; bin++) {
     dibosonSM_down->SetBinContent(bin, dibosonSM_reference->GetBinContent(bin) - (dibosonSM_up->GetBinContent(bin) - dibosonSM_reference->GetBinContent(bin)));
-    dibosonSM_down->SetBinError(bin, dibosonSM_up->GetBinError(bin));
+    dibosonSM_down->SetBinError(bin, 0.0);
     bkg_jetpho_misid_down->SetBinContent(bin, bkg_jetpho_misid_reference->GetBinContent(bin) - (bkg_jetpho_misid_up->GetBinContent(bin) - bkg_jetpho_misid_reference->GetBinContent(bin)));
-    bkg_jetpho_misid_down->SetBinError(bin, bkg_jetpho_misid_up->GetBinError(bin));
+    bkg_jetpho_misid_down->SetBinError(bin, 0.0);
     bkg_irred_down->SetBinContent(bin, bkg_irred_reference->GetBinContent(bin) - (bkg_irred_up->GetBinContent(bin) - bkg_irred_reference->GetBinContent(bin)));
-    bkg_irred_down->SetBinError(bin, bkg_irred_up->GetBinError(bin));
+    bkg_irred_down->SetBinError(bin, 0.0);
     if (boson == "WGG") {
       bkg_egmisid_down->SetBinContent(bin , bkg_egmisid_reference->GetBinContent(bin) - (bkg_egmisid_up->GetBinContent(bin) - bkg_egmisid_reference->GetBinContent(bin)));
-      bkg_egmisid_down->SetBinError(bin   , bkg_egmisid_up->GetBinError(bin));
+      bkg_egmisid_down->SetBinError(bin, 0.0);
+    }
+    dibosonSM_up->SetBinError(bin, 0.0);
+    bkg_jetpho_misid_up->SetBinError(bin, 0.0);
+    bkg_irred_up->SetBinError(bin, 0.0);
+    if (boson == "WGG") {
+      bkg_egmisid_up->SetBinError(bin, 0.0);
     }
   }
 
@@ -64,7 +70,7 @@ void syst_symmetriser(string path, string boson, string channel, string flag, in
   }
 
   // dump histos into output file
-  TFile *file_out = new TFile((path+"/ch_"+channel+"_unequalBinning.root").c_str(),"UPDATE");
+  TFile *file_out = new TFile((path+"/ch_"+channel+"_"+year+"_unequalBinning.root").c_str(),"UPDATE");
   dibosonSM_up->Write("diboson_jet_misidUp");
   bkg_jetpho_misid_up->Write("bkg_jetpho_misid_jet_misidUp");
   bkg_irred_up->Write("bkg_irred_jet_misidUp");

@@ -1,6 +1,6 @@
 #include "lastbinner.C"
 
-void merge_histo(string path, string boson, string channel, string flag, int nLastBins)
+void merge_histo(string path, string boson, string channel, string flag, string year, int nLastBins)
 {
   // get histos
   TFile *file_in = new TFile((path+"/h_" + boson + "_"+channel+"_pho0_pho1_pt_"+flag+".root").c_str(),"OPEN");
@@ -24,16 +24,30 @@ void merge_histo(string path, string boson, string channel, string flag, int nLa
   }
 
   // dump histos into output file
-  TFile *file_out = new TFile((path+"/ch_"+channel+"_unequalBinning.root").c_str(),"UPDATE");
+  TFile *file_out = new TFile((path+"/ch_"+channel+"_"+year+"_unequalBinning.root").c_str(),"UPDATE");
   if (flag == "reference") {
     data_obs->Write("data_obs");
     dibosonSM->Write("diboson");
+    //set bin error to 0 for jetpho_misid
+    for (int bin = 0; bin < bkg_jetpho_misid->GetNbinsX() + 2; bin++) {
+      bkg_jetpho_misid->SetBinError(bin, 0.0);
+    }
     bkg_jetpho_misid->Write("bkg_jetpho_misid");
     bkg_irred->Write("bkg_irred");
     if (boson == "WGG") {
       bkg_egmisid->Write("bkg_egmisid");
     }
   } else {
+    //set bin error to 0 if !reference
+    for (int bin = 0; bin < dibosonSM->GetNbinsX() + 2; bin++) {
+      dibosonSM->SetBinError(bin, 0.0);
+      bkg_jetpho_misid->SetBinError(bin, 0.0);
+      bkg_irred->SetBinError(bin, 0.0);
+      if (boson == "WGG") {
+        bkg_egmisid->SetBinError(bin, 0.0);
+      }
+    }
+    //write histos
     if (flag.find("_up") != string::npos) flag.replace(flag.find("_up"), 3, "Up");
     if (flag.find("_down") != string::npos) flag.replace(flag.find("_down"), 5, "Down");
     dibosonSM->Write(("diboson_"+flag).c_str());
