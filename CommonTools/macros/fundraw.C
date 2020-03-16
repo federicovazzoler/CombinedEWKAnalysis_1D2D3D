@@ -38,25 +38,17 @@ void fundraw(string file_postfit, string file_prefit, string output_html, string
     double dipho_pt_max = -1.;
     if (i == 0){
       dipho_pt_min = 0;      
-      dipho_pt_max = 20;
-    } 
-    if (i == 1){
-      dipho_pt_min = 20;      
       dipho_pt_max = 40;
     } 
-    if (i == 2){
+    if (i == 1){
       dipho_pt_min = 40;      
-      dipho_pt_max = 60;
-    } 
-    if (i == 3){
-      dipho_pt_min = 60;      
       dipho_pt_max = 80;
     } 
-    if (i == 4){
+    if (i == 2){
       dipho_pt_min = 80;      
       dipho_pt_max = 180;
     } 
-    if (i == 5){
+    if (i == 3){
       dipho_pt_min = 180;      
       dipho_pt_max = 300;
     } 
