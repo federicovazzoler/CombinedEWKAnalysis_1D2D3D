@@ -1,0 +1,248 @@
+enum {test, k_nChan };
+
+// Available plot sets
+bool catgcg = true;
+bool catgcz = true;
+bool natgcg = false;
+bool natgcz = false;
+
+bool catgceft  = true;
+
+bool atgc = catgcg||catgcz||natgcg||natgcz|catgceft;
+
+bool aqgc_a = false;
+bool aqgc_ft = false; 
+bool aqgc_fm = false;
+bool aqgc_fs = false;
+
+bool aqgc = aqgc_a||aqgc_fs||aqgc_fm||aqgc_ft;
+
+bool lineStyles = false;
+
+bool aqgc_wg8 = true;
+bool aqgc_zg8 = true;
+bool aqgc_zg13 = true;
+bool aqgc_zz13 = true;
+
+float scale_h3 = 100;
+float scale_h4 = 10000;
+
+// Constants for EFT<->LEP and MadGraph<->VBFNLO EFT conversions
+
+float mw = 0.080385;
+float mz = 0.0911876;
+float alpha = 0.00781616;
+// Use at mz rather than at low energy
+float sin2thw = 0.23126;
+// Use at mz rather than at low energy
+float cos2thw = mw*mw/(mz*mz);
+float tan2thw =  sin2thw/cos2thw; 
+
+// and g = e/ sin(theta_W),  g = sqrt(0.00781616*4.0*3.14159)/0.23126
+// and g' = e/cos(theta_W), g' = sqrt(0.00781616*4.0*3.14169)/(m_W/m_Z)
+
+float g = sqrt(alpha*4.0*3.14159)/sqrt(sin2thw);
+float gp = sqrt(alpha*4.0*3.14169)/(mw/mz);
+
+float fm0toa0w = 4.0 * mw * mw / (g*g)  + 4.0 * mw * mw / (gp*gp);
+
+float fm1toacw = fm0toa0w;
+
+
+// This should be for ATLAS results
+float madftoa = 4.0*mw*mw/(g*g);
+
+
+
+int nPlotChan = 0;
+vector<bool> plotChan( k_nChan, false );
+vector<string> 
+chanName(        k_nChan ),
+  chanMeasurement( k_nChan ),
+  chanResult (     k_nChan ),
+  chanLumi   (     k_nChan ),
+  chanSqrtS  (     k_nChan ),
+  chanExp    (     k_nChan );
+vector<int>
+chanColor( k_nChan),
+  chanLine(k_nChan);
+vector<float> 
+  chanaCC( k_nChan,0 ), 
+  chanaCP( k_nChan,0 ),
+  chanaCM( k_nChan,0 );
+
+ float scale_;
+ int chan;
+
+scale_ = (1);
+
+
+
+  chan = test;
+  chanName[chan]            = "test";
+  chanMeasurement[chan]     = "test";
+  chanLumi[chan]            = "test fb^{-1}";
+  chanExp[chan]            = "WGG";
+  chanSqrtS[chan]          = "7 TeV";
+  chanaCC[chan]  = 0.;
+  chanaCM[chan]  = - 15 * scale_;// expected value! 
+  chanaCP[chan]  = + 50 * scale_;// expected value
+  plotChan[chan] = true;
+//  chanaCP[k_cdf_zg_h3g]  = +0.020 * scale_; 
+//  plotChan[k_cdf_zg_h3g] = false;
+  plotChan[chan]        = true;
+
+
+// define experiments and experiment colors
+
+const int numberExperiments = 6;
+vector<string> experiments(numberExperiments);
+vector<int> colors(numberExperiments);
+
+experiments[0] = "WGG";
+experiments[1] = "ZGG";
+experiments[2] = "WGG@8TeV";
+
+
+colors[0] = kRed;
+colors[1] = kBlue;
+colors[2] = kGreen;
+
+
+// determine limit range and number of measurements and experiments
+
+float range = 0.0;
+
+int types = 0;
+int exps = 0;
+bool centralValue = false;
+
+//if (catgceft) {
+//
+//  for( size_t ii=0; ii<k_nChan; ii++ )
+//    {
+//      if (plotChan[ii] == true) {
+//
+//	if (chanName[ii] == "#Delta#kappa_{Z}") plotChan[ii] = false;
+//	if (chanName[ii] == "#lambda_{Z}") {
+//	  chanName[ii] = "c_{WWW }/#Lambda^{2}";
+//	  chanaCC[ii]       =  (2.0/3.0) * (1.0/(g*g*mw*mw)) * chanaCC[ii];
+//	  chanaCM[ii]       =  (2.0/3.0) * (1.0/(g*g*mw*mw)) * chanaCM[ii];
+//	  chanaCP[ii]       =  (2.0/3.0) * (1.0/(g*g*mw*mw)) * chanaCP[ii];
+//
+//	}
+//	if (chanName[ii] == "#Deltag^{Z}_{1}") {
+//	  chanName[ii] = "c_{W }/#Lambda^{2}";
+//	  chanaCC[ii]       =  (2.0) * (1.0/(mz*mz)) * chanaCC[ii];
+//	  chanaCM[ii]       =  (2.0) * (1.0/(mz*mz)) * chanaCM[ii];
+//	  chanaCP[ii]       =  (2.0) * (1.0/(mz*mz)) * chanaCP[ii];
+//
+//	}
+//      
+//      }
+//    }
+//
+// }
+ 
+for( size_t ii=0; ii<k_nChan; ii++ )
+  {
+    if (plotChan[ii] == true) {
+      // determine limit range, used for x axis
+
+      if (-chanaCM[ii] > range) range = -chanaCM[ii];
+      if ( chanaCP[ii] > range) range =  chanaCP[ii];
+
+      // determine number of measurement, used in y axis
+      nPlotChan++;
+      // determine number of experiments,  used in ledgend
+      if (chanExp[ii]=="WGG")   types = types|1;
+      if (chanExp[ii]=="ZGG") types = types|2;
+      if (chanExp[ii]=="WGG@8TeV")   types = types|4;
+      
+// Concatonate chan results strings
+
+      ostringstream stream1, stream2, stream3;
+      stream1.precision(1);
+      stream2.precision(1);
+      stream3.precision(1);
+      stream1 << scientific;
+      stream2 << scientific;
+      stream3 << scientific;
+
+      if (aqgc_a||aqgc_fs||aqgc_fm||aqgc_ft||catgcg||catgcz||catgceft||natgcz 
+) {
+	stream1<< (chanaCC[ii]);    // for fixed point notation
+	stream2<<(chanaCM[ii]);    // for fixed point notation
+	stream3<<(chanaCP[ii]);    // for fixed point notation
+      } else if ( chanName[ii] == "h^{#gamma}_{3}" ||chanName[ii] == "h^{Z}_{3}")  {
+	stream1<< (chanaCC[ii]/100.0);    // for fixed point notation
+	stream2<<(chanaCM[ii]/100.0);    // for fixed point notation
+	stream3<<(chanaCP[ii]/100.0);    // for fixed point notation
+
+      } else if ( chanName[ii] == "h^{#gamma}_{4}" ||chanName[ii] == "h^{Z}_{4}")  {
+	stream1<< (chanaCC[ii]/10000.0);    // for fixed point notation
+	stream2<<(chanaCM[ii]/10000.0);    // for fixed point notation
+	stream3<<(chanaCP[ii]/10000.0);    // for fixed point notation
+
+      } 
+      if (chanaCM[ii]<0.0||chanaCP[ii]>0.0) chanResult[ii] = "[" + stream2.str() + ", " + stream3.str() + "]";
+
+      // Determine channel colors and line types;
+
+      for (int jj = 0; jj < numberExperiments; jj++){
+	if (chanExp[ii]==experiments[jj]) chanColor[ii] = colors[jj];
+      }
+      // if (chanExp[ii]=="CMS") chanColor[ii] = colors[0];
+      // if (chanExp[ii]=="ATLAS") chanColor[ii]= kBlack;
+      // if (chanExp[ii]=="CDF") chanColor[ii] = 209;
+      // if (chanExp[ii]=="D0") chanColor[ii] = 209;
+      // if (chanExp[ii]=="LEP") chanColor[ii] = kBlue;
+
+      cout << "Set chan color " << chanColor[ii] << endl;
+
+      if (aqgc&&lineStyles){
+	if (chanMeasurement[ii]     == "ss WW") chanLine[ii] = 7;
+	if (chanMeasurement[ii]     == "#gamma#gamma#rightarrowWW") chanLine[ii] = 3;
+	if (chanMeasurement[ii]     == "W#gamma") chanLine[ii] = 9;
+	//if (chanMeasurement[ii]     == "Z#gamma") chanLine[ii] = 9;
+	if (chanMeasurement[ii]     == "WW#gamma") chanLine[ii] = 2;
+	if (chanMeasurement[ii]     == "WV#gamma") chanLine[ii] = 2;
+	if (chanMeasurement[ii]     == "W#gamma#gamma") chanLine[ii] = 2;
+	  
+      }
+
+    }
+  }
+
+
+
+    
+if (types&1) exps++;
+if (types&2) exps++;
+if (types&4) exps++;
+if (types&8) exps++;
+if (types&16) exps++;
+if (types&32) exps++;
+    
+
+float minRange = -range*1.3*1.3;
+float maxRange = range*1.3*3.2;
+cout << "Range: " << -minRange << " - " << maxRange << endl;
+
+cout << "Number of experiments: " << exps << ", Number of measurements: " << nPlotChan << endl;
+
+// verbose print
+  bool verbose_(false);
+  if( verbose_ )
+    {
+      for( size_t ii=0; ii<k_nChan; ii++ )
+	{
+	  cout << chanName[ii]
+               << chanMeasurement[ii] 
+	       << " " << chanaCC[ii]
+	       << " : " << chanaCM[ii]
+	       << " -- " << chanaCP[ii]
+	       << endl;
+	}
+    }
+

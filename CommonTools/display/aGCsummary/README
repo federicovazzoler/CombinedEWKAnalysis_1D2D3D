@@ -1,0 +1,23 @@
+Author: Matthew Herndon 
+
+To run the script:
+> root -l plotaGC.C
+pdf and png files are produced, aQGC_v0.pdf
+
+In root 6 loading macros doesn't work in scripts.  Instead
+> root < plotaGC.txt
+
+
+To control which subset of aQGC paramaters to plot
+Change the lines
+ bool  aqgc_a  = true;
+ bool  aqgc_fm = false;
+ bool  aqgc_ft = false;
+ bool  aqgc_fs = false;
+
+in Data.C
+to get D6 a, and D8 fm,ft,fs parameters respectively
+ 
+To clean-up the directory
+> ./cleanup.sh
+
