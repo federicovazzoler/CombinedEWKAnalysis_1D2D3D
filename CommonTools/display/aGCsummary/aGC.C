@@ -402,27 +402,28 @@ aGC(float ymin=-2.0, float ymax=900000 )
 
 	    // Need to change to exp*1.25 for QGC plots, 0.9 for TGC plots 
 	    TGraphErrors _dataTotPoint(1);
-	    _dataTotPoint.SetPoint(1, xx_, yy_-dyy_*exp*1.25 );
+//	    _dataTotPoint.SetPoint(1, xx_, yy_-dyy_*exp*1.25 );
+	    _dataTotPoint.SetPoint(1, xx_, yy_-dyy_*exp);
 	    _dataTotPoint.SetPointError( 1, dyx_/2, 0 );
 	    _dataTotPoint.SetLineWidth(2);
 	    _dataTotPoint.SetLineColor(colors[ii]);
 	    _dataTotPoint.SetMarkerSize(0);
 	    _dataTotPoint.DrawClone("e");	
-
+/*
 	    if (baseTwo==8||baseTwo==16){
-	    TMarker _dataPoint( xx_, yy_-dyy_*exp*1.25, kFullCircle );
+	    TMarker _dataPoint( xx_, yy_-dyy_*exp*1.25);
 	    _dataPoint.SetMarkerSize(markerSize);
 	    _dataPoint.SetMarkerColor(colors[ii]);
 	    _dataPoint.DrawClone();
-	    _dataPoint.SetMarkerStyle(kOpenCircle);
 	    _dataPoint.SetMarkerColor(colors[ii]);
 	    _dataPoint.DrawClone();
 	    }
-	    
+*/	    
 	    txt[ntxt] = experiments[ii];
 	    txtSize[ntxt] = 0.018;
 	    txtX[ntxt] = xx_ - 0.20*maxRange;
-	    txtY[ntxt] = yy_-dyy_*exp*1.25;
+//	    txtY[ntxt] = yy_-dyy_*exp*1.25;
+	    txtY[ntxt] = yy_-dyy_*exp;
 	    txtAlign[ntxt] = 12;
 	    txtFont[ntxt] = 42;
 	    ntxt++;

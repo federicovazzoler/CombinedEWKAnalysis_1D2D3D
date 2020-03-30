@@ -22,8 +22,11 @@ FT8_ZGG_ele, FT8_ZGG_muo, FT8_ZGG_lep,
 FT9_ZGG_ele, FT9_ZGG_muo, FT9_ZGG_lep,
 k_nChan };
 
-string runopt = "elemuo"; //valid options are: all, lep, elemuo
+string runopt = "all"; //valid options are: all, lep, elemuo
 bool excludeFM = true;
+bool excludeFT012 = false;
+bool excludeFT5p = true;
+bool exclude8TeV = false;
 
 bool catgcg = false;
 bool catgcz = true;
@@ -156,6 +159,7 @@ float FT9_ZGG_lep_DOWN = -1.86;
 float FT9_ZGG_lep_UP = 1.86;
 //END PARAMETERS
 
+if (!excludeFM) {
 //FM2
   chan = FM2_WGG_ele;
   chanName[chan]            = "f_{M,2}";
@@ -169,7 +173,6 @@ float FT9_ZGG_lep_UP = 1.86;
   chanaCP[chan]  = FM2_WGG_ele_UP;// expected value
   plotChan[chan] = false;
   if (runopt == "all" || runopt == "elemuo") plotChan[chan] = true;
-  if (excludeFM) plotChan[chan] = false;
 
   chan = FM2_WGG_muo;
   chanName[chan]            = "f_{M,2}";
@@ -183,7 +186,6 @@ float FT9_ZGG_lep_UP = 1.86;
   chanaCP[chan]  = FM2_WGG_muo_UP;// expected value
   plotChan[chan] = false;
   if (runopt == "all" || runopt == "elemuo") plotChan[chan] = true;
-  if (excludeFM) plotChan[chan] = false;
 
   chan = FM2_WGG_lep;
   chanName[chan]            = "f_{M,2}";
@@ -197,7 +199,6 @@ float FT9_ZGG_lep_UP = 1.86;
   chanaCP[chan]  = FM2_WGG_lep_UP;// expected value
   plotChan[chan] = false;
   if (runopt == "all" || runopt == "lep") plotChan[chan] = true;
-  if (excludeFM) plotChan[chan] = false;
 
   chan = FM2_WGG_lep_8TeV;
   chanName[chan]            = "f_{M,2}";
@@ -210,7 +211,7 @@ float FT9_ZGG_lep_UP = 1.86;
   chanaCP[chan]  = 531;// expected value
   plotChan[chan] = false;
   if (runopt == "all" || runopt == "lep" || runopt == "elemuo") plotChan[chan] = true;
-  if (excludeFM) plotChan[chan] = false;
+  if (exclude8TeV) plotChan[chan] = false;
 
 //FM3
   chan = FM3_WGG_ele;
@@ -225,7 +226,6 @@ float FT9_ZGG_lep_UP = 1.86;
   chanaCP[chan]  = FM3_WGG_ele_UP;// expected value
   plotChan[chan] = false;
   if (runopt == "all" || runopt == "elemuo") plotChan[chan] = true;
-  if (excludeFM) plotChan[chan] = false;
 
   chan = FM3_WGG_muo;
   chanName[chan]            = "f_{M,3}";
@@ -239,7 +239,6 @@ float FT9_ZGG_lep_UP = 1.86;
   chanaCP[chan]  = FM3_WGG_muo_UP;// expected value
   plotChan[chan] = false;
   if (runopt == "all" || runopt == "elemuo") plotChan[chan] = true;
-  if (excludeFM) plotChan[chan] = false;
 
   chan = FM3_WGG_lep;
   chanName[chan]            = "f_{M,3}";
@@ -253,7 +252,6 @@ float FT9_ZGG_lep_UP = 1.86;
   chanaCP[chan]  = FM3_WGG_lep_UP;// expected value
   plotChan[chan] = false;
   if (runopt == "all" || runopt == "lep") plotChan[chan] = true;
-  if (excludeFM) plotChan[chan] = false;
 
   chan = FM3_WGG_lep_8TeV;
   chanName[chan]            = "f_{M,3}";
@@ -266,8 +264,10 @@ float FT9_ZGG_lep_UP = 1.86;
   chanaCP[chan]  = 950;// expected value
   plotChan[chan] = false;
   if (runopt == "all" || runopt == "lep" || runopt == "elemuo") plotChan[chan] = true;
-  if (excludeFM) plotChan[chan] = false;
+  if (exclude8TeV) plotChan[chan] = false;
+}
 
+if (!excludeFT012) {
 //FT0
   chan = FT0_WGG_ele;
   chanName[chan]            = "f_{T,0}";
@@ -358,6 +358,7 @@ float FT9_ZGG_lep_UP = 1.86;
   chanaCP[chan]  = 27;// expected value
   plotChan[chan] = false;
   if (runopt == "all" || runopt == "lep" || runopt == "elemuo") plotChan[chan] = true;
+  if (exclude8TeV) plotChan[chan] = false;
 
 //FT1
   chan = FT1_WGG_ele;
@@ -449,6 +450,7 @@ float FT9_ZGG_lep_UP = 1.86;
   chanaCP[chan]  = 34.8;// expected value
   plotChan[chan] = false;
   if (runopt == "all" || runopt == "lep" || runopt == "elemuo") plotChan[chan] = true;
+  if (exclude8TeV) plotChan[chan] = false;
 
 //FT2
   chan = FT2_WGG_ele;
@@ -540,7 +542,10 @@ float FT9_ZGG_lep_UP = 1.86;
   chanaCP[chan]  = 73.7;// expected value
   plotChan[chan] = false;
   if (runopt == "all" || runopt == "lep" || runopt == "elemuo") plotChan[chan] = true;
+  if (exclude8TeV) plotChan[chan] = false;
+}
 
+if (!excludeFT5p) {
 //FT5
   chan = FT5_WGG_ele;
   chanName[chan]            = "f_{T,5}";
@@ -857,7 +862,7 @@ float FT9_ZGG_lep_UP = 1.86;
   chanaCP[chan]  = FT9_ZGG_lep_UP;// expected value
   plotChan[chan] = false;
   if (runopt == "all" || runopt == "lep") plotChan[chan] = true;
-
+}
 // define experiments and experiment colors
 
 const int numberExperiments = 7;

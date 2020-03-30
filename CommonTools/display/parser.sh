@@ -25,13 +25,20 @@ PARS=$PARS" FT9"
 
 rm latex.txt
 touch latex.txt
+rm latex_lep.txt
+touch latex_lep.txt
 rm param.txt
 touch param.txt
 
 for PAR in $PARS; do
 
+  echo -n "\$" >> latex.txt
+  echo -n "\$" >> latex_lep.txt
   WRITEPAR=${PAR:0:1}_{${PAR:1:1},${PAR:2:1}}
   echo -n $WRITEPAR | sed 's/F/f/g' >> latex.txt
+  echo -n $WRITEPAR | sed 's/F/f/g' >> latex_lep.txt
+  echo -n "\$" >> latex.txt
+  echo -n "\$" >> latex_lep.txt
 
   for BOSON in $BOSONS; do
 
@@ -39,14 +46,22 @@ for PAR in $PARS; do
 
       if [[ "$BOSON" = "ZGG" ]]; then
         if [[ "$PAR" = "FM0" ]] || [[ "$PAR" = "FM1" ]] || [[ "$PAR" = "FM2" ]] || [[ "$PAR" = "FM3" ]] || [[ "$PAR" = "FM4" ]] || [[ "$PAR" = "FM5" ]] || [[ "$PAR" = "FM6" ]] || [[ "$PAR" = "FM7" ]]; then
-          echo -n "& " >> latex.txt
+          if [[ "$CHANNEL" != "lep" ]]; then
+            echo -n "& " >> latex.txt
+          else
+            echo -n "& " >> latex_lep.txt
+          fi
           continue
         fi
       fi
 
       if [[ "$BOSON" = "WGG" ]]; then
         if [[ "$PAR" = "FT8" ]] || [[ "$PAR" = "FT9" ]]; then
-          echo -n "& " >> latex.txt
+          if [[ "$CHANNEL" != "lep" ]]; then
+            echo -n "& " >> latex.txt
+          else
+            echo -n "& " >> latex_lep.txt
+          fi
           continue
         fi
       fi
@@ -59,7 +74,9 @@ for PAR in $PARS; do
 
         if [[ "$CHANNEL" != "lep" ]]; then
           echo -n "& " >> latex.txt
-        fi
+        else
+          echo -n "& " >> latex_lep.txt
+        fi 
 
       else
     
@@ -73,6 +90,8 @@ for PAR in $PARS; do
     
         if [[ "$CHANNEL" != "lep" ]]; then
           echo -n "& ${minval}, ${maxval} " >> latex.txt
+        else
+          echo -n "& ${minval}, ${maxval} " >> latex_lep.txt
         fi
 
         echo "float ${PAR}_${BOSON}_${CHANNEL}_DOWN = ${minval};" >> param.txt
@@ -85,6 +104,7 @@ for PAR in $PARS; do
   done
 
   echo "\\\\" >> latex.txt
+  echo "\\\\" >> latex_lep.txt
 
 done
 
