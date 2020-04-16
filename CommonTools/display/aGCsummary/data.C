@@ -990,6 +990,7 @@ if (!excludeFT5p) {
   chanExp[chan]            = "Z(ll)#gamma";
   chanSqrtS[chan]          = "13 TeV";
   chanaCC[chan]  = (-0.47 + 0.47)/2;
+  if (chanaCC[chan] == 0) chanaCC[chan]  = 1e-10;
   chanaCM[chan]  = -0.47;// expected value! 
   chanaCP[chan]  = 0.47;// expected value
   plotChan[chan] = false;
@@ -1043,6 +1044,7 @@ if (!excludeFT5p) {
   chanExp[chan]            = "Z(ll)#gamma";
   chanSqrtS[chan]          = "13 TeV";
   chanaCC[chan]  = (-1.27 + 1.27)/2;
+  if (chanaCC[chan] == 0) chanaCC[chan]  = 1e-10;
   chanaCM[chan]  = -1.27;// expected value! 
   chanaCP[chan]  = 1.27;// expected value
   plotChan[chan] = false;
