@@ -28,10 +28,6 @@ void merge_histo(string path, string boson, string channel, string flag, string 
   if (flag == "reference") {
     data_obs->Write("data_obs");
     dibosonSM->Write("diboson");
-    //set bin error to 0 for jetpho_misid
-    for (int bin = 0; bin < bkg_jetpho_misid->GetNbinsX() + 2; bin++) {
-      bkg_jetpho_misid->SetBinError(bin, 0.0);
-    }
     bkg_jetpho_misid->Write("bkg_jetpho_misid");
     bkg_irred->Write("bkg_irred");
     if (boson == "WGG") {
