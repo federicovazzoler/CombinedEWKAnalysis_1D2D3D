@@ -4,7 +4,9 @@ WORKDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $WORKDIR
 
 #URL="https://wwwusers.ts.infn.it/~darold/vgg/v14.aodv6.iso.default/"
-URL="https://wwwusers.ts.infn.it/~dellaric/tmp/Vgg/v14.aodv6.split.default/"
+#URL="https://wwwusers.ts.infn.it/~dellaric/tmp/Vgg/v14.aodv6.split.default/"
+#URL="https://wwwusers.ts.infn.it/~dellaric/tmp/Vgg/v14.newsel.default/"
+URL="https://wwwusers.ts.infn.it/~dellaric/tmp/Vgg/v14.newgen4.default/"
 
 BOSON=$1
 if [ -z "$1" ]; then
