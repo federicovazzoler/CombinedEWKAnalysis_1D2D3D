@@ -40,6 +40,8 @@ for PAR in $PARS; do
   echo -n "\$" >> latex.txt
   echo -n "\$" >> latex_lep.txt
 
+  errors=0
+
   for BOSON in $BOSONS; do
 
     for CHANNEL in $CHANNELS; do
@@ -66,9 +68,39 @@ for PAR in $PARS; do
         fi
       fi
 
-      first=$(tail -1 ../data/${BOSON}/${PAR}/${BOSON}_${PAR}_${CHANNEL}_exp_1000.txt | sed 's/95\% CL Limit: \[//g' | sed 's/\]//g' | cut -f1 -d",")
-      line=$(tail -1 ../data/${BOSON}/${PAR}/${BOSON}_${PAR}_${CHANNEL}_exp_1000.txt | sed 's/95\% CL Limit: \[//g' | sed 's/\]//g')
-      second=${line#*,}
+      lastline=$(tail -1 ../data/${BOSON}/${PAR}/${BOSON}_${PAR}_${CHANNEL}_exp_1000.txt)
+
+      if [[ $lastline = *"]U["* ]]; then
+        lastline=$(tail -1 ../data/${BOSON}/${PAR}/${BOSON}_${PAR}_${CHANNEL}_exp_1000.txt | sed 's/95\% CL Limit: \[//g' | sed 's/\]U\[/_/g' | sed 's/\]//g')
+        firstelement=$(tail -1 ../data/${BOSON}/${PAR}/${BOSON}_${PAR}_${CHANNEL}_exp_1000.txt | sed 's/95\% CL Limit: \[//g' | sed 's/\]U\[/_/g' | sed 's/\]//g' | cut -f1 -d"_" | cut -f1 -d",")
+        firstline=$(tail -1 ../data/${BOSON}/${PAR}/${BOSON}_${PAR}_${CHANNEL}_exp_1000.txt | sed 's/95\% CL Limit: \[//g' | sed 's/\]U\[/_/g' | sed 's/\]//g' | cut -f1 -d"_")
+        secondelement=${firstline#*,}
+
+        secondline=${lastline#*_}
+        thirdelement=$(tail -1 ../data/${BOSON}/${PAR}/${BOSON}_${PAR}_${CHANNEL}_exp_1000.txt | sed 's/95\% CL Limit: \[//g' | sed 's/\]U\[/_/g' | sed 's/\]//g'| cut -d "_" -f2 | cut -f1 -d",")
+        fourthelement=${secondline#*,}
+
+        if [[ ${firstelement:0:1} != ${secondelement:0:1} ]]; then
+          first=$firstelement
+          second=$secondelement
+        elif [[ ${thirdelement:0:1} != ${fourthelement:0:1} ]]; then 
+          first=$thirdelement
+          second=$fourthelement
+        else
+          first=0
+          second=0
+          errors=$errors+1
+        fi
+
+        echo $first $second
+
+      else
+
+        first=$(tail -1 ../data/${BOSON}/${PAR}/${BOSON}_${PAR}_${CHANNEL}_exp_1000.txt | sed 's/95\% CL Limit: \[//g' | sed 's/\]//g' | cut -f1 -d",")
+        line=$(tail -1 ../data/${BOSON}/${PAR}/${BOSON}_${PAR}_${CHANNEL}_exp_1000.txt | sed 's/95\% CL Limit: \[//g' | sed 's/\]//g')
+        second=${line#*,}
+
+      fi
 
       if [[ "$first" = "Sorry" ]]; then
 
@@ -87,7 +119,7 @@ for PAR in $PARS; do
         root-6.18 -l -b -q convert.C\(${second}\)
         maxval=$(cat out.txt)
         rm out.txt
-    
+
         if [[ "$CHANNEL" != "lep" ]]; then
           echo -n "& ${minval}, ${maxval} " >> latex.txt
         else
@@ -107,4 +139,6 @@ for PAR in $PARS; do
   echo "\\\\" >> latex_lep.txt
 
 done
+
+echo "There have been $errors errors."
 
