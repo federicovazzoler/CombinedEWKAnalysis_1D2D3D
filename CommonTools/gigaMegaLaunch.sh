@@ -6,7 +6,10 @@ cd $WORKDIR
 #URL="https://wwwusers.ts.infn.it/~darold/vgg/v14.aodv6.iso.default/"
 #URL="https://wwwusers.ts.infn.it/~dellaric/tmp/Vgg/v14.aodv6.split.default/"
 #URL="https://wwwusers.ts.infn.it/~dellaric/tmp/Vgg/v14.newsel.default/"
-URL="https://wwwusers.ts.infn.it/~dellaric/tmp/Vgg/v14.newgen4.default/"
+#URL="https://wwwusers.ts.infn.it/~dellaric/tmp/Vgg/v14.newgen4.default/"
+#URL="https://wwwusers.ts.infn.it/~dellaric/tmp/Vgg/v14.newgen5.default/"
+#URL="https://wwwusers.ts.infn.it/~dellaric/tmp/Vgg/v15.default/"
+URL="https://wwwusers.ts.infn.it/~dellaric/tmp/Vgg/v15.wideSF.default/"
 
 BOSON=$1
 if [ -z "$1" ]; then
@@ -96,6 +99,7 @@ CHANNELS="ele muo"
 #echo ''
 #sleep 1
 #echo ''
+
 echo '---------------------------------'
 echo '0. Prepare input cards           '
 echo '---------------------------------'

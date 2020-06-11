@@ -11,6 +11,8 @@ BOSON=$3
 LASTBINS=$4
 
 FLAGS="reference"
+FLAGS=$FLAGS" lumi_up"
+FLAGS=$FLAGS" lumi_down"
 FLAGS=$FLAGS" pileup_up"
 FLAGS=$FLAGS" pileup_down"
 #FLAGS=$FLAGS" jec_up"
@@ -128,16 +130,16 @@ for PAR in $PARS; do
   echo "par1Name = $PAR" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
   echo "par1Low = -$(cat $WORKDIR/cards/range_${PAR}.txt)" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
   echo "par1High = $(cat $WORKDIR/cards/range_${PAR}.txt)" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
-  echo "NlnN = 1" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
-  echo "lnN1_name = lumi" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
-  if [ $BOSON = "WGG" ]; then
-    echo "lnN1_value = 1.018,1.018,1.018,1.018,1.018,1.018,1.018,1.018" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
-    echo "lnN1_for = ch_ele_signal,ch_ele_bkg_jetpho_misid,ch_ele_bkg_irred,ch_ele_bkg_egmisid,ch_muo_signal,ch_muo_bkg_jetpho_misid,ch_muo_bkg_irred,ch_muo_bkg_egmisid" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
-  fi
-  if [ $BOSON = "ZGG" ]; then
-    echo "lnN1_value = 1.018,1.018,1.018,1.018,1.018,1.018" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
-    echo "lnN1_for = ch_ele_signal,ch_ele_bkg_jetpho_misid,ch_ele_bkg_irred,ch_muo_signal,ch_muo_bkg_jetpho_misid,ch_muo_bkg_irred" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
-  fi
+#  echo "NlnN = 1" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
+#  echo "lnN1_name = lumi" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
+#  if [ $BOSON = "WGG" ]; then
+#    echo "lnN1_value = 1.018,1.018,1.018,1.018,1.018,1.018,1.018,1.018" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
+#    echo "lnN1_for = ch_ele_signal,ch_ele_bkg_jetpho_misid,ch_ele_bkg_irred,ch_ele_bkg_egmisid,ch_muo_signal,ch_muo_bkg_jetpho_misid,ch_muo_bkg_irred,ch_muo_bkg_egmisid" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
+#  fi
+#  if [ $BOSON = "ZGG" ]; then
+#    echo "lnN1_value = 1.018,1.018,1.018,1.018,1.018,1.018" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
+#    echo "lnN1_for = ch_ele_signal,ch_ele_bkg_jetpho_misid,ch_ele_bkg_irred,ch_muo_signal,ch_muo_bkg_jetpho_misid,ch_muo_bkg_irred" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
+#  fi
   for CHANNEL in $CHANNELS; do
     echo "[ch_${CHANNEL}]" >> $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR
     if [ $BOSON = "WGG" ]; then
