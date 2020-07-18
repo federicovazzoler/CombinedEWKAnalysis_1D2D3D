@@ -71,17 +71,17 @@ void syst_symmetriser(string path, string boson, string channel, string flag, st
 
   // dump histos into output file
   TFile *file_out = new TFile((path+"/ch_"+channel+"_"+year+"_unequalBinning.root").c_str(),"UPDATE");
-  dibosonSM_up->Write("diboson_jet_misidUp");
-  bkg_jetpho_misid_up->Write("bkg_jetpho_misid_jet_misidUp");
-  bkg_irred_up->Write("bkg_irred_jet_misidUp");
+  dibosonSM_up->Write(("diboson_" + flag + "Up").c_str());
+  bkg_jetpho_misid_up->Write(("bkg_jetpho_misid_" + flag + "Up").c_str());
+  bkg_irred_up->Write(("bkg_irred_" + flag + "Up").c_str());
   if (boson == "WGG") {
-    bkg_egmisid_up->Write("bkg_egmisid_jet_misidUp");
+    bkg_egmisid_up->Write(("bkg_egmisid_" + flag + "Up").c_str());
   }
-  dibosonSM_down->Write("diboson_jet_misidDown");
-  bkg_jetpho_misid_down->Write("bkg_jetpho_misid_jet_misidDown");
-  bkg_irred_down->Write("bkg_irred_jet_misidDown");
+  dibosonSM_down->Write(("diboson_" + flag + "Down").c_str());
+  bkg_jetpho_misid_down->Write(("bkg_jetpho_misid_" + flag + "Down").c_str());
+  bkg_irred_down->Write(("bkg_irred_" + flag + "Down").c_str());
   if (boson == "WGG") {
-    bkg_egmisid_down->Write("bkg_egmisid_jet_misidDown");
+    bkg_egmisid_down->Write(("bkg_egmisid_" + flag + "Down").c_str());
   }
 
   file_in_reference->Close();
