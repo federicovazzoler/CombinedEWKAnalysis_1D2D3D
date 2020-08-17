@@ -12,7 +12,9 @@ cd $WORKDIR
 #URL="https://wwwusers.ts.infn.it/~dellaric/tmp/Vgg/v14.newgen5.default/"
 #URL="https://wwwusers.ts.infn.it/~dellaric/tmp/Vgg/v15.default/"
 #URL="https://wwwusers.ts.infn.it/~dellaric/tmp/Vgg/v15.aodv7.default/"
-URL="https://wwwusers.ts.infn.it/~dellaric/tmp/Vgg/v16.default/"
+#URL="https://wwwusers.ts.infn.it/~darold/vgg/v16.xsec.default/"
+
+URL="https://wwwusers.ts.infn.it/~dellaric/tmp/Vgg/v17.default/"
 
 BOSON=$1
 if [ -z "$1" ]; then
