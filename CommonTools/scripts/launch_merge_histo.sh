@@ -39,13 +39,15 @@ FLAGS=$FLAGS" l1prefiring_up"
 FLAGS=$FLAGS" l1prefiring_down"
 FLAGS=$FLAGS" eg_misid_up"
 FLAGS=$FLAGS" eg_misid_down"
-FLAGS=$FLAGS" jet_misid_syst"
+#FLAGS=$FLAGS" jet_misid_syst"
 FLAGS=$FLAGS" xsec_syst_wg"
 FLAGS=$FLAGS" xsec_syst_zg"
 FLAGS=$FLAGS" xsec_syst_others"
-FLAGS=$FLAGS" jet_misid_test"
+#FLAGS=$FLAGS" jet_misid_test"
+FLAGS=$FLAGS" jet_misid_qcd"
 
-YEARS="2016 2017 2018 Run2"
+#YEARS="2016 2017 2018 Run2"
+YEARS="Run2"
 
 # merge histos
 for YEAR in ${YEARS}; do
@@ -83,7 +85,7 @@ for YEAR in ${YEARS}; do
           rm -f data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}_2017.root
           rm -f data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}_2018.root
         fi
-      elif [[ "$FLAG" == "jet_misid_syst" || "$FLAG" == "xsec_syst_wg" || "$FLAG" == "xsec_syst_zg" || "$FLAG" == "xsec_syst_others" || "$FLAG" == "jet_misid_test" ]]; then
+      elif [[ "$FLAG" == "jet_misid_syst" || "$FLAG" == "xsec_syst_wg" || "$FLAG" == "xsec_syst_zg" || "$FLAG" == "xsec_syst_others" || "$FLAG" == "jet_misid_test" || "$FLAG" == "jet_misid_qcd" ]]; then
         wget -q -O data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_reference.root $URL/reference/${YEAR}.matrix/root/h_${BOSON}_${CHANNEL}_pho0_pho1_pt.root
         wget -q -O data/$BOSON/h_${BOSON}_${CHANNEL}_pho0_pho1_pt_${FLAG}.root $URL/$FLAG/${YEAR}.matrix/root/h_${BOSON}_${CHANNEL}_pho0_pho1_pt.root
         root-6.12 -l -b -q macros/syst_symmetriser.C\(\"$WORKDIR/data/$BOSON\",\"$BOSON\",\"$CHANNEL\",\"$FLAG\",\"$YEAR\",$LASTBINS\)
@@ -124,7 +126,7 @@ if [ $BOSON = "ZGG" ]; then
   PARS=$PARS" FT9"
 fi
 
-FLAGS=$(echo $FLAGS | sed -e "s; jet_misid_syst; jet_misid_syst_up jet_misid_syst_down;" | sed -e "s; xsec_syst_wg; xsec_syst_wg_up xsec_syst_wg_down;" | sed -e "s; xsec_syst_zg; xsec_syst_zg_up xsec_syst_zg_down;" | sed -e "s; xsec_syst_others; xsec_syst_others_up xsec_syst_others_down;" | sed -e "s; jet_misid_test;;")
+FLAGS=$(echo $FLAGS | sed -e "s; jet_misid_syst;;" | sed -e "s; xsec_syst_wg; xsec_syst_wg_up xsec_syst_wg_down;" | sed -e "s; xsec_syst_zg; xsec_syst_zg_up xsec_syst_zg_down;" | sed -e "s; xsec_syst_others; xsec_syst_others_up xsec_syst_others_down;" | sed -e "s; jet_misid_test;;" | sed -e "s; jet_misid_qcd; jet_misid_qcd_up jet_misid_qcd_down;")
 
 for PAR in $PARS; do
   rm -f $WORKDIR/cards/config_${BOSON}_13TeV_buildWorkspace_$PAR

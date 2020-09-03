@@ -13,46 +13,73 @@ void syst_symmetriser(string path, string boson, string channel, string flag, st
   }
 
   TFile *file_in_jetmisid = new TFile((path+"/h_" + boson + "_"+channel+"_pho0_pho1_pt_"+flag+".root").c_str(),"OPEN");
-  TH1D *dibosonSM_up = (TH1D*)file_in_jetmisid->Get(("h_" + boson + "_"+channel+"_pho0_pho1_pt_sig").c_str());
-  TH1D *bkg_jetpho_misid_up = (TH1D*)file_in_jetmisid->Get(("h_" + boson + "_"+channel+"_pho0_pho1_pt_misid").c_str());
-  TH1D *bkg_irred_up  = (TH1D*)file_in_jetmisid->Get(("h_" + boson + "_"+channel+"_pho0_pho1_pt_irred").c_str());
-  TH1D *bkg_egmisid_up = 0;
+  TH1D *dibosonSM_var = (TH1D*)file_in_jetmisid->Get(("h_" + boson + "_"+channel+"_pho0_pho1_pt_sig").c_str());
+  TH1D *bkg_jetpho_misid_var = (TH1D*)file_in_jetmisid->Get(("h_" + boson + "_"+channel+"_pho0_pho1_pt_misid").c_str());
+  TH1D *bkg_irred_var  = (TH1D*)file_in_jetmisid->Get(("h_" + boson + "_"+channel+"_pho0_pho1_pt_irred").c_str());
+  TH1D *bkg_egmisid_var = 0;
   if (boson == "WGG") {
-    bkg_egmisid_up = (TH1D*)file_in_jetmisid->Get(("h_" + boson + "_"+channel+"_pho0_pho1_pt_egmisid").c_str());
+    bkg_egmisid_var = (TH1D*)file_in_jetmisid->Get(("h_" + boson + "_"+channel+"_pho0_pho1_pt_egmisid").c_str());
   }
 
-  TH1D *dibosonSM_down = (TH1D*)dibosonSM_up->Clone("dibosonSM_down");
+  TH1D *dibosonSM_down = (TH1D*)dibosonSM_reference->Clone("dibosonSM_down");
   dibosonSM_down->Reset();
-
-  TH1D *bkg_jetpho_misid_down = (TH1D*)bkg_jetpho_misid_up->Clone("bkg_jetpho_misid_down");
+  TH1D *bkg_jetpho_misid_down = (TH1D*)bkg_jetpho_misid_reference->Clone("bkg_jetpho_misid_down");
   bkg_jetpho_misid_down->Reset();
-
-  TH1D *bkg_irred_down = (TH1D*)bkg_irred_up->Clone("bkg_irred_down");
+  TH1D *bkg_irred_down = (TH1D*)bkg_irred_reference->Clone("bkg_irred_down");
   bkg_irred_down->Reset();
 
+  TH1D *dibosonSM_up = (TH1D*)dibosonSM_reference->Clone("dibosonSM_up");
+  dibosonSM_up->Reset();
+  TH1D *bkg_jetpho_misid_up = (TH1D*)bkg_jetpho_misid_reference->Clone("bkg_jetpho_misid_up");
+  bkg_jetpho_misid_up->Reset();
+  TH1D *bkg_irred_up = (TH1D*)bkg_irred_reference->Clone("bkg_irred_up");
+  bkg_irred_up->Reset();
+
   TH1D *bkg_egmisid_down = 0;
+  TH1D *bkg_egmisid_up = 0;
 
   if (boson == "WGG") {
-    bkg_egmisid_down = (TH1D*)bkg_egmisid_up->Clone("bkg_egmisid_down");
+    bkg_egmisid_down = (TH1D*)bkg_egmisid_reference->Clone("bkg_egmisid_down");
     bkg_egmisid_down->Reset();
+
+    bkg_egmisid_up = (TH1D*)bkg_egmisid_reference->Clone("bkg_egmisid_up");
+    bkg_egmisid_up->Reset();
   }
 
+  float factor = 1.;
+  if (flag == "jet_misid_syst" || flag == "jet_misid_test" || flag == "jet_misid_qcd" || flag == "eg_misid") factor = 0.5;
+
   for (int bin = 0; bin < bkg_jetpho_misid_up->GetNbinsX() + 2; bin++) {
-    dibosonSM_down->SetBinContent(bin, dibosonSM_reference->GetBinContent(bin) - (dibosonSM_up->GetBinContent(bin) - dibosonSM_reference->GetBinContent(bin)));
+    dibosonSM_down->SetBinContent(bin, dibosonSM_reference->GetBinContent(bin) - (factor * (dibosonSM_var->GetBinContent(bin) - dibosonSM_reference->GetBinContent(bin))));
     dibosonSM_down->SetBinError(bin, 0.0);
-    bkg_jetpho_misid_down->SetBinContent(bin, bkg_jetpho_misid_reference->GetBinContent(bin) - (bkg_jetpho_misid_up->GetBinContent(bin) - bkg_jetpho_misid_reference->GetBinContent(bin)));
+    bkg_jetpho_misid_down->SetBinContent(bin, bkg_jetpho_misid_reference->GetBinContent(bin) - (factor * (bkg_jetpho_misid_var->GetBinContent(bin) - bkg_jetpho_misid_reference->GetBinContent(bin))));
     bkg_jetpho_misid_down->SetBinError(bin, 0.0);
-    bkg_irred_down->SetBinContent(bin, bkg_irred_reference->GetBinContent(bin) - (bkg_irred_up->GetBinContent(bin) - bkg_irred_reference->GetBinContent(bin)));
+    bkg_irred_down->SetBinContent(bin, bkg_irred_reference->GetBinContent(bin) - (factor * (bkg_irred_var->GetBinContent(bin) - bkg_irred_reference->GetBinContent(bin))));
     bkg_irred_down->SetBinError(bin, 0.0);
     if (boson == "WGG") {
-      bkg_egmisid_down->SetBinContent(bin , bkg_egmisid_reference->GetBinContent(bin) - (bkg_egmisid_up->GetBinContent(bin) - bkg_egmisid_reference->GetBinContent(bin)));
+      bkg_egmisid_down->SetBinContent(bin , bkg_egmisid_reference->GetBinContent(bin) - (factor * (bkg_egmisid_var->GetBinContent(bin) - bkg_egmisid_reference->GetBinContent(bin))));
       bkg_egmisid_down->SetBinError(bin, 0.0);
     }
+    dibosonSM_up->SetBinContent(bin, dibosonSM_reference->GetBinContent(bin) + (factor * (dibosonSM_var->GetBinContent(bin) - dibosonSM_reference->GetBinContent(bin))));
     dibosonSM_up->SetBinError(bin, 0.0);
+    bkg_jetpho_misid_up->SetBinContent(bin, bkg_jetpho_misid_reference->GetBinContent(bin) + (factor * (bkg_jetpho_misid_var->GetBinContent(bin) - bkg_jetpho_misid_reference->GetBinContent(bin))));
     bkg_jetpho_misid_up->SetBinError(bin, 0.0);
+    bkg_irred_up->SetBinContent(bin, bkg_irred_reference->GetBinContent(bin) + (factor * (bkg_irred_var->GetBinContent(bin) - bkg_irred_reference->GetBinContent(bin))));
     bkg_irred_up->SetBinError(bin, 0.0);
     if (boson == "WGG") {
+      bkg_egmisid_up->SetBinContent(bin , bkg_egmisid_reference->GetBinContent(bin) + (factor * (bkg_egmisid_var->GetBinContent(bin) - bkg_egmisid_reference->GetBinContent(bin))));
       bkg_egmisid_up->SetBinError(bin, 0.0);
+    }
+
+    if (dibosonSM_down->GetBinContent(bin) <= 0.) dibosonSM_down->SetBinContent(bin, 0.);
+    if (dibosonSM_up->GetBinContent(bin) <= 0.) dibosonSM_up->SetBinContent(bin, 0.);
+    if (bkg_jetpho_misid_down->GetBinContent(bin) <= 0.) bkg_jetpho_misid_down->SetBinContent(bin, 0.);
+    if (bkg_jetpho_misid_up->GetBinContent(bin) <= 0.) bkg_jetpho_misid_up->SetBinContent(bin, 0.);
+    if (bkg_irred_down->GetBinContent(bin) <= 0.) bkg_irred_down->SetBinContent(bin, 0.);
+    if (bkg_irred_up->GetBinContent(bin) <= 0.) bkg_irred_up->SetBinContent(bin, 0.);
+    if (boson == "WGG") {
+      if (bkg_egmisid_down->GetBinContent(bin) <= 0.) bkg_egmisid_down->SetBinContent(bin, 0.);
+      if (bkg_egmisid_up->GetBinContent(bin) <= 0.) bkg_egmisid_up->SetBinContent(bin, 0.);
     }
   }
 
