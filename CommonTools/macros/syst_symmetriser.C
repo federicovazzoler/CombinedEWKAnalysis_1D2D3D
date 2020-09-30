@@ -47,7 +47,7 @@ void syst_symmetriser(string path, string boson, string channel, string flag, st
   }
 
   float factor = 1.;
-  if (flag == "jet_misid_syst" || flag == "jet_misid_test" || flag == "jet_misid_qcd" || flag == "eg_misid") factor = 0.5;
+  if (flag == "jet_misid_syst" || flag == "jet_misid_test" || flag == "jet_misid_qcd" || flag == "jet_misid_sherpa" || flag == "eg_misid") factor = 0.5;
 
   for (int bin = 0; bin < bkg_jetpho_misid_up->GetNbinsX() + 2; bin++) {
     dibosonSM_down->SetBinContent(bin, dibosonSM_reference->GetBinContent(bin) - (factor * (dibosonSM_var->GetBinContent(bin) - dibosonSM_reference->GetBinContent(bin))));
