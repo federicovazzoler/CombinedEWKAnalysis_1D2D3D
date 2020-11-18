@@ -1,20 +1,32 @@
 enum {
+FM2_WGG_ele, FM2_WGG_muo, FM2_WGG_lep,
+FM2_WGG_lep_8TeV,
+FM2_ZG_lep_13TeV,
+FM3_WGG_ele, FM3_WGG_muo, FM3_WGG_lep,
+FM3_WGG_lep_8TeV,
+FM3_ZG_lep_13TeV,
+FT0_WGG_ele, FT0_WGG_muo, FT0_WGG_lep,
 FT0_ZGG_ele, FT0_ZGG_muo, FT0_ZGG_lep,
 FT0_WGG_lep_8TeV,
 FT0_ZG_lep_13TeV,
 FT0_WZ_lep_13TeV,
+FT1_WGG_ele, FT1_WGG_muo, FT1_WGG_lep,
 FT1_ZGG_ele, FT1_ZGG_muo, FT1_ZGG_lep,
 FT1_WGG_lep_8TeV,
 FT1_ZG_lep_13TeV,
 FT1_WZ_lep_13TeV,
+FT2_WGG_ele, FT2_WGG_muo, FT2_WGG_lep,
 FT2_ZGG_ele, FT2_ZGG_muo, FT2_ZGG_lep,
 FT2_WGG_lep_8TeV,
 FT2_ZG_lep_13TeV,
 FT2_WZ_lep_13TeV,
+FT5_WGG_ele, FT5_WGG_muo, FT5_WGG_lep,
 FT5_ZGG_ele, FT5_ZGG_muo, FT5_ZGG_lep,
 FT5_ZG_lep_13TeV,
+FT6_WGG_ele, FT6_WGG_muo, FT6_WGG_lep,
 FT6_ZGG_ele, FT6_ZGG_muo, FT6_ZGG_lep,
 FT6_ZG_lep_13TeV,
+FT7_WGG_ele, FT7_WGG_muo, FT7_WGG_lep,
 FT7_ZGG_ele, FT7_ZGG_muo, FT7_ZGG_lep,
 FT7_ZG_lep_13TeV,
 FT8_ZGG_ele, FT8_ZGG_muo, FT8_ZGG_lep,
@@ -23,14 +35,15 @@ FT9_ZGG_ele, FT9_ZGG_muo, FT9_ZGG_lep,
 FT9_ZG_lep_13TeV,
 k_nChan };
 
-string runopt = "all"; //valid options are: all, lep, elemuo
+string runopt = "lep"; //valid options are: all, lep, elemuo
 
+bool excludeFM = true;
 bool excludeFT012 = false;
-bool excludeFT5p = true;
+bool excludeFT5p = false;
 
-bool exclude8TeV = false;
-bool excludeZg = true;
-bool excludeWZ = true;
+bool exclude8TeV = true;
+bool excludeZg = false;
+bool excludeWZ = false;
 
 bool catgcg = false;
 bool catgcz = true;
@@ -65,94 +78,279 @@ vector<float>
   int chan;
 
 //PARAMETERS
-float FT0_WGG_ele_DOWN = -1.94;
-float FT0_WGG_ele_UP = 1.94;
-float FT0_WGG_muo_DOWN = -1.3;
-float FT0_WGG_muo_UP = 1.3;
-float FT0_WGG_lep_DOWN = -1.3;
-float FT0_WGG_lep_UP = 1.3;
-float FT0_ZGG_ele_DOWN = -6.38;
-float FT0_ZGG_ele_UP = 6.14;
-float FT0_ZGG_muo_DOWN = -6.54;
-float FT0_ZGG_muo_UP = 6.38;
-float FT0_ZGG_lep_DOWN = -5.7;
-float FT0_ZGG_lep_UP = 5.46;
-float FT1_WGG_ele_DOWN = -2.54;
-float FT1_WGG_ele_UP = 2.5;
-float FT1_WGG_muo_DOWN = -1.7;
-float FT1_WGG_muo_UP = 1.66;
-float FT1_WGG_lep_DOWN = -1.7;
-float FT1_WGG_lep_UP = 1.66;
-float FT1_ZGG_ele_DOWN = -6.38;
-float FT1_ZGG_ele_UP = 6.14;
-float FT1_ZGG_muo_DOWN = -6.54;
-float FT1_ZGG_muo_UP = 6.38;
-float FT1_ZGG_lep_DOWN = -5.7;
-float FT1_ZGG_lep_UP = 5.46;
-float FT2_WGG_ele_DOWN = -5.4;
-float FT2_WGG_ele_UP = 5.4;
-float FT2_WGG_muo_DOWN = -3.64;
-float FT2_WGG_muo_UP = 3.64;
-float FT2_WGG_lep_DOWN = -3.64;
-float FT2_WGG_lep_UP = 3.64;
-float FT2_ZGG_ele_DOWN = -12.8;
-float FT2_ZGG_ele_UP = 12.3;
-float FT2_ZGG_muo_DOWN = -13.2;
-float FT2_ZGG_muo_UP = 12.8;
-float FT2_ZGG_lep_DOWN = -11.4;
-float FT2_ZGG_lep_UP = 10.9;
-float FT5_WGG_ele_DOWN = -0.84;
-float FT5_WGG_ele_UP = 0.92;
-float FT5_WGG_muo_DOWN = -0.52;
-float FT5_WGG_muo_UP = 0.6;
-float FT5_WGG_lep_DOWN = -0.52;
-float FT5_WGG_lep_UP = 0.6;
-float FT5_ZGG_ele_DOWN = -3.24;
-float FT5_ZGG_ele_UP = 3.32;
-float FT5_ZGG_muo_DOWN = -3.32;
-float FT5_ZGG_muo_UP = 3.4;
-float FT5_ZGG_lep_DOWN = -2.92;
-float FT5_ZGG_lep_UP = 2.92;
-float FT6_WGG_ele_DOWN = -1;
-float FT6_WGG_ele_UP = 1;
-float FT6_WGG_muo_DOWN = -0.6;
-float FT6_WGG_muo_UP = 0.68;
-float FT6_WGG_lep_DOWN = -0.6;
-float FT6_WGG_lep_UP = 0.68;
-float FT6_ZGG_ele_DOWN = -4.28;
+float FM2_WGG_ele_DOWN = -78.9;
+float FM2_WGG_ele_UP = 78.5;
+float FM2_WGG_muo_DOWN = -61.1;
+float FM2_WGG_muo_UP = 61.1;
+float FM2_WGG_lep_DOWN = -57.3;
+float FM2_WGG_lep_UP = 57.1;
+float FM3_WGG_ele_DOWN = -126;
+float FM3_WGG_ele_UP = 125;
+float FM3_WGG_muo_DOWN = -98.2;
+float FM3_WGG_muo_UP = 99.4;
+float FM3_WGG_lep_DOWN = -91.8;
+float FM3_WGG_lep_UP = 92.6;
+float FT0_WGG_ele_DOWN = -2.54;
+float FT0_WGG_ele_UP = 2.54;
+float FT0_WGG_muo_DOWN = -1.98;
+float FT0_WGG_muo_UP = 1.98;
+float FT0_WGG_lep_DOWN = -1.86;
+float FT0_WGG_lep_UP = 1.86;
+float FT0_ZGG_ele_DOWN = -6.46;
+float FT0_ZGG_ele_UP = 6.26;
+float FT0_ZGG_muo_DOWN = -5.5;
+float FT0_ZGG_muo_UP = 5.3;
+float FT0_ZGG_lep_DOWN = -4.86;
+float FT0_ZGG_lep_UP = 4.66;
+float FT1_WGG_ele_DOWN = -3.3;
+float FT1_WGG_ele_UP = 3.26;
+float FT1_WGG_muo_DOWN = -2.58;
+float FT1_WGG_muo_UP = 2.54;
+float FT1_WGG_lep_DOWN = -2.38;
+float FT1_WGG_lep_UP = 2.38;
+float FT1_ZGG_ele_DOWN = -6.46;
+float FT1_ZGG_ele_UP = 6.26;
+float FT1_ZGG_muo_DOWN = -5.5;
+float FT1_ZGG_muo_UP = 5.3;
+float FT1_ZGG_lep_DOWN = -4.86;
+float FT1_ZGG_lep_UP = 4.66;
+float FT2_WGG_ele_DOWN = -7.08;
+float FT2_WGG_ele_UP = 7.08;
+float FT2_WGG_muo_DOWN = -5.48;
+float FT2_WGG_muo_UP = 5.56;
+float FT2_WGG_lep_DOWN = -5.16;
+float FT2_WGG_lep_UP = 5.16;
+float FT2_ZGG_ele_DOWN = -12.9;
+float FT2_ZGG_ele_UP = 12.5;
+float FT2_ZGG_muo_DOWN = -11.1;
+float FT2_ZGG_muo_UP = 10.7;
+float FT2_ZGG_lep_DOWN = -9.72;
+float FT2_ZGG_lep_UP = 9.32;
+float FT5_WGG_ele_DOWN = -1.08;
+float FT5_WGG_ele_UP = 1.16;
+float FT5_WGG_muo_DOWN = -0.84;
+float FT5_WGG_muo_UP = 0.92;
+float FT5_WGG_lep_DOWN = -0.76;
+float FT5_WGG_lep_UP = 0.84;
+float FT5_ZGG_ele_DOWN = -3.32;
+float FT5_ZGG_ele_UP = 3.4;
+float FT5_ZGG_muo_DOWN = -2.76;
+float FT5_ZGG_muo_UP = 2.84;
+float FT5_ZGG_lep_DOWN = -2.44;
+float FT5_ZGG_lep_UP = 2.52;
+float FT6_WGG_ele_DOWN = -1.24;
+float FT6_WGG_ele_UP = 1.32;
+float FT6_WGG_muo_DOWN = -1;
+float FT6_WGG_muo_UP = 1.08;
+float FT6_WGG_lep_DOWN = -0.92;
+float FT6_WGG_lep_UP = 1;
+float FT6_ZGG_ele_DOWN = -4.36;
 float FT6_ZGG_ele_UP = 4.36;
-float FT6_ZGG_muo_DOWN = -4.36;
-float FT6_ZGG_muo_UP = 4.44;
-float FT6_ZGG_lep_DOWN = -3.8;
-float FT6_ZGG_lep_UP = 3.88;
-float FT7_WGG_ele_DOWN = -1.8;
-float FT7_WGG_ele_UP = 1.8;
-float FT7_WGG_muo_DOWN = -1.16;
-float FT7_WGG_muo_UP = 1.16;
-float FT7_WGG_lep_DOWN = -1.16;
-float FT7_WGG_lep_UP = 1.16;
+float FT6_ZGG_muo_DOWN = -3.64;
+float FT6_ZGG_muo_UP = 3.72;
+float FT6_ZGG_lep_DOWN = -3.24;
+float FT6_ZGG_lep_UP = 3.24;
+float FT7_WGG_ele_DOWN = -2.28;
+float FT7_WGG_ele_UP = 2.36;
+float FT7_WGG_muo_DOWN = -1.8;
+float FT7_WGG_muo_UP = 1.8;
+float FT7_WGG_lep_DOWN = -1.64;
+float FT7_WGG_lep_UP = 1.72;
 float FT7_ZGG_ele_DOWN = -8.92;
-float FT7_ZGG_ele_UP = 8.76;
-float FT7_ZGG_muo_DOWN = -9;
-float FT7_ZGG_muo_UP = 8.92;
-float FT7_ZGG_lep_DOWN = -7.88;
-float FT7_ZGG_lep_UP = 7.72;
+float FT7_ZGG_ele_UP = 8.84;
+float FT7_ZGG_muo_DOWN = -7.56;
+float FT7_ZGG_muo_UP = 7.48;
+float FT7_ZGG_lep_DOWN = -6.68;
+float FT7_ZGG_lep_UP = 6.6;
 float FT8_ZGG_ele_DOWN = -1.22;
-float FT8_ZGG_ele_UP = 1.22;
-float FT8_ZGG_muo_DOWN = -1.22;
-float FT8_ZGG_muo_UP = 1.26;
-float FT8_ZGG_lep_DOWN = -1.06;
-float FT8_ZGG_lep_UP = 1.1;
+float FT8_ZGG_ele_UP = 1.26;
+float FT8_ZGG_muo_DOWN = -1.02;
+float FT8_ZGG_muo_UP = 1.06;
+float FT8_ZGG_lep_DOWN = -0.9;
+float FT8_ZGG_lep_UP = 0.94;
 float FT9_ZGG_ele_DOWN = -2.06;
 float FT9_ZGG_ele_UP = 2.06;
-float FT9_ZGG_muo_DOWN = -2.1;
-float FT9_ZGG_muo_UP = 2.1;
-float FT9_ZGG_lep_DOWN = -1.82;
-float FT9_ZGG_lep_UP = 1.82;
+float FT9_ZGG_muo_DOWN = -1.74;
+float FT9_ZGG_muo_UP = 1.74;
+float FT9_ZGG_lep_DOWN = -1.54;
+float FT9_ZGG_lep_UP = 1.54;
 //END PARAMETERS
+
+if (!excludeFM) {
+//FM2
+  chan = FM2_WGG_ele;
+  chanName[chan]            = "f_{M,2}";
+  chanMeasurement[chan]     = "W(e#nu)#gamma#gamma";
+  chanLumi[chan]            = "137 fb^{-1}";
+  chanExp[chan]            = "W(e#nu)#gamma#gamma";
+  chanSqrtS[chan]          = "13 TeV";
+  chanaCC[chan]  = (FM2_WGG_ele_DOWN + FM2_WGG_ele_UP)/2;
+  if (chanaCC[chan] == 0) chanaCC[chan]  = 1e-10;
+  chanaCM[chan]  = FM2_WGG_ele_DOWN;// expected value! 
+  chanaCP[chan]  = FM2_WGG_ele_UP;// expected value
+  plotChan[chan] = false;
+  if (runopt == "all" || runopt == "elemuo") plotChan[chan] = true;
+
+  chan = FM2_WGG_muo;
+  chanName[chan]            = "f_{M,2}";
+  chanMeasurement[chan]     = "W(#mu#nu)#gamma#gamma";
+  chanLumi[chan]            = "137 fb^{-1}";
+  chanExp[chan]            = "W(#mu#nu)#gamma#gamma";
+  chanSqrtS[chan]          = "13 TeV";
+  chanaCC[chan]  = (FM2_WGG_muo_DOWN + FM2_WGG_muo_UP)/2;
+  if (chanaCC[chan] == 0) chanaCC[chan]  = 1e-10;
+  chanaCM[chan]  = FM2_WGG_muo_DOWN;// expected value! 
+  chanaCP[chan]  = FM2_WGG_muo_UP;// expected value
+  plotChan[chan] = false;
+  if (runopt == "all" || runopt == "elemuo") plotChan[chan] = true;
+
+  chan = FM2_WGG_lep;
+  chanName[chan]            = "f_{M,2}";
+  chanMeasurement[chan]     = "W(l#nu)#gamma#gamma";
+  chanLumi[chan]            = "137 fb^{-1}";
+  chanExp[chan]            = "W(l#nu)#gamma#gamma";
+  chanSqrtS[chan]          = "13 TeV";
+  chanaCC[chan]  = (FM2_WGG_lep_DOWN + FM2_WGG_lep_UP)/2;
+  if (chanaCC[chan] == 0) chanaCC[chan]  = 1e-10;
+  chanaCM[chan]  = FM2_WGG_lep_DOWN;// expected value! 
+  chanaCP[chan]  = FM2_WGG_lep_UP;// expected value
+  plotChan[chan] = false;
+  if (runopt == "all" || runopt == "lep") plotChan[chan] = true;
+
+  chan = FM2_WGG_lep_8TeV;
+  chanName[chan]            = "f_{M,2}";
+  chanMeasurement[chan]     = "W(l#nu)#gamma#gamma";
+  chanLumi[chan]            = "19.7 fb^{-1}";
+  chanExp[chan]            = "W(l#nu)#gamma#gamma@8TeV";
+  chanSqrtS[chan]          = "8 TeV";
+  chanaCC[chan]  = (-549 + 531)/2;
+  chanaCM[chan]  = -549;// expected value! 
+  chanaCP[chan]  = 531;// expected value
+  plotChan[chan] = false;
+  if (runopt == "all" || runopt == "lep" || runopt == "elemuo") plotChan[chan] = true;
+  if (exclude8TeV) plotChan[chan] = false;
+
+  chan = FM2_ZG_lep_13TeV;
+  chanName[chan]            = "f_{M,2}";
+  chanMeasurement[chan]     = "Z(ll)#gamma";
+  chanLumi[chan]            = "35.9 fb^{-1}";
+  chanExp[chan]            = "Z(ll)#gamma";
+  chanSqrtS[chan]          = "13 TeV";
+  chanaCC[chan]  = (-8.22 + 8.10)/2;
+  chanaCM[chan]  = -8.22;// expected value! 
+  chanaCP[chan]  = 8.10;// expected value
+  plotChan[chan] = false;
+  if (runopt == "all" || runopt == "lep") plotChan[chan] = true;
+  if (excludeZg) plotChan[chan] = false;
+
+//FM3
+  chan = FM3_WGG_ele;
+  chanName[chan]            = "f_{M,3}";
+  chanMeasurement[chan]     = "W(e#nu)#gamma#gamma";
+  chanLumi[chan]            = "137 fb^{-1}";
+  chanExp[chan]            = "W(e#nu)#gamma#gamma";
+  chanSqrtS[chan]          = "13 TeV";
+  chanaCC[chan]  = (FM3_WGG_ele_DOWN + FM3_WGG_ele_UP)/2;
+  if (chanaCC[chan] == 0) chanaCC[chan]  = 1e-10;
+  chanaCM[chan]  = FM3_WGG_ele_DOWN;// expected value! 
+  chanaCP[chan]  = FM3_WGG_ele_UP;// expected value
+  plotChan[chan] = false;
+  if (runopt == "all" || runopt == "elemuo") plotChan[chan] = true;
+
+  chan = FM3_WGG_muo;
+  chanName[chan]            = "f_{M,3}";
+  chanMeasurement[chan]     = "W(#mu#nu)#gamma#gamma";
+  chanLumi[chan]            = "137 fb^{-1}";
+  chanExp[chan]            = "W(#mu#nu)#gamma#gamma";
+  chanSqrtS[chan]          = "13 TeV";
+  chanaCC[chan]  = (FM3_WGG_muo_DOWN + FM3_WGG_muo_UP)/2;
+  if (chanaCC[chan] == 0) chanaCC[chan]  = 1e-10;
+  chanaCM[chan]  = FM3_WGG_muo_DOWN;// expected value! 
+  chanaCP[chan]  = FM3_WGG_muo_UP;// expected value
+  plotChan[chan] = false;
+  if (runopt == "all" || runopt == "elemuo") plotChan[chan] = true;
+
+  chan = FM3_WGG_lep;
+  chanName[chan]            = "f_{M,3}";
+  chanMeasurement[chan]     = "W(l#nu)#gamma#gamma";
+  chanLumi[chan]            = "137 fb^{-1}";
+  chanExp[chan]            = "W(l#nu)#gamma#gamma";
+  chanSqrtS[chan]          = "13 TeV";
+  chanaCC[chan]  = (FM3_WGG_lep_DOWN + FM3_WGG_lep_UP)/2;
+  if (chanaCC[chan] == 0) chanaCC[chan]  = 1e-10;
+  chanaCM[chan]  = FM3_WGG_lep_DOWN;// expected value! 
+  chanaCP[chan]  = FM3_WGG_lep_UP;// expected value
+  plotChan[chan] = false;
+  if (runopt == "all" || runopt == "lep") plotChan[chan] = true;
+
+  chan = FM3_WGG_lep_8TeV;
+  chanName[chan]            = "f_{M,3}";
+  chanMeasurement[chan]     = "W(l#nu)#gamma#gamma";
+  chanLumi[chan]            = "19.7 fb^{-1}";
+  chanExp[chan]            = "W(l#nu)#gamma#gamma@8TeV";
+  chanSqrtS[chan]          = "8 TeV";
+  chanaCC[chan]  = (-916 + 950)/2;
+  chanaCM[chan]  = -916;// expected value! 
+  chanaCP[chan]  = 950;// expected value
+  plotChan[chan] = false;
+  if (runopt == "all" || runopt == "lep" || runopt == "elemuo") plotChan[chan] = true;
+  if (exclude8TeV) plotChan[chan] = false;
+
+  chan = FM3_ZG_lep_13TeV;
+  chanName[chan]            = "f_{M,3}";
+  chanMeasurement[chan]     = "Z(ll)#gamma";
+  chanLumi[chan]            = "35.9 fb^{-1}";
+  chanExp[chan]            = "Z(ll)#gamma";
+  chanSqrtS[chan]          = "13 TeV";
+  chanaCC[chan]  = (-17.7 + 17.9)/2;
+  chanaCM[chan]  = -17.7;// expected value! 
+  chanaCP[chan]  = 17.9;// expected value
+  plotChan[chan] = false;
+  if (runopt == "all" || runopt == "lep") plotChan[chan] = true;
+  if (excludeZg) plotChan[chan] = false;
+}
 
 if (!excludeFT012) {
 //FT0
+  chan = FT0_WGG_ele;
+  chanName[chan]            = "f_{T,0}";
+  chanMeasurement[chan]     = "W(e#nu)#gamma#gamma";
+  chanLumi[chan]            = "137 fb^{-1}";
+  chanExp[chan]            = "W(e#nu)#gamma#gamma";
+  chanSqrtS[chan]          = "13 TeV";
+  chanaCC[chan]  = (FT0_WGG_ele_DOWN + FT0_WGG_ele_UP)/2;
+  if (chanaCC[chan] == 0) chanaCC[chan]  = 1e-10;
+  chanaCM[chan]  = FT0_WGG_ele_DOWN;// expected value! 
+  chanaCP[chan]  = FT0_WGG_ele_UP;// expected value
+  plotChan[chan] = false;
+  if (runopt == "all" || runopt == "elemuo") plotChan[chan] = true;
+
+  chan = FT0_WGG_muo;
+  chanName[chan]            = "f_{T,0}";
+  chanMeasurement[chan]     = "W(#mu#nu)#gamma#gamma";
+  chanLumi[chan]            = "137 fb^{-1}";
+  chanExp[chan]            = "W(#mu#nu)#gamma#gamma";
+  chanSqrtS[chan]          = "13 TeV";
+  chanaCC[chan]  = (FT0_WGG_muo_DOWN + FT0_WGG_muo_UP)/2;
+  if (chanaCC[chan] == 0) chanaCC[chan]  = 1e-10;
+  chanaCM[chan]  = FT0_WGG_muo_DOWN;// expected value! 
+  chanaCP[chan]  = FT0_WGG_muo_UP;// expected value
+  plotChan[chan] = false;
+  if (runopt == "all" || runopt == "elemuo") plotChan[chan] = true;
+
+  chan = FT0_WGG_lep;
+  chanName[chan]            = "f_{T,0}";
+  chanMeasurement[chan]     = "W(l#nu)#gamma#gamma";
+  chanLumi[chan]            = "137 fb^{-1}";
+  chanExp[chan]            = "W(l#nu)#gamma#gamma";
+  chanSqrtS[chan]          = "13 TeV";
+  chanaCC[chan]  = (FT0_WGG_lep_DOWN + FT0_WGG_lep_UP)/2;
+  if (chanaCC[chan] == 0) chanaCC[chan]  = 1e-10;
+  chanaCM[chan]  = FT0_WGG_lep_DOWN;// expected value! 
+  chanaCP[chan]  = FT0_WGG_lep_UP;// expected value
+  plotChan[chan] = false;
+  if (runopt == "all" || runopt == "lep") plotChan[chan] = true;
+
   chan = FT0_ZGG_ele;
   chanName[chan]            = "f_{T,0}";
   chanMeasurement[chan]     = "Z(ee)#gamma#gamma";
@@ -232,6 +430,45 @@ if (!excludeFT012) {
   if (excludeWZ) plotChan[chan] = false;
 
 //FT1
+  chan = FT1_WGG_ele;
+  chanName[chan]            = "f_{T,1}";
+  chanMeasurement[chan]     = "W(e#nu)#gamma#gamma";
+  chanLumi[chan]            = "137 fb^{-1}";
+  chanExp[chan]            = "W(e#nu)#gamma#gamma";
+  chanSqrtS[chan]          = "13 TeV";
+  chanaCC[chan]  = (FT1_WGG_ele_DOWN + FT1_WGG_ele_UP)/2;
+  if (chanaCC[chan] == 0) chanaCC[chan]  = 1e-10;
+  chanaCM[chan]  = FT1_WGG_ele_DOWN;// expected value! 
+  chanaCP[chan]  = FT1_WGG_ele_UP;// expected value
+  plotChan[chan] = false;
+  if (runopt == "all" || runopt == "elemuo") plotChan[chan] = true;
+
+  chan = FT1_WGG_muo;
+  chanName[chan]            = "f_{T,1}";
+  chanMeasurement[chan]     = "W(#mu#nu)#gamma#gamma";
+  chanLumi[chan]            = "137 fb^{-1}";
+  chanExp[chan]            = "W(#mu#nu)#gamma#gamma";
+  chanSqrtS[chan]          = "13 TeV";
+  chanaCC[chan]  = (FT1_WGG_muo_DOWN + FT1_WGG_muo_UP)/2;
+  if (chanaCC[chan] == 0) chanaCC[chan]  = 1e-10;
+  chanaCM[chan]  = FT1_WGG_muo_DOWN;// expected value! 
+  chanaCP[chan]  = FT1_WGG_muo_UP;// expected value
+  plotChan[chan] = false;
+  if (runopt == "all" || runopt == "elemuo") plotChan[chan] = true;
+
+  chan = FT1_WGG_lep;
+  chanName[chan]            = "f_{T,1}";
+  chanMeasurement[chan]     = "W(l#nu)#gamma#gamma";
+  chanLumi[chan]            = "137 fb^{-1}";
+  chanExp[chan]            = "W(l#nu)#gamma#gamma";
+  chanSqrtS[chan]          = "13 TeV";
+  chanaCC[chan]  = (FT1_WGG_lep_DOWN + FT1_WGG_lep_UP)/2;
+  if (chanaCC[chan] == 0) chanaCC[chan]  = 1e-10;
+  chanaCM[chan]  = FT1_WGG_lep_DOWN;// expected value! 
+  chanaCP[chan]  = FT1_WGG_lep_UP;// expected value
+  plotChan[chan] = false;
+  if (runopt == "all" || runopt == "lep") plotChan[chan] = true;
+
   chan = FT1_ZGG_ele;
   chanName[chan]            = "f_{T,1}";
   chanMeasurement[chan]     = "Z(ee)#gamma#gamma";
@@ -311,6 +548,45 @@ if (!excludeFT012) {
   if (excludeWZ) plotChan[chan] = false;
 
 //FT2
+  chan = FT2_WGG_ele;
+  chanName[chan]            = "f_{T,2}";
+  chanMeasurement[chan]     = "W(e#nu)#gamma#gamma";
+  chanLumi[chan]            = "137 fb^{-1}";
+  chanExp[chan]            = "W(e#nu)#gamma#gamma";
+  chanSqrtS[chan]          = "13 TeV";
+  chanaCC[chan]  = (FT2_WGG_ele_DOWN + FT2_WGG_ele_UP)/2;
+  if (chanaCC[chan] == 0) chanaCC[chan]  = 1e-10;
+  chanaCM[chan]  = FT2_WGG_ele_DOWN;// expected value! 
+  chanaCP[chan]  = FT2_WGG_ele_UP;// expected value
+  plotChan[chan] = false;
+  if (runopt == "all" || runopt == "elemuo") plotChan[chan] = true;
+
+  chan = FT2_WGG_muo;
+  chanName[chan]            = "f_{T,2}";
+  chanMeasurement[chan]     = "W(#mu#nu)#gamma#gamma";
+  chanLumi[chan]            = "137 fb^{-1}";
+  chanExp[chan]            = "W(#mu#nu)#gamma#gamma";
+  chanSqrtS[chan]          = "13 TeV";
+  chanaCC[chan]  = (FT2_WGG_muo_DOWN + FT2_WGG_muo_UP)/2;
+  if (chanaCC[chan] == 0) chanaCC[chan]  = 1e-10;
+  chanaCM[chan]  = FT2_WGG_muo_DOWN;// expected value! 
+  chanaCP[chan]  = FT2_WGG_muo_UP;// expected value
+  plotChan[chan] = false;
+  if (runopt == "all" || runopt == "elemuo") plotChan[chan] = true;
+
+  chan = FT2_WGG_lep;
+  chanName[chan]            = "f_{T,2}";
+  chanMeasurement[chan]     = "W(l#nu)#gamma#gamma";
+  chanLumi[chan]            = "137 fb^{-1}";
+  chanExp[chan]            = "W(l#nu)#gamma#gamma";
+  chanSqrtS[chan]          = "13 TeV";
+  chanaCC[chan]  = (FT2_WGG_lep_DOWN + FT2_WGG_lep_UP)/2;
+  if (chanaCC[chan] == 0) chanaCC[chan]  = 1e-10;
+  chanaCM[chan]  = FT2_WGG_lep_DOWN;// expected value! 
+  chanaCP[chan]  = FT2_WGG_lep_UP;// expected value
+  plotChan[chan] = false;
+  if (runopt == "all" || runopt == "lep") plotChan[chan] = true;
+
   chan = FT2_ZGG_ele;
   chanName[chan]            = "f_{T,2}";
   chanMeasurement[chan]     = "Z(ee)#gamma#gamma";
@@ -392,6 +668,45 @@ if (!excludeFT012) {
 
 if (!excludeFT5p) {
 //FT5
+  chan = FT5_WGG_ele;
+  chanName[chan]            = "f_{T,5}";
+  chanMeasurement[chan]     = "W(e#nu)#gamma#gamma";
+  chanLumi[chan]            = "137 fb^{-1}";
+  chanExp[chan]            = "W(e#nu)#gamma#gamma";
+  chanSqrtS[chan]          = "13 TeV";
+  chanaCC[chan]  = (FT5_WGG_ele_DOWN + FT5_WGG_ele_UP)/2;
+  if (chanaCC[chan] == 0) chanaCC[chan]  = 1e-10;
+  chanaCM[chan]  = FT5_WGG_ele_DOWN;// expected value! 
+  chanaCP[chan]  = FT5_WGG_ele_UP;// expected value
+  plotChan[chan] = false;
+  if (runopt == "all" || runopt == "elemuo") plotChan[chan] = true;
+
+  chan = FT5_WGG_muo;
+  chanName[chan]            = "f_{T,5}";
+  chanMeasurement[chan]     = "W(#mu#nu)#gamma#gamma";
+  chanLumi[chan]            = "137 fb^{-1}";
+  chanExp[chan]            = "W(#mu#nu)#gamma#gamma";
+  chanSqrtS[chan]          = "13 TeV";
+  chanaCC[chan]  = (FT5_WGG_muo_DOWN + FT5_WGG_muo_UP)/2;
+  if (chanaCC[chan] == 0) chanaCC[chan]  = 1e-10;
+  chanaCM[chan]  = FT5_WGG_muo_DOWN;// expected value! 
+  chanaCP[chan]  = FT5_WGG_muo_UP;// expected value
+  plotChan[chan] = false;
+  if (runopt == "all" || runopt == "elemuo") plotChan[chan] = true;
+
+  chan = FT5_WGG_lep;
+  chanName[chan]            = "f_{T,5}";
+  chanMeasurement[chan]     = "W(l#nu)#gamma#gamma";
+  chanLumi[chan]            = "137 fb^{-1}";
+  chanExp[chan]            = "W(l#nu)#gamma#gamma";
+  chanSqrtS[chan]          = "13 TeV";
+  chanaCC[chan]  = (FT5_WGG_lep_DOWN + FT5_WGG_lep_UP)/2;
+  if (chanaCC[chan] == 0) chanaCC[chan]  = 1e-10;
+  chanaCM[chan]  = FT5_WGG_lep_DOWN;// expected value! 
+  chanaCP[chan]  = FT5_WGG_lep_UP;// expected value
+  plotChan[chan] = false;
+  if (runopt == "all" || runopt == "lep") plotChan[chan] = true;
+
   chan = FT5_ZGG_ele;
   chanName[chan]            = "f_{T,5}";
   chanMeasurement[chan]     = "Z(ee)#gamma#gamma";
@@ -445,6 +760,45 @@ if (!excludeFT5p) {
   if (excludeZg) plotChan[chan] = false;
 
 //FT6
+  chan = FT6_WGG_ele;
+  chanName[chan]            = "f_{T,6}";
+  chanMeasurement[chan]     = "W(e#nu)#gamma#gamma";
+  chanLumi[chan]            = "137 fb^{-1}";
+  chanExp[chan]            = "W(e#nu)#gamma#gamma";
+  chanSqrtS[chan]          = "13 TeV";
+  chanaCC[chan]  = (FT6_WGG_ele_DOWN + FT6_WGG_ele_UP)/2;
+  if (chanaCC[chan] == 0) chanaCC[chan]  = 1e-10;
+  chanaCM[chan]  = FT6_WGG_ele_DOWN;// expected value! 
+  chanaCP[chan]  = FT6_WGG_ele_UP;// expected value
+  plotChan[chan] = false;
+  if (runopt == "all" || runopt == "elemuo") plotChan[chan] = true;
+
+  chan = FT6_WGG_muo;
+  chanName[chan]            = "f_{T,6}";
+  chanMeasurement[chan]     = "W(#mu#nu)#gamma#gamma";
+  chanLumi[chan]            = "137 fb^{-1}";
+  chanExp[chan]            = "W(#mu#nu)#gamma#gamma";
+  chanSqrtS[chan]          = "13 TeV";
+  chanaCC[chan]  = (FT6_WGG_muo_DOWN + FT6_WGG_muo_UP)/2;
+  if (chanaCC[chan] == 0) chanaCC[chan]  = 1e-10;
+  chanaCM[chan]  = FT6_WGG_muo_DOWN;// expected value! 
+  chanaCP[chan]  = FT6_WGG_muo_UP;// expected value
+  plotChan[chan] = false;
+  if (runopt == "all" || runopt == "elemuo") plotChan[chan] = true;
+
+  chan = FT6_WGG_lep;
+  chanName[chan]            = "f_{T,6}";
+  chanMeasurement[chan]     = "W(l#nu)#gamma#gamma";
+  chanLumi[chan]            = "137 fb^{-1}";
+  chanExp[chan]            = "W(l#nu)#gamma#gamma";
+  chanSqrtS[chan]          = "13 TeV";
+  chanaCC[chan]  = (FT6_WGG_lep_DOWN + FT6_WGG_lep_UP)/2;
+  if (chanaCC[chan] == 0) chanaCC[chan]  = 1e-10;
+  chanaCM[chan]  = FT6_WGG_lep_DOWN;// expected value! 
+  chanaCP[chan]  = FT6_WGG_lep_UP;// expected value
+  plotChan[chan] = false;
+  if (runopt == "all" || runopt == "lep") plotChan[chan] = true;
+
   chan = FT6_ZGG_ele;
   chanName[chan]            = "f_{T,6}";
   chanMeasurement[chan]     = "Z(ee)#gamma#gamma";
@@ -498,6 +852,45 @@ if (!excludeFT5p) {
   if (excludeZg) plotChan[chan] = false;
 
 //FT7
+  chan = FT7_WGG_ele;
+  chanName[chan]            = "f_{T,7}";
+  chanMeasurement[chan]     = "W(e#nu)#gamma#gamma";
+  chanLumi[chan]            = "137 fb^{-1}";
+  chanExp[chan]            = "W(e#nu)#gamma#gamma";
+  chanSqrtS[chan]          = "13 TeV";
+  chanaCC[chan]  = (FT7_WGG_ele_DOWN + FT7_WGG_ele_UP)/2;
+  if (chanaCC[chan] == 0) chanaCC[chan]  = 1e-10;
+  chanaCM[chan]  = FT7_WGG_ele_DOWN;// expected value! 
+  chanaCP[chan]  = FT7_WGG_ele_UP;// expected value
+  plotChan[chan] = false;
+  if (runopt == "all" || runopt == "elemuo") plotChan[chan] = true;
+
+  chan = FT7_WGG_muo;
+  chanName[chan]            = "f_{T,7}";
+  chanMeasurement[chan]     = "W(#mu#nu)#gamma#gamma";
+  chanLumi[chan]            = "137 fb^{-1}";
+  chanExp[chan]            = "W(#mu#nu)#gamma#gamma";
+  chanSqrtS[chan]          = "13 TeV";
+  chanaCC[chan]  = (FT7_WGG_muo_DOWN + FT7_WGG_muo_UP)/2;
+  if (chanaCC[chan] == 0) chanaCC[chan]  = 1e-10;
+  chanaCM[chan]  = FT7_WGG_muo_DOWN;// expected value! 
+  chanaCP[chan]  = FT7_WGG_muo_UP;// expected value
+  plotChan[chan] = false;
+  if (runopt == "all" || runopt == "elemuo") plotChan[chan] = true;
+
+  chan = FT7_WGG_lep;
+  chanName[chan]            = "f_{T,7}";
+  chanMeasurement[chan]     = "W(l#nu)#gamma#gamma";
+  chanLumi[chan]            = "137 fb^{-1}";
+  chanExp[chan]            = "W(l#nu)#gamma#gamma";
+  chanSqrtS[chan]          = "13 TeV";
+  chanaCC[chan]  = (FT7_WGG_lep_DOWN + FT7_WGG_lep_UP)/2;
+  if (chanaCC[chan] == 0) chanaCC[chan]  = 1e-10;
+  chanaCM[chan]  = FT7_WGG_lep_DOWN;// expected value! 
+  chanaCP[chan]  = FT7_WGG_lep_UP;// expected value
+  plotChan[chan] = false;
+  if (runopt == "all" || runopt == "lep") plotChan[chan] = true;
+
   chan = FT7_ZGG_ele;
   chanName[chan]            = "f_{T,7}";
   chanMeasurement[chan]     = "Z(ee)#gamma#gamma";
@@ -664,19 +1057,25 @@ const int numberExperiments = 9;
 vector<string> experiments(numberExperiments);
 vector<int> colors(numberExperiments);
 
-experiments[0] = "Z(ee)#gamma#gamma";
-experiments[1] = "Z(#mu#mu)#gamma#gamma";
-experiments[2] = "Z(ll)#gamma#gamma";
-experiments[3] = "W(l#nu)#gamma#gamma@8TeV";
-experiments[4] = "Z(ll)#gamma";
-experiments[5] = "W(l#nu)Z(ll)";
+experiments[0] = "W(e#nu)#gamma#gamma";
+experiments[1] = "W(#mu#nu)#gamma#gamma";
+experiments[2] = "W(l#nu)#gamma#gamma";
+experiments[3] = "Z(ee)#gamma#gamma";
+experiments[4] = "Z(#mu#mu)#gamma#gamma";
+experiments[5] = "Z(ll)#gamma#gamma";
+experiments[6] = "W(l#nu)#gamma#gamma@8TeV";
+experiments[7] = "Z(ll)#gamma";
+experiments[8] = "W(l#nu)Z(ll)";
 
-colors[0] = kOrange;
-colors[1] = kOrange+2;
-colors[2] = kRed;
-colors[3] = kGreen;
-colors[4] = kViolet-2;
-colors[5] = kGreen+3;
+colors[0] = kAzure+1;
+colors[1] = kViolet;
+colors[2] = kBlue;
+colors[3] = kOrange;
+colors[4] = kOrange+2;
+colors[5] = kRed;
+colors[6] = kGreen;
+colors[7] = kViolet-2;
+colors[8] = kGreen+3;
 
 // determine limit range and number of measurements and experiments
 
@@ -697,12 +1096,15 @@ for( size_t ii=0; ii<k_nChan; ii++ )
       // determine number of measurement, used in y axis
       nPlotChan++;
       // determine number of experiments,  used in ledgend
-      if (chanExp[ii]=="Z(ee)#gamma#gamma")   types = types|1;
-      if (chanExp[ii]=="Z(#mu#mu)#gamma#gamma")   types = types|2;
-      if (chanExp[ii]=="Z(ll)#gamma#gamma")   types = types|4;
-      if (chanExp[ii]=="W(l#nu)#gamma#gamma@8TeV")   types = types|8;
-      if (chanExp[ii]=="Z(ll)#gamma")   types = types|16;
-      if (chanExp[ii]=="W(l#nu)Z(ll)")   types = types|32;
+      if (chanExp[ii]=="W(e#nu)#gamma#gamma")   types = types|1;
+      if (chanExp[ii]=="W(#mu#nu)#gamma#gamma")   types = types|2;
+      if (chanExp[ii]=="W(l#nu)#gamma#gamma")   types = types|4;
+      if (chanExp[ii]=="Z(ee)#gamma#gamma")   types = types|8;
+      if (chanExp[ii]=="Z(#mu#mu)#gamma#gamma")   types = types|16;
+      if (chanExp[ii]=="Z(ll)#gamma#gamma")   types = types|32;
+      if (chanExp[ii]=="W(l#nu)#gamma#gamma@8TeV")   types = types|64;
+      if (chanExp[ii]=="Z(ll)#gamma")   types = types|128;
+      if (chanExp[ii]=="W(l#nu)Z(ll)")   types = types|256;
       
 // Concatonate chan results strings
 
@@ -737,6 +1139,9 @@ if (types&4) exps++;
 if (types&8) exps++;
 if (types&16) exps++;
 if (types&32) exps++;
+if (types&64) exps++;
+if (types&128) exps++;
+if (types&256) exps++;
     
 
 float minRange = -range*1.3*1.3;
