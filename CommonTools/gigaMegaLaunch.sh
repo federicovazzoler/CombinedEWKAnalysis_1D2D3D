@@ -5,7 +5,7 @@ eval `scramv1 runtime -sh`
 WORKDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $WORKDIR
 
-URL="https://wwwusers.ts.infn.it/~dellaric/tmp/Vgg/v17.deltaEtaSC.default/"
+URL="https://wwwusers.ts.infn.it/~dellaric/tmp/Vgg/v18.default/"
 
 BOSON=$1
 if [ -z "$1" ]; then
